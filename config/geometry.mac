@@ -1,0 +1,9 @@
+/LArSIMple/WorldWidth  10.0 m
+/LArSIMple/WorldHeight 10.0 m
+/LArSIMple/WorldLength 10.0 m
+
+/LArSIMple/DetectorWidth 5.0 m
+/LArSIMple/DetectorHeight 5.0 m
+/LArSIMple/DetectorLength 5.0 m
+
+/LArSIMple/CheckOverlaps true
