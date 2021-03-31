@@ -64,9 +64,9 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event* evt) {
   if(fEventID%1000==0 || (fEventID%100==0 && fEventID<1000))
     std::cout << "\n---> Ending of event: " << fEventID << std::endl;
 
-  std::cout << "Got " << fEnergyDeposits.size() << std::endl;
-  for(auto const &edep : fEnergyDeposits)
-    edep.PrintSummary();
+  std::cout << "Got " << fEnergyDeposits.size() << " 3D energy deposits" << std::endl;
+//  for(auto const &edep : fEnergyDeposits)
+//    edep.PrintSummary();
 
   this->WriteOutputFiles();
 
