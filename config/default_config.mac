@@ -7,6 +7,7 @@
 /LArSIMple/DetectorHeight 5.0 m
 /LArSIMple/DetectorLength 5.0 m
 
+/LArSIMple/VoxeliseLAr true
 /LArSIMple/CheckOverlaps true
 
 # Physics

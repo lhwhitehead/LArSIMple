@@ -50,6 +50,11 @@ LArSIMpleDetectorMessenger::LArSIMpleDetectorMessenger(LArSIMpleDetectorConstruc
   fDetectorLength->SetDefaultValue(500.);
   fDetectorLength->SetDefaultUnit("cm");
 
+  fVoxeliseLAr = new G4UIcmdWithABool("/LArSIMple/VoxeliseLAr",this);
+  fVoxeliseLAr->SetGuidance("Voxelise the main LAr volume");
+  fVoxeliseLAr->SetParameterName("VoxeliseLAr",true,true);
+  fVoxeliseLAr->SetDefaultValue(true);
+
   fCheckOverlaps = new G4UIcmdWithABool("/LArSIMple/CheckOverlaps",this);
   fCheckOverlaps->SetGuidance("Check overlaps when building geometry");
   fCheckOverlaps->SetParameterName("CheckOverlaps",true,true);
@@ -81,6 +86,8 @@ void LArSIMpleDetectorMessenger::SetNewValue(G4UIcommand* command,G4String newVa
   if(command == fDetectorLength)
     fDetectorConstruction->SetLArLength(fDetectorLength->GetNewDoubleValue(newValue));
 
+  if(command == fVoxeliseLAr)
+    fDetectorConstruction->SetVoxeliseLAr(fVoxeliseLAr->GetNewBoolValue(newValue));
   if(command == fCheckOverlaps)
     fDetectorConstruction->SetCheckOverlaps(fCheckOverlaps->GetNewBoolValue(newValue));
 }

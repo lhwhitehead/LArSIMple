@@ -58,6 +58,9 @@ public:
   float GetLArSizeMaxY() const {return fLArSizeY / 2.f;}; 
   float GetLArSizeMaxZ() const {return fLArSizeZ / 2.f;}; 
 
+  bool GetVoxeliseLAr() const {return fVoxeliseLAr;};
+  void SetVoxeliseLAr(bool flag) {fVoxeliseLAr = flag;};
+
   bool GetCheckOverlaps() const {return fCheckOverlaps;};
   void SetCheckOverlaps(bool check) {fCheckOverlaps = check;};
 
@@ -74,17 +77,18 @@ private:
   float  fLArSizeX;
   float  fLArSizeY;
   float  fLArSizeZ;
-
+  
+  bool fVoxeliseLAr;
   bool fCheckOverlaps;
 
   G4Material*        fMaterialLAr;
   G4Material*        fMaterialAir;
   
-  G4Box*             fSolidWorld;    //pointer to the solid World 
-  G4LogicalVolume*   fLogicWorld;    //pointer to the logical World
-  G4VPhysicalVolume* fPhysiWorld;    //pointer to the physical World
+  G4Box*             fSolidWorld;
+  G4LogicalVolume*   fLogicWorld;
+  G4VPhysicalVolume* fPhysiWorld;
   
-  G4Box*             fSolidLArBox;    // Aluminium plate definitions
+  G4Box*             fSolidLArBox;
   G4LogicalVolume*   fLogicLArBox;
   G4VPhysicalVolume* fPhysiLArBox;
 
@@ -97,7 +101,7 @@ private:
   void DefineMaterials();  
   void ConstructWorld();
   void ConstructLArBox();
-
+  void ConstructLArVoxels();
 };
 
 #endif

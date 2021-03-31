@@ -35,6 +35,9 @@ class LArSIMpleDetectorMessenger: public G4UImessenger
   G4UIcmdWithADoubleAndUnit* fDetectorHeight;
   G4UIcmdWithADoubleAndUnit* fDetectorLength;
 
+  // Voxelise the LAr volume
+  G4UIcmdWithABool* fVoxeliseLAr;
+
   // Check for Overlaps
   G4UIcmdWithABool* fCheckOverlaps;
 };

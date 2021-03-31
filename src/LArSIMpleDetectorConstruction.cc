@@ -1,5 +1,6 @@
 #include "LArSIMpleDetectorConstruction.hh"
 #include "LArSIMpleDetectorMessenger.hh"
+#include "LArSIMpleNestedParameterisation.hh"
 //#include "LArSIMpleSensitiveDetector.hh"
 
 #include "G4Material.hh"
@@ -11,6 +12,9 @@
 #include "G4PVReplica.hh"
 #include "G4UniformMagField.hh"
 #include "G4Tubs.hh"
+#include "G4PVParameterised.hh"
+
+#include "G4UserLimits.hh"
 
 #include "G4GeometryManager.hh"
 #include "G4PhysicalVolumeStore.hh"
@@ -90,6 +94,56 @@ void LArSIMpleDetectorConstruction::ConstructLArBox()
   fSolidLArBox = new G4Box("LArBox", fLArSizeX/2.f, fLArSizeY/2.f, fLArSizeZ/2.f);
   fLogicLArBox = new G4LogicalVolume(fSolidLArBox, fMaterialLAr, "LArBox");
   fPhysiLArBox = new G4PVPlacement(0, G4ThreeVector(), fLogicLArBox, "LArBox", fLogicWorld, false, 0, fCheckOverlaps);
+
+  if(fVoxeliseLAr)
+    this->ConstructLArVoxels();
+
+  fLogicLArBox->SetUserLimits(new G4UserLimits(1.0 / CLHEP::mm));
+}
+
+void LArSIMpleDetectorConstruction::ConstructLArVoxels()
+{
+  const double voxelSize = 5.0;
+  const int nCellsX = static_cast<int>(fLArSizeX / voxelSize);
+  const int nCellsY = static_cast<int>(fLArSizeY / voxelSize);
+  const int nCellsZ = static_cast<int>(fLArSizeZ / voxelSize);
+
+  std::cout << fLArSizeY << ", " << voxelSize << ", " << nCellsY << std::endl;
+
+  // Firstly we build detector slices in Y
+  G4VSolid* solYRep = new G4Box("LArBox_ySlices", fLArSizeX / 2., voxelSize / 2., fLArSizeZ / 2.);
+  G4LogicalVolume* logYRep = new G4LogicalVolume(solYRep, fMaterialLAr, "LArBox_ySlices");
+  new G4PVReplica("LArBox_ySlices", logYRep, fLogicLArBox, kYAxis, nCellsY, voxelSize);
+
+  std::cout << "Constructed y slices" << std::endl;
+
+  // Now for X
+  G4VSolid* solXRep = new G4Box("LArBox_xSlices", voxelSize / 2., voxelSize / 2., fLArSizeZ / 2.);
+  G4LogicalVolume* logXRep = new G4LogicalVolume(solXRep, fMaterialLAr, "LArBox_xSlices");
+  new G4PVReplica("LArBox_xSlices", logXRep, logYRep, kXAxis, nCellsX, voxelSize);
+
+  std::cout << "Constructed x slices" << std::endl;
+
+  // We use our custom nested parameterisation for Z
+  G4VSolid* solVoxel =  new G4Box("LArBox_zSlices", voxelSize / 2., voxelSize / 2., voxelSize / 2.);
+  G4LogicalVolume* logVoxel = new G4LogicalVolume(solVoxel, fMaterialLAr, "LArBox_zSlices");
+  std::vector<G4Material*> materials({fMaterialLAr});
+  // Parameterisation for transformation of voxels.
+  //  (voxel size is fixed in this example. 
+  //  e.g. nested parameterisation handles material and transfomation of voxels.)
+  LArSIMpleNestedParameterisation* paramVoxels
+    = new LArSIMpleNestedParameterisation(materials, voxelSize / 2., voxelSize / 2., voxelSize / 2., nCellsZ);
+  //G4VPhysicalVolume * physiPhantomSens =
+  new G4PVParameterised("LArBox_zSlices",     // their name
+                          logVoxel,    // their logical volume
+                          logXRep,           // Mother logical volume
+                          kUndefined,        // Are placed along this axis 
+                          nCellsZ,           // Number of cells
+                          paramVoxels);     // Parameterisation.
+  //   Optimization flag is avaiable for,
+  //    kUndefined, kXAxis, kYAxis, kZAxis.
+  //
+  std::cout << "Constructed voxels" << std::endl;
 }
 
 void LArSIMpleDetectorConstruction::PrintDetectorSummary() const
