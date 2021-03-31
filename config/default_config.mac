@@ -1,3 +1,4 @@
+# Geometry
 /LArSIMple/WorldWidth  10.0 m
 /LArSIMple/WorldHeight 10.0 m
 /LArSIMple/WorldLength 10.0 m
@@ -7,3 +8,7 @@
 /LArSIMple/DetectorLength 5.0 m
 
 /LArSIMple/CheckOverlaps true
+
+# Physics
+/LArSIMple/HitThreshold 0.01 MeV
+

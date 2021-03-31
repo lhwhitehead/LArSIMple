@@ -2,6 +2,7 @@
 
 //#include "LArSIMpleHit.hh"
 #include "LArSIMplePrimaryGeneratorAction.hh"
+#include "LArSIMpleMessenger.hh"
 
 #include "G4Event.hh"
 #include "G4EventManager.hh"
@@ -27,13 +28,15 @@ LArSIMpleEventAction::LArSIMpleEventAction(LArSIMplePrimaryGeneratorAction* LArS
   : fGenAction(LArSIMplePGA) {
   
   fOutputFileBase="hits_3d";
-
+  fHitThreshold = 0.;
+  fMessenger = new LArSIMpleMessenger(this);
 }
 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 LArSIMpleEventAction::~LArSIMpleEventAction() 
-{;}
+{
+}
 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
@@ -66,6 +69,7 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event* evt) {
 
   this->WriteOutputFiles();
 
+  fTrackIDToPDG.clear();
 //
 //  G4TrajectoryContainer* trajectoryContainer = evt->GetTrajectoryContainer();
 //
@@ -149,6 +153,29 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event* evt) {
 //      }
 //    }
 //  }
+}
+
+int LArSIMpleEventAction::GetPDGFromTrackID(const int trackID) const{
+  if(fTrackIDToPDG.count(trackID) != 0)
+  {
+    return fTrackIDToPDG.at(trackID);
+  }
+  else
+  {
+    std::cerr << "- Track " << trackID << " not found in the map... returning -9999" << std::endl;
+    return -9999;
+  }
+}
+
+void LArSIMpleEventAction::AddTrackIDAndPDG(const int trackID, const int pdg){
+  if(fTrackIDToPDG.count(trackID) == 0)
+  {
+    fTrackIDToPDG[trackID] = pdg;
+  }
+  else
+  {
+    std::cerr << "- Track " << trackID << " already exists in the map... doing nothing" << std::endl;
+  }
 }
 
 void LArSIMpleEventAction::WriteOutputFiles() const

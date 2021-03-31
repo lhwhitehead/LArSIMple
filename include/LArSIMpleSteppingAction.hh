@@ -1,11 +1,13 @@
-#ifndef SteppingAction_h
-#define SteppingAction_h 1
+#ifndef LArSIMpleSteppingAction_h
+#define LArSIMpleSteppingAction_h 1
 
 #include "G4UserSteppingAction.hh"
 #include "G4VProcess.hh"
 #include "globals.hh"
 
 class LArSIMpleEventAction;
+class G4Step;
+class G4Track;
 
 class LArSIMpleSteppingAction : public G4UserSteppingAction
 {
@@ -18,6 +20,8 @@ public:
     
 private:
   LArSIMpleEventAction* fEventAction;
+
+  void GetFoldedTrackIDAndPDG(const G4Track*, int &foldedTrackID, int &foldedTrackPDG);
 };
 
 #endif

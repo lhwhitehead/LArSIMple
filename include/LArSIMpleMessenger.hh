@@ -25,6 +25,7 @@ class LArSIMpleMessenger: public G4UImessenger
 
     G4UIdirectory*      fLArSIMpleDir;
     G4UIcmdWithAString* fOutputFileBase;
+    G4UIcmdWithADoubleAndUnit* fHitThreshold;
 };
 
 #endif

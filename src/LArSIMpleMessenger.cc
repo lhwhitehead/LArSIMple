@@ -23,12 +23,18 @@ LArSIMpleMessenger::LArSIMpleMessenger(LArSIMpleEventAction* ptra)
   fOutputFileBase->SetGuidance("The base part of the output file name (to be appended with event number etc)");
   fOutputFileBase->SetParameterName("OutputFileBase",true);
   fOutputFileBase->SetDefaultValue("hits_3d");
+
+  fHitThreshold = new G4UIcmdWithADoubleAndUnit("/LArSIMple/HitThreshold",this);
+  fHitThreshold->SetGuidance("Energy threshold for saving hits");
+  fHitThreshold->SetParameterName("HitThreshold",true);
+  fHitThreshold->SetDefaultValue(0.01);
 }
 
 LArSIMpleMessenger::~LArSIMpleMessenger()
 {
-  delete fOutputFileBase;
   delete fLArSIMpleDir;
+  delete fOutputFileBase;
+  delete fHitThreshold;
 }
 
 void LArSIMpleMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
@@ -36,4 +42,7 @@ void LArSIMpleMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
 
   if (command == fOutputFileBase)
     fEventAction->SetOutputFileBase(newValue);
+  if (command == fHitThreshold)
+    fEventAction->SetHitThreshold(fHitThreshold->GetNewDoubleValue(newValue));
+
 }

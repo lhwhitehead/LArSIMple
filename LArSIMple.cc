@@ -19,6 +19,7 @@
 #include "LArSIMplePrimaryGeneratorAction.hh"
 #include "LArSIMpleRunAction.hh"
 #include "LArSIMpleEventAction.hh"
+#include "LArSIMpleTrackingAction.hh"
 #include "LArSIMpleSteppingAction.hh"
 //#include "LArSIMpleSteppingVerbose.hh"
 #include "LArSIMpleMessenger.hh"
@@ -51,14 +52,6 @@ int main(int argc,char** argv) {
   runManager->SetUserInitialization(detector);
   //LArSIMpleDetectorMessenger* detectorMessenger = new LArSIMpleDetectorMessenger(detector);
   //get the pointer to the User Interface manager 
-  G4UImanager* UI = G4UImanager::GetUIpointer();
-  G4String command, fileName;
-  if (argc==3) {
-    command = "/control/execute ";
-    fileName = argv[2];
-    UI->ApplyCommand(command+fileName);
-  }
-
   
   //Geant Version 9 (user defined physics list)
   runManager->SetUserInitialization(new LArSIMplePhysicsList);
@@ -104,10 +97,22 @@ int main(int argc,char** argv) {
   LArSIMpleEventAction* event_action = new LArSIMpleEventAction(pga);
   runManager->SetUserAction(event_action);
 
+  LArSIMpleTrackingAction* tracking_action = new LArSIMpleTrackingAction(event_action);
+  runManager->SetUserAction(tracking_action);
 //  LArSIMpleMessenger* messenger = new LArSIMpleMessenger(event_action);
  
   LArSIMpleSteppingAction* stepping_action = new LArSIMpleSteppingAction(event_action);
   runManager->SetUserAction(stepping_action);
+
+  // Read the detector and physics configuration
+  G4UImanager* UI = G4UImanager::GetUIpointer();
+  G4String command, fileName;
+  if (argc==3) {
+    command = "/control/execute ";
+    fileName = argv[2];
+    UI->ApplyCommand(command+fileName);
+  }
+
   
   //Initialize G4 kernel
   runManager->Initialize();
