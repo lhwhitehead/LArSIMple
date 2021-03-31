@@ -19,7 +19,7 @@ LArSIMpleTrackingAction::~LArSIMpleTrackingAction()
 
 void LArSIMpleTrackingAction::PreUserTrackingAction(const G4Track* aTrack)
 {
-  fEventAction->AddTrackIDAndPDG(aTrack->GetTrackID(),aTrack->GetParticleDefinition()->GetPDGEncoding());
+  fEventAction->AddTrack(aTrack);
 }
 
 void LArSIMpleTrackingAction::PostUserTrackingAction(const G4Track* aTrack)

@@ -67,38 +67,25 @@ void LArSIMpleSteppingAction::GetFoldedTrackIDAndPDG(const G4Track *track, int &
 {
   const int trackID = track->GetTrackID();
   const int trackPDG = track->GetParticleDefinition()->GetPDGEncoding();
-  const int parentID = track->GetParentID();
 
-  // Primary particle first
-  if(parentID == 0)
+  foldedTrackID = trackID;
+  foldedTrackPDG = trackPDG;
+  // We need to iterate through the parent links until we find a track that isn't foldable
+  bool keepFolding = fEventAction->GetTrackDataFromTrackID(track->GetTrackID()).IsFoldable();
+  while(keepFolding)
   {
-    foldedTrackID = trackID;
-    foldedTrackPDG = trackPDG;
-  }
-  // Check if secondaries have processes we don't want to consider as particles
-  else
-  {
-    std::string process = track->GetCreatorProcess()->GetProcessName();
-    if(process.find("conv")           != std::string::npos
-       || process.find("LowEnConversion") != std::string::npos
-       || process.find("Pair")            != std::string::npos
-       || process.find("compt")           != std::string::npos
-       || process.find("Compt")           != std::string::npos
-       || process.find("Brem")            != std::string::npos
-       || process.find("phot")            != std::string::npos
-       || process.find("Photo")           != std::string::npos
-       || process.find("Ion")             != std::string::npos
-       || process.find("annihil")         != std::string::npos)
+    const LArSIMpleTrackData trkData = fEventAction->GetTrackDataFromTrackID(foldedTrackID);
+    if(trkData.IsFoldable())
     {
-      foldedTrackID = parentID;
-      foldedTrackPDG = fEventAction->GetPDGFromTrackID(parentID);
+      foldedTrackID = trkData.GetParentID();
     }
-    // Otherwise these are particles that we want to keep
     else
     {
-      foldedTrackID = trackID;
-      foldedTrackPDG = trackPDG;
+      foldedTrackID = trkData.GetTrackID();
+      foldedTrackPDG = trkData.GetPDG();
+      keepFolding = false;
     }
   }
+
 }
 

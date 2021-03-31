@@ -4,6 +4,7 @@
 #include <map>
 
 #include "LArSIMple3DEnergyDeposit.hh"
+#include "LArSIMpleTrackData.hh"
 
 #include "G4UserEventAction.hh"
 #include "globals.hh"
@@ -11,6 +12,7 @@
 
 class LArSIMplePrimaryGeneratorAction;
 class LArSIMpleMessenger;
+class G4Track;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 class LArSIMpleEventAction : public G4UserEventAction {
@@ -24,8 +26,8 @@ public:
   void Add3DEnergyDeposit(LArSIMple3DEnergyDeposit edep);
   void SetOutputFileBase(std::string base) {fOutputFileBase = base;};
  
-  int GetPDGFromTrackID(const int trackID) const;
-  void AddTrackIDAndPDG(const int trackID, const int pdg);
+  const LArSIMpleTrackData GetTrackDataFromTrackID(const int trackID) const;
+  void AddTrack(const G4Track *track);
 
   double GetHitThreshold() const {return fHitThreshold;};
   void SetHitThreshold(const double threshold) {fHitThreshold = threshold;};
@@ -42,7 +44,7 @@ private:
   std::vector<LArSIMple3DEnergyDeposit> fEnergyDeposits;
 
   // Tracks can be transient so keep track of the type
-  std::map<int,int> fTrackIDToPDG;
+  std::map<int,LArSIMpleTrackData> fTrackIDToTrackData;
   
   void WriteOutputFiles() const;
   

@@ -8,6 +8,7 @@
 #include "G4EventManager.hh"
 #include "G4HCofThisEvent.hh"
 #include "G4VHitsCollection.hh"
+#include "G4Track.hh"
 
 #include "G4TrajectoryContainer.hh"
 #include "G4Trajectory.hh"
@@ -69,7 +70,7 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event* evt) {
 
   this->WriteOutputFiles();
 
-  fTrackIDToPDG.clear();
+  fTrackIDToTrackData.clear();
 //
 //  G4TrajectoryContainer* trajectoryContainer = evt->GetTrajectoryContainer();
 //
@@ -155,22 +156,23 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event* evt) {
 //  }
 }
 
-int LArSIMpleEventAction::GetPDGFromTrackID(const int trackID) const{
-  if(fTrackIDToPDG.count(trackID) != 0)
+const LArSIMpleTrackData LArSIMpleEventAction::GetTrackDataFromTrackID(const int trackID) const{
+  if(fTrackIDToTrackData.count(trackID) != 0)
   {
-    return fTrackIDToPDG.at(trackID);
+    return fTrackIDToTrackData.at(trackID);
   }
   else
   {
-    std::cerr << "- Track " << trackID << " not found in the map... returning -9999" << std::endl;
-    return -9999;
+    std::cerr << "- Track " << trackID << " not found in the map... returning empty track data object" << std::endl;
+    return LArSIMpleTrackData();
   }
 }
 
-void LArSIMpleEventAction::AddTrackIDAndPDG(const int trackID, const int pdg){
-  if(fTrackIDToPDG.count(trackID) == 0)
+void LArSIMpleEventAction::AddTrack(const G4Track *track){
+  const int trackID = track->GetTrackID();
+  if(fTrackIDToTrackData.count(trackID) == 0)
   {
-    fTrackIDToPDG[trackID] = pdg;
+    fTrackIDToTrackData[trackID] = LArSIMpleTrackData(track);
   }
   else
   {
