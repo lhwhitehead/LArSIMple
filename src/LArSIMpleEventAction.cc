@@ -76,7 +76,27 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event* evt) {
   std::cout << " - Angle to neighbours = " << hitUtils.GetAngleToNeighbours(0) << std::endl;
   std::cout << " - Dot product to neighbours = " << hitUtils.GetDotProductToNeighbours(0) << std::endl;
 
-  this->WriteOutputFiles();
+  // Get neighbours and charge for different radii
+  std::vector<double> radii = {30, 100, 300};
+  std::map<unsigned int,std::vector<unsigned int>> neighbours = hitUtils.GetNumberOfNeighboursWithinRadii(radii);
+  std::map<unsigned int,std::vector<double>> charges = hitUtils.GetChargeWithinRadii(radii);
+
+  std::vector<float> flatVector;
+  for(unsigned int hitIdx = 0; hitIdx < fEnergyDeposits.size(); ++hitIdx)
+  {
+    fEnergyDeposits.at(hitIdx).AddFeature(hitUtils.GetAngleToNeighbours(hitIdx)); 
+    fEnergyDeposits.at(hitIdx).AddFeature(hitUtils.GetDotProductToNeighbours(hitIdx));
+    for(unsigned int radius = 0; radius < radii.size(); ++radius)
+      fEnergyDeposits.at(hitIdx).AddFeature(neighbours.at(hitIdx).at(radius));
+    for(unsigned int radius = 0; radius < radii.size(); ++radius)
+      fEnergyDeposits.at(hitIdx).AddFeature(charges.at(hitIdx).at(radius));
+    std::vector flatHit = fEnergyDeposits.at(hitIdx).GetFlatRepresentation();
+    flatVector.insert(flatVector.end(),flatHit.begin(),flatHit.end());
+  }
+
+  std::cout << "Final flat vector has " << flatVector.size() << " elements" << std::endl;
+
+  this->WriteOutputFiles(flatVector);
 
   fTrackIDToTrackData.clear();
 //
@@ -188,15 +208,14 @@ void LArSIMpleEventAction::AddTrack(const G4Track *track){
   }
 }
 
-void LArSIMpleEventAction::WriteOutputFiles() const
+void LArSIMpleEventAction::WriteOutputFiles(const std::vector<float> &flatVec) const
 {
   // Write the output using zlib
-  std::vector<double> pixel_array{0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8};
-  ulong src_len = pixel_array.size(); // pixelArray length
+  ulong src_len = flatVec.size() * sizeof(float); // pixelArray length
   ulong dest_len = compressBound(src_len);     // calculate size of the compressed data               
   char* ostream = (char *) malloc(dest_len);  // allocate memory for the compressed data
 
-  int res = compress((Bytef *) ostream, &dest_len, (Bytef *) &pixel_array[0], src_len);
+  int res = compress((Bytef *) ostream, &dest_len, (Bytef *) &flatVec[0], src_len);
 
   // Buffer error
 
@@ -206,8 +225,31 @@ void LArSIMpleEventAction::WriteOutputFiles() const
   else if (res ==  Z_MEM_ERROR)
     std::cout << "Not enough memory for compression!" << std::endl;
   // Compression ok 
-  else { 
+  else
+  {
     std::cout << "Hooray... writing files" << std::endl;
+
+    // Create output files 
+    std::stringstream image_file_name;
+    std::string out_dir = "";
+    image_file_name << out_dir << "test_event.gz";
+//    std::stringstream info_file_name;
+//    info_file_name  << out_dir << "test_event" << evt.event() << "_" << counter << ".info";
+
+    std::ofstream image_file (image_file_name.str(), std::ofstream::binary);
+//    std::ofstream info_file  (info_file_name.str());
+
+    if(image_file.is_open())
+    {
+      // Write the graph to the file and close it
+      image_file.write(ostream, dest_len);
+      image_file.close(); // close file
+    }
+    else
+    {
+      if (image_file.is_open())
+        image_file.close();
+    }
   }
 }
 

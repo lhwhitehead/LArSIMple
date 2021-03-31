@@ -26,6 +26,9 @@ class LArSIMple3DEnergyDeposit
   void SetEnergy(const double energy);
   void SetParticleInfo(const int pdg, const int trackID);
 
+  void AddFeature(const float val) {fFeatures.push_back(val);};
+  std::vector<float> GetFlatRepresentation() const;
+
   void PrintSummary() const;
 
   private:
@@ -36,6 +39,7 @@ class LArSIMple3DEnergyDeposit
   double fTime;
 
   double fEnergy;
+  std::vector<float> fFeatures;
 
   // Information about the particle that created the energy
   int fParticlePDG;
@@ -75,6 +79,22 @@ inline void LArSIMple3DEnergyDeposit::SetParticleInfo(const int pdg, const int t
 {
   fParticlePDG = pdg;
   fParticleTrackID = trackID;
+}
+
+inline std::vector<float> LArSIMple3DEnergyDeposit::GetFlatRepresentation() const
+{
+  std::vector<float> flatOutput;
+  // Three position coordinates
+  flatOutput.push_back(fPosX);
+  flatOutput.push_back(fPosY);
+  flatOutput.push_back(fPosZ);
+  // Charge (energy)
+  flatOutput.push_back(fEnergy);
+  // Now add any features
+  for(const float &feature : fFeatures)
+    flatOutput.push_back(feature);
+
+  return flatOutput;
 }
 
 #endif

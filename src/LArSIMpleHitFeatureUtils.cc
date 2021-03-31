@@ -76,7 +76,7 @@ std::map<unsigned int, std::vector<unsigned int>> LArSIMpleHitFeatureUtils::GetN
       for(unsigned int cut = 0; cut < rangeCuts.size(); ++cut)
       {
         if(dist < rangeCuts.at(cut))
-          nNeighbours.at(idx1) += 1;
+          nNeighbours.at(cut) += 1;
       }
     }
     result[idx1] = nNeighbours;    
@@ -100,7 +100,7 @@ std::map<unsigned int, std::vector<double>> LArSIMpleHitFeatureUtils::GetChargeW
       for(unsigned int cut = 0; cut < rangeCuts.size(); ++cut)
       {
         if(dist < rangeCuts.at(cut))
-          charge.at(idx1) += fHits.at(idx2).GetEnergy();
+          charge.at(cut) += fHits.at(idx2).GetEnergy();
       }
     }
     result[idx1] = charge;
