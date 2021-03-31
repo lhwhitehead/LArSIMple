@@ -3,6 +3,7 @@
 //#include "LArSIMpleHit.hh"
 #include "LArSIMplePrimaryGeneratorAction.hh"
 #include "LArSIMpleMessenger.hh"
+#include "LArSIMpleHitFeatureUtils.hh"
 
 #include "G4Event.hh"
 #include "G4EventManager.hh"
@@ -67,6 +68,13 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event* evt) {
   std::cout << "Got " << fEnergyDeposits.size() << " 3D energy deposits" << std::endl;
 //  for(auto const &edep : fEnergyDeposits)
 //    edep.PrintSummary();
+
+  LArSIMpleHitFeatureUtils hitUtils(fEnergyDeposits);
+
+  std::cout << "Hit 0:" << std::endl;
+  std::cout << " - Nearest neighbour is Hit " << hitUtils.GetNearestNeighbourMap().at(0) << std::endl;
+  std::cout << " - Angle to neighbours = " << hitUtils.GetAngleToNeighbours(0) << std::endl;
+  std::cout << " - Dot product to neighbours = " << hitUtils.GetDotProductToNeighbours(0) << std::endl;
 
   this->WriteOutputFiles();
 
