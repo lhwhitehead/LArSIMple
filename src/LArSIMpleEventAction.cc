@@ -23,6 +23,9 @@
 #include <fstream>
 #include <iomanip>
 
+#include "TFile.h"
+#include "TTree.h"
+
 #include "zlib.h"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
@@ -32,6 +35,8 @@ LArSIMpleEventAction::LArSIMpleEventAction(LArSIMplePrimaryGeneratorAction* LArS
   fOutputFileBase="hits_3d";
   fHitThreshold = 0.;
   fMessenger = new LArSIMpleMessenger(this);
+  fWriteZipAndInfoFiles = true;
+  fWriteRootFile = false;
 }
 
 
@@ -57,7 +62,6 @@ void LArSIMpleEventAction::BeginOfEventAction(const G4Event* evt) {
 
 }
 
-
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 void LArSIMpleEventAction::EndOfEventAction(const G4Event* evt) {
 
@@ -66,15 +70,8 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event* evt) {
     std::cout << "\n---> Ending of event: " << fEventID << std::endl;
 
   std::cout << "Got " << fEnergyDeposits.size() << " 3D energy deposits" << std::endl;
-//  for(auto const &edep : fEnergyDeposits)
-//    edep.PrintSummary();
 
   LArSIMpleHitFeatureUtils hitUtils(fEnergyDeposits);
-
-  std::cout << "Hit 0:" << std::endl;
-  std::cout << " - Nearest neighbour is Hit " << hitUtils.GetNearestNeighbourMap().at(0) << std::endl;
-  std::cout << " - Angle to neighbours = " << hitUtils.GetAngleToNeighbours(0) << std::endl;
-  std::cout << " - Dot product to neighbours = " << hitUtils.GetDotProductToNeighbours(0) << std::endl;
 
   // Get neighbours and charge for different radii
   std::vector<double> radii = {30, 100, 300};
@@ -96,7 +93,11 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event* evt) {
 
   std::cout << "Final flat vector has " << flatVector.size() << " elements" << std::endl;
 
-  this->WriteOutputZipAndInfoFiles(flatVector);
+  if(fWriteZipAndInfoFiles)
+    this->WriteOutputZipAndInfoFiles(flatVector);
+
+  if(fWriteRootFile)
+    this->WriteRootFile();
 
   fTrackIDToTrackData.clear();
   fEnergyDeposits.clear();
@@ -214,9 +215,9 @@ void LArSIMpleEventAction::WriteOutputZipAndInfoFiles(const std::vector<float> &
   // Write the output using zlib
   ulong src_len = flatVec.size() * sizeof(float); // pixelArray length
   ulong dest_len = compressBound(src_len);     // calculate size of the compressed data               
-  char* ostream = (char *) malloc(dest_len);  // allocate memory for the compressed data
+  char* outputStream = (char *) malloc(dest_len);  // allocate memory for the compressed data
 
-  int res = compress((Bytef *) ostream, &dest_len, (Bytef *) &flatVec[0], src_len);
+  int res = compress((Bytef *) outputStream, &dest_len, (Bytef *) &flatVec[0], src_len);
 
   // Buffer error
 
@@ -238,7 +239,7 @@ void LArSIMpleEventAction::WriteOutputZipAndInfoFiles(const std::vector<float> &
     if(image_file.is_open())
     {
       // Write the graph to the file and close it
-      image_file.write(ostream, dest_len);
+      image_file.write(outputStream, dest_len);
       image_file.close();
     }
   }
@@ -261,5 +262,65 @@ void LArSIMpleEventAction::WriteOutputZipAndInfoFiles(const std::vector<float> &
     infoFile.close();
   }
 
+}
+
+// This is very specific and hardcoded
+void LArSIMpleEventAction::WriteRootFile() const
+{
+  std::stringstream rootFileName;
+  rootFileName << fOutputFileBase << "_test_event_" << fEventID << ".root";
+  TTree *outputTree = new TTree("hits","");
+  outputTree->SetDirectory(0);
+
+  float posX, posY, posZ;
+  float charge;
+  float angle, dotProduct;
+  float neighboursR1, neighboursR2, neighboursR3;
+  float chargeR1, chargeR2, chargeR3;
+  float pdg, trackid;
+  outputTree->Branch("x",&posX,"x/F");
+  outputTree->Branch("y",&posY,"y/F");
+  outputTree->Branch("z",&posZ,"z/F");
+  outputTree->Branch("charge",&charge,"charge/F");
+  outputTree->Branch("angle",&angle,"angle/F");
+  outputTree->Branch("dotProduct",&dotProduct,"dotProduct/F");
+  outputTree->Branch("neighboursR1",&neighboursR1,"neighboursR1/F");
+  outputTree->Branch("neighboursR2",&neighboursR2,"neighboursR2/F");
+  outputTree->Branch("neighboursR3",&neighboursR3,"neighboursR3/F");
+  outputTree->Branch("chargeR1",&chargeR1,"chargeR1/F");
+  outputTree->Branch("chargeR2",&chargeR2,"chargeR2/F");
+  outputTree->Branch("chargeR3",&chargeR3,"chargeR3/F");
+  outputTree->Branch("pdg",&pdg,"pdg/I");
+  outputTree->Branch("trackid",&trackid,"trackid/I");
+
+  for(unsigned int h = 0; h < fEnergyDeposits.size(); ++h)
+  {
+    const LArSIMple3DEnergyDeposit &hit = fEnergyDeposits.at(h);
+    posX = hit.GetX();
+    posY = hit.GetY();
+    posZ = hit.GetZ();
+    const std::vector<float> features = hit.GetFeatures();
+    charge = features.at(0);
+    angle = features.at(1);
+    dotProduct = features.at(2);
+    neighboursR1 = features.at(3);
+    neighboursR2 = features.at(4);
+    neighboursR3 = features.at(5);
+    chargeR1 = features.at(6);
+    chargeR2 = features.at(7);
+    chargeR3 = features.at(8);
+    pdg = hit.GetParticlePDG();
+    trackid = hit.GetParticleTrackID();
+    outputTree->Fill();
+  }
+
+  TFile *outputFile = new TFile(rootFileName.str().c_str(),"recreate");
+  outputFile->cd();
+  outputTree->Write();
+  outputFile->Close();
+
+  outputTree->ResetBranchAddresses();
+  delete outputTree;
+  delete outputFile;
 }
 

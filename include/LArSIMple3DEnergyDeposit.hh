@@ -27,6 +27,8 @@ class LArSIMple3DEnergyDeposit
   void SetParticleInfo(const int pdg, const int trackID);
 
   void AddFeature(const float val) {fFeatures.push_back(val);};
+  std::vector<float> GetFeatures() const {return fFeatures;};
+
   std::vector<float> GetFlatRepresentation() const;
 
   unsigned int GetNCoordinates() const {return 3;}; // Hardcoded for now

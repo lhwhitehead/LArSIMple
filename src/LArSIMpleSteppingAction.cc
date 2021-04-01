@@ -46,7 +46,7 @@ void LArSIMpleSteppingAction::UserSteppingAction(const G4Step* aStep)
       return;
 
     const G4StepPoint *stepPoint = aStep->GetPreStepPoint();
-    energyDeposit.SetPositionAndTime(stepPoint->GetPosition(),stepPoint->GetGlobalTime());
+    energyDeposit.SetPositionAndTime((stepPoint->GetPosition() / CLHEP::cm),stepPoint->GetGlobalTime());
 
     const G4Track *track = aStep->GetTrack();
     int foldedTrackID = 0;

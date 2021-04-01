@@ -7,6 +7,7 @@
 #include "G4UIcommand.hh"
 #include "G4UIparameter.hh"
 #include "G4UIcmdWithAString.hh"
+#include "G4UIcmdWithABool.hh"
 #include "G4UIcmdWithADoubleAndUnit.hh"
 
 //LArSIMpleMessenger::LArSIMpleMessenger(LArSIMpleEventAction* ptra, LArSIMpleSteppingVerbose* ptsv, LArSIMpleDetectorConstruction* ptgc)
@@ -24,6 +25,16 @@ LArSIMpleMessenger::LArSIMpleMessenger(LArSIMpleEventAction* ptra)
   fOutputFileBase->SetParameterName("OutputFileBase",true);
   fOutputFileBase->SetDefaultValue("hits_3d");
 
+  fWriteZipAndInfoFiles = new G4UIcmdWithABool("/LArSIMple/WriteZipAndInfoFiles",this);
+  fWriteZipAndInfoFiles->SetGuidance("Write output files in .gz and .info (default option)");
+  fWriteZipAndInfoFiles->SetParameterName("WriteZipAndInfoFiles",true);
+  fWriteZipAndInfoFiles->SetDefaultValue(true);
+
+  fWriteRootFile = new G4UIcmdWithABool("/LArSIMple/WriteRootFile",this);
+  fWriteRootFile->SetGuidance("Write ROOT tree file");
+  fWriteRootFile->SetParameterName("WriteRootFile",true);
+  fWriteRootFile->SetDefaultValue(false);
+
   fHitThreshold = new G4UIcmdWithADoubleAndUnit("/LArSIMple/HitThreshold",this);
   fHitThreshold->SetGuidance("Energy threshold for saving hits");
   fHitThreshold->SetParameterName("HitThreshold",true);
@@ -40,9 +51,13 @@ LArSIMpleMessenger::~LArSIMpleMessenger()
 void LArSIMpleMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
 {
 
-  if (command == fOutputFileBase)
+  if(command == fOutputFileBase)
     fEventAction->SetOutputFileBase(newValue);
-  if (command == fHitThreshold)
+  if(command == fWriteZipAndInfoFiles)
+    fEventAction->SetWriteZipAndInfoFiles(newValue);
+  if(command == fWriteRootFile)
+    fEventAction->SetWriteRootFile(newValue);
+  if(command == fHitThreshold)
     fEventAction->SetHitThreshold(fHitThreshold->GetNewDoubleValue(newValue));
 
 }

@@ -5,6 +5,7 @@ class LArSIMpleEventAction;
 class G4UIdirectory;
 class G4UIcmdWithAString;
 class G4UIcmdWithADoubleAndUnit;
+class G4UIcmdWithABool;
 
 #include "G4UImessenger.hh"
 #include "globals.hh"
@@ -24,7 +25,11 @@ class LArSIMpleMessenger: public G4UImessenger
     //LArSIMpleDetectorConstruction* fDetectorConstruction;
 
     G4UIdirectory*      fLArSIMpleDir;
+
     G4UIcmdWithAString* fOutputFileBase;
+    G4UIcmdWithABool* fWriteZipAndInfoFiles;
+    G4UIcmdWithABool* fWriteRootFile;
+
     G4UIcmdWithADoubleAndUnit* fHitThreshold;
 };
 

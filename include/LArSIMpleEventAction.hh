@@ -17,7 +17,7 @@ class G4Track;
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 class LArSIMpleEventAction : public G4UserEventAction {
   
-public:
+  public:
   LArSIMpleEventAction(LArSIMplePrimaryGeneratorAction*);
   virtual ~LArSIMpleEventAction();
   virtual void BeginOfEventAction(const G4Event*);
@@ -32,8 +32,10 @@ public:
   double GetHitThreshold() const {return fHitThreshold;};
   void SetHitThreshold(const double threshold) {fHitThreshold = threshold;};
 
-private:
-  
+  void SetWriteZipAndInfoFiles(const bool val) {fWriteZipAndInfoFiles = val;};
+  void SetWriteRootFile(const bool val) {fWriteRootFile = val;};
+
+  private:  
   LArSIMplePrimaryGeneratorAction* fGenAction;
   LArSIMpleMessenger* fMessenger;
 
@@ -41,11 +43,15 @@ private:
   double fHitThreshold;
   std::string fOutputFileBase;
 
+  bool fWriteZipAndInfoFiles;
+  bool fWriteRootFile;
+
   std::vector<LArSIMple3DEnergyDeposit> fEnergyDeposits;
 
   // Tracks can be transient so keep track of the type
   std::map<int,LArSIMpleTrackData> fTrackIDToTrackData;
-  
+ 
+  void WriteRootFile() const; 
   void WriteOutputZipAndInfoFiles(const std::vector<float> &flatVec) const;
   
 };
