@@ -99,6 +99,7 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event* evt) {
   this->WriteOutputZipAndInfoFiles(flatVector);
 
   fTrackIDToTrackData.clear();
+  fEnergyDeposits.clear();
 //
 //  G4TrajectoryContainer* trajectoryContainer = evt->GetTrajectoryContainer();
 //
