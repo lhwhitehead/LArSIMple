@@ -96,7 +96,7 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event* evt) {
 
   std::cout << "Final flat vector has " << flatVector.size() << " elements" << std::endl;
 
-  this->WriteOutputFiles(flatVector);
+  this->WriteOutputZipAndInfoFiles(flatVector);
 
   fTrackIDToTrackData.clear();
 //
@@ -208,7 +208,7 @@ void LArSIMpleEventAction::AddTrack(const G4Track *track){
   }
 }
 
-void LArSIMpleEventAction::WriteOutputFiles(const std::vector<float> &flatVec) const
+void LArSIMpleEventAction::WriteOutputZipAndInfoFiles(const std::vector<float> &flatVec) const
 {
   // Write the output using zlib
   ulong src_len = flatVec.size() * sizeof(float); // pixelArray length
@@ -231,25 +231,34 @@ void LArSIMpleEventAction::WriteOutputFiles(const std::vector<float> &flatVec) c
 
     // Create output files 
     std::stringstream image_file_name;
-    std::string out_dir = "";
-    image_file_name << out_dir << "test_event.gz";
-//    std::stringstream info_file_name;
-//    info_file_name  << out_dir << "test_event" << evt.event() << "_" << counter << ".info";
+    image_file_name << fOutputFileBase << "_test_event_" << fEventID << ".gz";
 
     std::ofstream image_file (image_file_name.str(), std::ofstream::binary);
-//    std::ofstream info_file  (info_file_name.str());
-
     if(image_file.is_open())
     {
       // Write the graph to the file and close it
       image_file.write(ostream, dest_len);
-      image_file.close(); // close file
-    }
-    else
-    {
-      if (image_file.is_open())
-        image_file.close();
+      image_file.close();
     }
   }
+
+  // Write info file
+  std::stringstream infoFileName;
+  infoFileName << fOutputFileBase << "_test_event_" << fEventID << ".info";
+  std::ofstream infoFile(infoFileName.str());
+  if(infoFile.is_open())
+  {
+    // Number of nodes
+    infoFile << fEnergyDeposits.size() << std::endl;
+    // Number of positions
+    infoFile << fEnergyDeposits.at(0).GetNCoordinates() << std::endl;
+    // Number of features
+    infoFile << fEnergyDeposits.at(0).GetNFeatures() << std::endl;
+    // Truth information
+    infoFile << fEnergyDeposits.at(0).GetNTruths() << std::endl;
+
+    infoFile.close();
+  }
+
 }
 

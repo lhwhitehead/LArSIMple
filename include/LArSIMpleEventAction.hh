@@ -46,7 +46,7 @@ private:
   // Tracks can be transient so keep track of the type
   std::map<int,LArSIMpleTrackData> fTrackIDToTrackData;
   
-  void WriteOutputFiles(const std::vector<float> &flatVec) const;
+  void WriteOutputZipAndInfoFiles(const std::vector<float> &flatVec) const;
   
 };
 

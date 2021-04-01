@@ -29,6 +29,9 @@ class LArSIMple3DEnergyDeposit
   void AddFeature(const float val) {fFeatures.push_back(val);};
   std::vector<float> GetFlatRepresentation() const;
 
+  unsigned int GetNCoordinates() const {return 3;}; // Hardcoded for now
+  unsigned int GetNFeatures() const {return fFeatures.size();};
+  unsigned int GetNTruths() const {return 2;}; // Hardcoded for now
   void PrintSummary() const;
 
   private:
@@ -73,6 +76,8 @@ inline void LArSIMple3DEnergyDeposit::SetPositionAndTime(const G4ThreeVector &po
 inline void LArSIMple3DEnergyDeposit::SetEnergy(const double energy)
 {
   fEnergy = energy;
+  // Add the energy as the first feature... we should also allow for calibration later
+  fFeatures.push_back(fEnergy);
 }
 
 inline void LArSIMple3DEnergyDeposit::SetParticleInfo(const int pdg, const int trackID)
@@ -88,13 +93,15 @@ inline std::vector<float> LArSIMple3DEnergyDeposit::GetFlatRepresentation() cons
   flatOutput.push_back(fPosX);
   flatOutput.push_back(fPosY);
   flatOutput.push_back(fPosZ);
-  // Charge (energy)
-  flatOutput.push_back(fEnergy);
   // Now add any features
   for(const float &feature : fFeatures)
     flatOutput.push_back(feature);
+  // Truth information
+  flatOutput.push_back(fParticlePDG);
+  flatOutput.push_back(fParticleTrackID);
 
   return flatOutput;
 }
+
 
 #endif
