@@ -1,8 +1,11 @@
+/LArSIMple/OutputFileBase LArSIMple_positron
+
+/random/setSeeds 1234 5678
 
 /gps/particle e+
 /gps/pos/type Point
-/gps/pos/centre 0 0 0 cm
+/gps/pos/centre 0 0 -200 cm
 /gps/energy 1000 MeV
 /gps/direction 0 0 1
 
-/run/beamOn 1
+/run/beamOn 5

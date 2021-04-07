@@ -10,6 +10,10 @@
 /LArSIMple/VoxeliseLAr true
 /LArSIMple/CheckOverlaps true
 
+# Output files
+/LArSIMple/WriteZipAndInfoFiles true
+/LArSIMple/WriteRootFile false
+
 # Physics
 /LArSIMple/HitThreshold 0.01 MeV
 

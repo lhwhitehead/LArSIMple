@@ -1,10 +1,10 @@
-/LArSIMple/OutputFileBase hit_3D
-/LArSIMple/WriteZipAndInfoFiles true
-/LArSIMple/WriteRootFile true
+/LArSIMple/OutputFileBase LArSIMple_pion
+
+/random/setSeeds 1234 5678
 
 /gps/particle pi+
 /gps/pos/type Point
-/gps/pos/centre 0 0 0 cm
+/gps/pos/centre 0 0 -200 cm
 /gps/energy 1000 MeV
 /gps/direction 0 0 1
 
