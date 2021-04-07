@@ -74,7 +74,7 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event* evt) {
   LArSIMpleHitFeatureUtils hitUtils(fEnergyDeposits);
 
   // Get neighbours and charge for different radii
-  std::vector<double> radii = {30, 100, 300};
+  std::vector<double> radii = {3, 10, 30}; // Measured in cm
   std::map<unsigned int,std::vector<unsigned int>> neighbours = hitUtils.GetNumberOfNeighboursWithinRadii(radii);
   std::map<unsigned int,std::vector<double>> charges = hitUtils.GetChargeWithinRadii(radii);
 
