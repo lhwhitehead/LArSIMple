@@ -12,8 +12,8 @@
 
 # Output files
 /LArSIMple/WriteZipAndInfoFiles true
-/LArSIMple/WriteRootFile false
+/LArSIMple/WriteRootFile true
 
 # Physics
-/LArSIMple/HitThreshold 0.01 MeV
+/LArSIMple/HitThreshold 0.1 MeV
 
