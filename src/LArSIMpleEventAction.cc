@@ -277,7 +277,7 @@ void LArSIMpleEventAction::WriteRootFile() const
   float angle, dotProduct;
   float neighboursR1, neighboursR2, neighboursR3;
   float chargeR1, chargeR2, chargeR3;
-  float pdg, trackid;
+  int pdg, trackid;
   outputTree->Branch("x",&posX,"x/F");
   outputTree->Branch("y",&posY,"y/F");
   outputTree->Branch("z",&posZ,"z/F");
