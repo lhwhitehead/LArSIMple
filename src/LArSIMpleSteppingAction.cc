@@ -49,9 +49,12 @@ void LArSIMpleSteppingAction::UserSteppingAction(const G4Step* aStep)
     energyDeposit.SetPositionAndTime((stepPoint->GetPosition() / CLHEP::cm),stepPoint->GetGlobalTime());
 
     const G4Track *track = aStep->GetTrack();
-    int foldedTrackID = 0;
-    int foldedTrackPDG = 0;
-    this->GetFoldedTrackIDAndPDG(track,foldedTrackID,foldedTrackPDG);
+    int foldedTrackID = track->GetTrackID();
+    int foldedTrackPDG = track->GetParticleDefinition()->GetPDGEncoding();
+
+    if(fEventAction->FoldBackTruthInfo())
+      this->GetFoldedTrackIDAndPDG(track,foldedTrackID,foldedTrackPDG);
+
     energyDeposit.SetParticleInfo(foldedTrackPDG,foldedTrackID);
 
     // Allow for Birk's suppression when considering energy
@@ -65,11 +68,8 @@ void LArSIMpleSteppingAction::UserSteppingAction(const G4Step* aStep)
 
 void LArSIMpleSteppingAction::GetFoldedTrackIDAndPDG(const G4Track *track, int &foldedTrackID, int &foldedTrackPDG)
 {
-  const int trackID = track->GetTrackID();
-  const int trackPDG = track->GetParticleDefinition()->GetPDGEncoding();
+  // Values for foldedTrackID and foldedTrackPDG set to those of the G4Track track already
 
-  foldedTrackID = trackID;
-  foldedTrackPDG = trackPDG;
   // We need to iterate through the parent links until we find a track that isn't foldable
   bool keepFolding = fEventAction->GetTrackDataFromTrackID(track->GetTrackID()).IsFoldable();
   while(keepFolding)

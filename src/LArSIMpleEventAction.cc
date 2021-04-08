@@ -37,6 +37,7 @@ LArSIMpleEventAction::LArSIMpleEventAction(LArSIMplePrimaryGeneratorAction* LArS
   fMessenger = new LArSIMpleMessenger(this);
   fWriteZipAndInfoFiles = true;
   fWriteRootFile = false;
+  fFoldBackTruthInfo = true;
 }
 
 

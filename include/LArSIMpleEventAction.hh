@@ -35,6 +35,9 @@ class LArSIMpleEventAction : public G4UserEventAction {
   void SetWriteZipAndInfoFiles(const bool val) {fWriteZipAndInfoFiles = val;};
   void SetWriteRootFile(const bool val) {fWriteRootFile = val;};
 
+  bool FoldBackTruthInfo() const {return fFoldBackTruthInfo;};
+  void SetFoldBackTruthInfo(const bool val) {fFoldBackTruthInfo = val;}; 
+
   private:  
   LArSIMplePrimaryGeneratorAction* fGenAction;
   LArSIMpleMessenger* fMessenger;
@@ -45,6 +48,7 @@ class LArSIMpleEventAction : public G4UserEventAction {
 
   bool fWriteZipAndInfoFiles;
   bool fWriteRootFile;
+  bool fFoldBackTruthInfo;
 
   std::vector<LArSIMple3DEnergyDeposit> fEnergyDeposits;
 

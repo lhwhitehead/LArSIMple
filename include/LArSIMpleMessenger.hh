@@ -30,6 +30,8 @@ class LArSIMpleMessenger: public G4UImessenger
     G4UIcmdWithABool* fWriteZipAndInfoFiles;
     G4UIcmdWithABool* fWriteRootFile;
 
+    G4UIcmdWithABool* fFoldBackTruthInfo;
+
     G4UIcmdWithADoubleAndUnit* fHitThreshold;
 };
 

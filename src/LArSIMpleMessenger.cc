@@ -35,6 +35,11 @@ LArSIMpleMessenger::LArSIMpleMessenger(LArSIMpleEventAction* ptra)
   fWriteRootFile->SetParameterName("WriteRootFile",true);
   fWriteRootFile->SetDefaultValue(false);
 
+  fFoldBackTruthInfo = new G4UIcmdWithABool("/LArSIMple/FoldBackTruthInfo",this);
+  fFoldBackTruthInfo->SetGuidance("Fold back truth information so that hits from ionisation electrons are assigned to the parent etc");
+  fFoldBackTruthInfo->SetParameterName("FoldBackTruthInfo",true);
+  fFoldBackTruthInfo->SetDefaultValue(true);
+
   fHitThreshold = new G4UIcmdWithADoubleAndUnit("/LArSIMple/HitThreshold",this);
   fHitThreshold->SetGuidance("Energy threshold for saving hits");
   fHitThreshold->SetParameterName("HitThreshold",true);
@@ -57,6 +62,8 @@ void LArSIMpleMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
     fEventAction->SetWriteZipAndInfoFiles(newValue);
   if(command == fWriteRootFile)
     fEventAction->SetWriteRootFile(newValue);
+  if(command == fFoldBackTruthInfo)
+    fEventAction->SetFoldBackTruthInfo(newValue);
   if(command == fHitThreshold)
     fEventAction->SetHitThreshold(fHitThreshold->GetNewDoubleValue(newValue));
 
