@@ -11,17 +11,23 @@ LArSIMpleTrueNeutrinoEvent::~LArSIMpleTrueNeutrinoEvent()
 
 }
 
-void LArSIMpleTrueNeutrinoEvent::AddNeutrino(const G4ThreeVector &pos, const G4ThreeVector &dir, const double energy, const int pdg)
+void LArSIMpleTrueNeutrinoEvent::AddNeutrino(LArSIMpleTrueParticle neutrino)
+{
+  fNeutrino = neutrino;
+  this->SetFlavour();
+}
+
+void LArSIMpleTrueNeutrinoEvent::AddNeutrino(G4ThreeVector pos, G4ThreeVector dir, double energy, int pdg)
 {
   this->AddNeutrino(LArSIMpleTrueParticle(pos,dir,energy,pdg));
 }
 
-void LArSIMpleTrueNeutrinoEvent::AddTarget(const G4ThreeVector &pos, const G4ThreeVector &dir, const double energy, const int pdg)
+void LArSIMpleTrueNeutrinoEvent::AddTarget(G4ThreeVector pos, G4ThreeVector dir, double energy, int pdg)
 {
   this->AddTarget(LArSIMpleTrueParticle(pos,dir,energy,pdg));
 }
 
-void LArSIMpleTrueNeutrinoEvent::AddFinalStateParticle(const G4ThreeVector &pos, const G4ThreeVector &dir, const double energy, const int pdg)
+void LArSIMpleTrueNeutrinoEvent::AddFinalStateParticle(G4ThreeVector pos, G4ThreeVector dir, double energy, int pdg)
 {
   this->AddFinalStateParticle(LArSIMpleTrueParticle(pos,dir,energy,pdg));
 }

@@ -23,7 +23,8 @@ enum class LArSIMpleNeutrinoInteractionType
   kNCQE,
   kNCRES,
   kNCDIS,
-  kNCOther
+  kNCOther,
+  kDummy = 999
 };
 
 class LArSIMpleTrueNeutrinoEvent
@@ -33,12 +34,15 @@ class LArSIMpleTrueNeutrinoEvent
   LArSIMpleTrueNeutrinoEvent();
   ~LArSIMpleTrueNeutrinoEvent();
 
-  void AddNeutrino(const LArSIMpleTrueParticle neutrino) {fNeutrino = neutrino;};
-  void AddNeutrino(const G4ThreeVector &pos, const G4ThreeVector &dir, const double energy, const int pdg);
-  void AddTarget(const LArSIMpleTrueParticle target) {fTarget = target;};
-  void AddTarget(const G4ThreeVector &pos, const G4ThreeVector &dir, const double energy, const int pdg);
-  void AddFinalStateParticle(const LArSIMpleTrueParticle particle) {fFinalStateParticles.push_back(particle);};
-  void AddFinalStateParticle(const G4ThreeVector &pos, const G4ThreeVector &dir, const double energy, const int pdg);
+  void AddNeutrino(LArSIMpleTrueParticle neutrino);
+  void AddNeutrino(G4ThreeVector pos, G4ThreeVector dir, double energy, int pdg);
+  void AddTarget(LArSIMpleTrueParticle target) {fTarget = target;};
+  void AddTarget(G4ThreeVector pos, G4ThreeVector dir,  double energy, int pdg);
+  void AddFinalStateParticle(LArSIMpleTrueParticle particle) {fFinalStateParticles.push_back(particle);};
+  void AddFinalStateParticle(G4ThreeVector pos, G4ThreeVector dir, double energy, int pdg);
+
+  void SetInteractionVertex(G4ThreeVector pos) {fInteractionVertex = pos;};
+  G4ThreeVector GetInteractionVertex() const {return fInteractionVertex;};
 
   LArSIMpleNeutrinoFlavourType GetNeutrinoFlavour() const {return fFlavour;};
   LArSIMpleNeutrinoInteractionType GetInteractionType() const {return fInteractionType;};
@@ -62,6 +66,7 @@ class LArSIMpleTrueNeutrinoEvent
   LArSIMpleTrueParticle fNeutrino;
   LArSIMpleTrueParticle fTarget;
 
+  G4ThreeVector fInteractionVertex;
   LArSIMpleNeutrinoFlavourType fFlavour;
   LArSIMpleNeutrinoInteractionType fInteractionType;
 
