@@ -3,6 +3,7 @@
 
 #include "LArSIMpleNeutrinoInputParser.hh"
 #include "G4VUserPrimaryGeneratorAction.hh"
+#include "G4ThreeVector.hh"
 #include "globals.hh"
 
 class G4ParticleGun;
@@ -26,7 +27,8 @@ public:
 
   bool UseNeutrinos() const {return fUseNeutrinos;};
   void SetUseNeutrinos(bool val) {fUseNeutrinos = val;};
- 
+
+  void SetNeutrinoVertex(G4ThreeVector vec) {fNeutrinoVertex = vec;}; 
 private:
 
   G4GeneralParticleSource* fParticleGun;
@@ -36,6 +38,7 @@ private:
   bool fUseNeutrinos;
   std::string fNeutrinoFileName;
   LArSIMpleNeutrinoInputType fNeutrinoFileType;
+  G4ThreeVector fNeutrinoVertex;
 };
 
 #endif

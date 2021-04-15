@@ -6,6 +6,7 @@ class G4UIdirectory;
 class G4UIcmdWithAString;
 class G4UIcmdWithAnInteger;
 class G4UIcmdWithABool;
+class G4UIcmdWith3VectorAndUnit;
 
 #include "G4UImessenger.hh"
 #include "globals.hh"
@@ -27,7 +28,7 @@ class LArSIMplePrimaryGeneratorMessenger: public G4UImessenger
     G4UIcmdWithABool* fUseNeutrinos;
     G4UIcmdWithAString* fNeutrinoFileName;
     G4UIcmdWithAnInteger* fNeutrinoFileType;
-
+    G4UIcmdWith3VectorAndUnit *fNeutrinoVertex;
 };
 
 #endif

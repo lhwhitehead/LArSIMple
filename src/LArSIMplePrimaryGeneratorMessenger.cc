@@ -8,6 +8,7 @@
 #include "G4UIcmdWithAString.hh"
 #include "G4UIcmdWithABool.hh"
 #include "G4UIcmdWithAnInteger.hh"
+#include "G4UIcmdWith3VectorAndUnit.hh"
 
 //LArSIMplePrimaryGeneratorMessenger::LArSIMplePrimaryGeneratorMessenger(LArSIMplePrimaryGeneratorAction* ptra, LArSIMpleSteppingVerbose* ptsv, LArSIMpleDetectorConstruction* ptgc)
 //  :fPrimaryGeneratorAction(ptra),fSteppingVerbose(ptsv),fDetectorConstruction(ptgc)
@@ -33,6 +34,11 @@ LArSIMplePrimaryGeneratorMessenger::LArSIMplePrimaryGeneratorMessenger(LArSIMple
   fNeutrinoFileType->SetGuidance("0 = nuance tracker, 1 = GENIE tree");
   fNeutrinoFileType->SetParameterName("NeutrinoFileType",true);
   fNeutrinoFileType->SetDefaultValue(0);
+
+  fNeutrinoVertex = new G4UIcmdWith3VectorAndUnit("/LArSIMple/SetNeutrinoVertex",this);
+  fNeutrinoVertex->SetGuidance("Neutrino interaction vertex");
+  fNeutrinoVertex->SetParameterName("NeutrinoVertexX","NeutrinoVertexY","NeutrinoVertexZ",true);
+  fNeutrinoVertex->SetDefaultValue(G4ThreeVector());
 }
 
 LArSIMplePrimaryGeneratorMessenger::~LArSIMplePrimaryGeneratorMessenger()
@@ -58,4 +64,6 @@ void LArSIMplePrimaryGeneratorMessenger::SetNewValue(G4UIcommand* command,G4Stri
       type = LArSIMpleNeutrinoInputType::kGENIETree;
     fPrimaryGeneratorAction->SetNeutrinoFileType(type);   
   }
+  if (command == fNeutrinoVertex)
+    fPrimaryGeneratorAction->SetNeutrinoVertex(fNeutrinoVertex->GetNew3VectorValue(newValue));
 }

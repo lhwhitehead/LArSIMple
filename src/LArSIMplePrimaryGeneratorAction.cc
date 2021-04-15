@@ -52,7 +52,7 @@ void LArSIMplePrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
     }
 
     const std::vector<LArSIMpleTrueParticle> finalStateParticles = neutrinoEvent.GetFinalStateParticles();
-    const G4ThreeVector neutrinoVertex = neutrinoEvent.GetInteractionVertex();
+    const G4ThreeVector neutrinoVertex = fNeutrinoVertex;
     const double vertexTime = 0.; // Hard code for now
 
     // Use a particle gun for the neutrinos as it is more convenient
