@@ -4,12 +4,7 @@
 
 #include "TChain.h"
 
-LArSIMpleNeutrinoInputParser::LArSIMpleNeutrinoInputParser() : fNEventsToRead(0)
-{
-
-}
-
-LArSIMpleNeutrinoInputParser::LArSIMpleNeutrinoInputParser(unsigned int nevents) : fNEventsToRead(nevents)
+LArSIMpleNeutrinoInputParser::LArSIMpleNeutrinoInputParser()
 {
 
 }
@@ -19,14 +14,20 @@ LArSIMpleNeutrinoInputParser::~LArSIMpleNeutrinoInputParser()
 
 }
 
+void LArSIMpleNeutrinoInputParser::ReadFile(const std::string &filename, const LArSIMpleNeutrinoInputType type)
+{
+  if (LArSIMpleNeutrinoInputType::kNuanceTracker == type)
+    this->ReadFromNuanceTrackerFile(filename);
+  else if (LArSIMpleNeutrinoInputType::kGENIETree == type)
+    this->ReadFromGENIETreeFile(filename);
+  else
+    std::cerr << "Error: neutrino file format not set" << std::endl;
+}
+
 void LArSIMpleNeutrinoInputParser::ReadFromNuanceTrackerFile(const std::string &filename)
 {
 
-  if (fNEventsToRead == 0)
-  {
-    std::cerr << "You haven't requested any events to read from the tracker file. Reading them all." << std::endl;
-  }
-
+  std::cout << "Reading neutrino events from " << filename << std::endl;
   std::ifstream inputFile(filename.c_str());
 
   // Keep going until we reach the stop command or we have the number of events that we want
@@ -41,7 +42,7 @@ void LArSIMpleNeutrinoInputParser::ReadFromNuanceTrackerFile(const std::string &
     // Check we haven't reached the end of the input file 
     if (token.size() == 0 || token[0] == "stop")
     {
-      std::cout << "end of nuance vector file!" << std::endl;
+      std::cout << "End of nuance vector file!" << std::endl;
       break;
     }
     
@@ -99,13 +100,6 @@ void LArSIMpleNeutrinoInputParser::ReadFromNuanceTrackerFile(const std::string &
     {
       std::cout << "Unexpected line in file... exiting parser" << std::endl;
       return;
-    }
-
-    // If we have enough events then we can give up
-    if (fNeutrinoEvents.size() == fNEventsToRead)
-    {
-      std::cout << "Successfully read " << fNEventsToRead << " from file " << filename << std::endl;
-      break;
     }
   }
 

@@ -86,13 +86,13 @@ int main(int argc,char** argv) {
 #endif
     
   // set user action classes
-  LArSIMplePrimaryGeneratorAction* pga = new LArSIMplePrimaryGeneratorAction;
+  LArSIMpleRunAction* run_action = new LArSIMpleRunAction;  
+  runManager->SetUserAction(run_action);
+
+  LArSIMplePrimaryGeneratorAction* pga = new LArSIMplePrimaryGeneratorAction();
   runManager->SetUserAction(pga);
   //runManager->SetUserAction(new LArSIMpleRunAction);
   //runManager->SetUserAction(new LArSIMpleEventAction(pga));
-
-  LArSIMpleRunAction* run_action = new LArSIMpleRunAction;  
-  runManager->SetUserAction(run_action);
 
   LArSIMpleEventAction* event_action = new LArSIMpleEventAction(pga);
   runManager->SetUserAction(event_action);

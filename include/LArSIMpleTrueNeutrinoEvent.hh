@@ -49,6 +49,7 @@ class LArSIMpleTrueNeutrinoEvent
   void SetInteractionType(const LArSIMpleNeutrinoInteractionType intType) {fInteractionType = intType;};
 
   unsigned int GetNumberOfFinalStateParticles() const {return fFinalStateParticles.size();};
+  std::vector<LArSIMpleTrueParticle> GetFinalStateParticles() const {return fFinalStateParticles;};
   LArSIMpleTrueParticle GetLeadingLepton() const;
 
   unsigned int GetNProtons() const  {return this->GetNParticles(2212);};

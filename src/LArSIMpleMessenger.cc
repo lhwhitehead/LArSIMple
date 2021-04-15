@@ -59,11 +59,11 @@ void LArSIMpleMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
   if(command == fOutputFileBase)
     fEventAction->SetOutputFileBase(newValue);
   if(command == fWriteZipAndInfoFiles)
-    fEventAction->SetWriteZipAndInfoFiles(newValue);
+    fEventAction->SetWriteZipAndInfoFiles(fWriteZipAndInfoFiles->GetNewBoolValue(newValue));
   if(command == fWriteRootFile)
     fEventAction->SetWriteRootFile(newValue);
   if(command == fFoldBackTruthInfo)
-    fEventAction->SetFoldBackTruthInfo(newValue);
+    fEventAction->SetFoldBackTruthInfo(fFoldBackTruthInfo->GetNewBoolValue(newValue));
   if(command == fHitThreshold)
     fEventAction->SetHitThreshold(fHitThreshold->GetNewDoubleValue(newValue));
 

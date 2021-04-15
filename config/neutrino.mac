@@ -1,0 +1,9 @@
+/LArSIMple/UseNeutrinoEvents true
+/LArSIMple/NeutrinoInputFile /dune/data/users/lwhite86/genie/test_tracker.dat
+/LArSIMple/NeutrinoFileType 0
+
+/LArSIMple/OutputFileBase LArSIMple_neutrino
+
+/random/setSeeds 1234 5678
+
+/run/beamOn 5 

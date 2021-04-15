@@ -6,19 +6,27 @@
 #include <string>
 #include <fstream>
 
+enum class LArSIMpleNeutrinoInputType
+{
+  kNuanceTracker,
+  kGENIETree,
+  kNotSet = 999
+};
+
 class LArSIMpleNeutrinoInputParser
 {
 
   public:
   LArSIMpleNeutrinoInputParser();
-  LArSIMpleNeutrinoInputParser(unsigned int nevents);
   ~LArSIMpleNeutrinoInputParser();
 
+  void ReadFile(const std::string &filename, const LArSIMpleNeutrinoInputType type);
   void ReadFromNuanceTrackerFile(const std::string &filename);
   void ReadFromGENIETreeFile(const std::string &filename);
 
-  void SetNEventsToRead(unsigned int val) {fNEventsToRead = val;};
   unsigned int GetNEvents() const {return fNeutrinoEvents.size();};
+
+  LArSIMpleTrueNeutrinoEvent GetEvent(unsigned int e);
 
   private:
 
@@ -26,9 +34,8 @@ class LArSIMpleNeutrinoInputParser
   std::vector<std::string> ReadNuanceTrackerLine(std::ifstream& inFile, int lineSize, char* inBuf);
   std::vector<std::string> TokeniseString(std::string separators, std::string input);
 
-  unsigned int fNEventsToRead;
   std::vector<LArSIMpleTrueNeutrinoEvent> fNeutrinoEvents;
-  
+    
 };
 
 inline LArSIMpleNeutrinoInteractionType LArSIMpleNeutrinoInputParser::ConvertNuanceCode(int code)
@@ -83,6 +90,17 @@ inline std::vector<std::string> LArSIMpleNeutrinoInputParser::TokeniseString(std
   }
 
   return tokens;
+}
+
+inline LArSIMpleTrueNeutrinoEvent LArSIMpleNeutrinoInputParser::GetEvent(unsigned int e)
+{
+  if (e < fNeutrinoEvents.size())
+    return fNeutrinoEvents.at(e);
+  else
+  {
+    std::cerr << "Requested event number beyond the number of neutrino events. Returning empty event." << std::endl;
+    return LArSIMpleTrueNeutrinoEvent();
+  }
 }
 
 #endif
