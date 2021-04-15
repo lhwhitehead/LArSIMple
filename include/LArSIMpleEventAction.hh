@@ -55,9 +55,6 @@ class LArSIMpleEventAction : public G4UserEventAction {
   // Tracks can be transient so keep track of the type
   std::map<int,LArSIMpleTrackData> fTrackIDToTrackData;
  
-  void WriteRootFile() const; 
-  void WriteOutputZipAndInfoFiles(const std::vector<float> &flatVec) const;
-  
 };
 
 inline void LArSIMpleEventAction::Add3DEnergyDeposit(LArSIMple3DEnergyDeposit edep)
