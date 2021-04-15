@@ -89,7 +89,7 @@ int main(int argc,char** argv) {
   LArSIMpleRunAction* run_action = new LArSIMpleRunAction;  
   runManager->SetUserAction(run_action);
 
-  LArSIMplePrimaryGeneratorAction* pga = new LArSIMplePrimaryGeneratorAction();
+  LArSIMplePrimaryGeneratorAction* pga = new LArSIMplePrimaryGeneratorAction(detector);
   runManager->SetUserAction(pga);
   //runManager->SetUserAction(new LArSIMpleRunAction);
   //runManager->SetUserAction(new LArSIMpleEventAction(pga));

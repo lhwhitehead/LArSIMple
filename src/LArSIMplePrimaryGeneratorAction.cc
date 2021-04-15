@@ -4,6 +4,7 @@
 #include "LArSIMpleNeutrinoInputParser.hh"
 #include "LArSIMpleTrueNeutrinoEvent.hh"
 #include "LArSIMpleTrueParticle.hh"
+#include "LArSIMpleDetectorConstruction.hh"
 
 #include "Randomize.hh"
 
@@ -14,18 +15,16 @@
 #include "globals.hh"
 
 
-LArSIMplePrimaryGeneratorAction::LArSIMplePrimaryGeneratorAction()
+LArSIMplePrimaryGeneratorAction::LArSIMplePrimaryGeneratorAction(const LArSIMpleDetectorConstruction *detCon) : fDetectorConstruction(detCon)
 {  
   fParticleGun = new G4GeneralParticleSource();
   fMessenger = new LArSIMplePrimaryGeneratorMessenger(this);
 }
 
-
 LArSIMplePrimaryGeneratorAction::~LArSIMplePrimaryGeneratorAction()
 {
   delete fParticleGun;
 }
-
 
 void LArSIMplePrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
@@ -52,7 +51,9 @@ void LArSIMplePrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
     }
 
     const std::vector<LArSIMpleTrueParticle> finalStateParticles = neutrinoEvent.GetFinalStateParticles();
-    const G4ThreeVector neutrinoVertex = fNeutrinoVertex;
+    G4ThreeVector neutrinoVertex = fNeutrinoVertex;
+    if (fUseRandomNeutrinoVertex)
+      this->RandomiseVertex(neutrinoVertex); 
     const double vertexTime = 0.; // Hard code for now
 
     // Use a particle gun for the neutrinos as it is more convenient
@@ -81,3 +82,18 @@ void LArSIMplePrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   }
 }
 
+void LArSIMplePrimaryGeneratorAction::RandomiseVertex(G4ThreeVector &vtx) const
+{
+  // Choose a random position within the LAr volume (at least 1m from the edges)
+  const float buffer(1000.f);
+  const float minX = fDetectorConstruction->GetLArSizeMinX() + buffer;
+  const float maxX = fDetectorConstruction->GetLArSizeMaxX() - buffer;
+  const float minY = fDetectorConstruction->GetLArSizeMinY() + buffer;
+  const float maxY = fDetectorConstruction->GetLArSizeMaxY() - buffer;
+  const float minZ = fDetectorConstruction->GetLArSizeMinZ() + buffer;
+  const float maxZ = fDetectorConstruction->GetLArSizeMaxZ() - buffer;
+  
+  vtx.setX(minX + G4UniformRand()*(maxX - minX));   
+  vtx.setY(minY + G4UniformRand()*(maxY - minY));   
+  vtx.setZ(minZ + G4UniformRand()*(maxZ - minZ));   
+}

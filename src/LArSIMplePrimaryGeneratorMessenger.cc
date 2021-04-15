@@ -35,6 +35,11 @@ LArSIMplePrimaryGeneratorMessenger::LArSIMplePrimaryGeneratorMessenger(LArSIMple
   fNeutrinoFileType->SetParameterName("NeutrinoFileType",true);
   fNeutrinoFileType->SetDefaultValue(0);
 
+  fUseRandomNeutrinoVertex = new G4UIcmdWithABool("/LArSIMple/UseRandomNeutrinoVertex",this);
+  fUseRandomNeutrinoVertex->SetGuidance("Use a random vertex (at least 1m from the walls)");
+  fUseRandomNeutrinoVertex->SetParameterName("UseRandomNeutrinoVertex",true);
+  fUseRandomNeutrinoVertex->SetDefaultValue(true);
+
   fNeutrinoVertex = new G4UIcmdWith3VectorAndUnit("/LArSIMple/SetNeutrinoVertex",this);
   fNeutrinoVertex->SetGuidance("Neutrino interaction vertex");
   fNeutrinoVertex->SetParameterName("NeutrinoVertexX","NeutrinoVertexY","NeutrinoVertexZ",true);
@@ -47,6 +52,7 @@ LArSIMplePrimaryGeneratorMessenger::~LArSIMplePrimaryGeneratorMessenger()
   delete fNeutrinoFileName;
   delete fNeutrinoFileType;
   delete fUseNeutrinos;
+  delete fUseRandomNeutrinoVertex;
 }
 
 void LArSIMplePrimaryGeneratorMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
@@ -66,4 +72,6 @@ void LArSIMplePrimaryGeneratorMessenger::SetNewValue(G4UIcommand* command,G4Stri
   }
   if (command == fNeutrinoVertex)
     fPrimaryGeneratorAction->SetNeutrinoVertex(fNeutrinoVertex->GetNew3VectorValue(newValue));
+  if (command == fUseRandomNeutrinoVertex)
+    fPrimaryGeneratorAction->SetUseRandomNeutrinoVertex(fUseRandomNeutrinoVertex->GetNewBoolValue(newValue));
 }

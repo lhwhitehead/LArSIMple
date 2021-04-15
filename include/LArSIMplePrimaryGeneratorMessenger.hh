@@ -28,6 +28,7 @@ class LArSIMplePrimaryGeneratorMessenger: public G4UImessenger
     G4UIcmdWithABool* fUseNeutrinos;
     G4UIcmdWithAString* fNeutrinoFileName;
     G4UIcmdWithAnInteger* fNeutrinoFileType;
+    G4UIcmdWithABool* fUseRandomNeutrinoVertex;
     G4UIcmdWith3VectorAndUnit *fNeutrinoVertex;
 };
 

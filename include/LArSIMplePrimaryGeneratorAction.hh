@@ -10,11 +10,12 @@ class G4ParticleGun;
 class G4GeneralParticleSource;
 class G4Event;
 class LArSIMplePrimaryGeneratorMessenger;
+class LArSIMpleDetectorConstruction;
 
 class LArSIMplePrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction {
 
 public:
-  LArSIMplePrimaryGeneratorAction();
+  LArSIMplePrimaryGeneratorAction(const LArSIMpleDetectorConstruction *detCon);
   ~LArSIMplePrimaryGeneratorAction();
   
   void GeneratePrimaries(G4Event* anEvent);
@@ -28,6 +29,7 @@ public:
   bool UseNeutrinos() const {return fUseNeutrinos;};
   void SetUseNeutrinos(bool val) {fUseNeutrinos = val;};
 
+  void SetUseRandomNeutrinoVertex(bool val) {fUseRandomNeutrinoVertex = val;};
   void SetNeutrinoVertex(G4ThreeVector vec) {fNeutrinoVertex = vec;}; 
 private:
 
@@ -38,7 +40,13 @@ private:
   bool fUseNeutrinos;
   std::string fNeutrinoFileName;
   LArSIMpleNeutrinoInputType fNeutrinoFileType;
+
+  bool fUseRandomNeutrinoVertex;
   G4ThreeVector fNeutrinoVertex;
+
+  const LArSIMpleDetectorConstruction *fDetectorConstruction;
+
+  void RandomiseVertex(G4ThreeVector &vtx) const;
 };
 
 #endif
