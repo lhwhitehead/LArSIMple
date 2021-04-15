@@ -11,10 +11,14 @@ class LArSIMpleNeutrinoInputParser
 
   public:
   LArSIMpleNeutrinoInputParser();
+  LArSIMpleNeutrinoInputParser(unsigned int nevents);
   ~LArSIMpleNeutrinoInputParser();
 
   void ReadFromNuanceTrackerFile(const std::string &filename);
   void ReadFromGENIETreeFile(const std::string &filename);
+
+  void SetNEventsToRead(unsigned int val) {fNEventsToRead = val;};
+  unsigned int GetNEvents() const {return fNeutrinoEvents.size();};
 
   private:
 
@@ -22,6 +26,7 @@ class LArSIMpleNeutrinoInputParser
   std::vector<std::string> ReadNuanceTrackerLine(std::ifstream& inFile, int lineSize, char* inBuf);
   std::vector<std::string> TokeniseString(std::string separators, std::string input);
 
+  unsigned int fNEventsToRead;
   std::vector<LArSIMpleTrueNeutrinoEvent> fNeutrinoEvents;
   
 };
