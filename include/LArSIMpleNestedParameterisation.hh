@@ -10,21 +10,23 @@ class LArSIMpleNestedParameterisation : public G4VNestedParameterisation
   LArSIMpleNestedParameterisation(std::vector<G4Material*> material, const double sizeX, const double sizeY, const double sizeZ, const int nRepZ);
   ~LArSIMpleNestedParameterisation();
 
+  using G4VNestedParameterisation::ComputeMaterial;
   G4Material* ComputeMaterial(G4VPhysicalVolume* currentVol,
                                       const G4int repNo, 
                                       const G4VTouchable* parentTouch=0);
     // Required method, as it is the reason for this class.
     // Must cope with parentTouch=0 for navigator's SetupHierarchy.
 
-  G4int       GetNumberOfMaterials() const {return fMaterials.size();};
-  G4Material* GetMaterial(G4int idx) const;
+  G4int       GetNumberOfMaterials() const override {return fMaterials.size();};
+  G4Material* GetMaterial(G4int idx) const override;
     // Needed to define materials for instances of Nested Parameterisation 
     // Current convention: each call should return the materials 
     // of all instances with the same mother/ancestor volume.
 
-  void ComputeTransformation(const G4int no, G4VPhysicalVolume* currentPV) const;
+  void ComputeTransformation(const G4int no, G4VPhysicalVolume* currentPV) const override;
 
-  void ComputeDimensions(G4Box &, const G4int, const G4VPhysicalVolume *) const;
+  using G4VNestedParameterisation::ComputeDimensions;
+  void ComputeDimensions(G4Box &, const G4int, const G4VPhysicalVolume *) const override;
 
   private:
 
