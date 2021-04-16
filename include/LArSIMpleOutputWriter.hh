@@ -1,5 +1,5 @@
 #ifndef LArSIMpleOutputWriter_h
-#define LArSIMpleOutputWriter_h 1
+#define LArSIMpleOutputWriter_h
 
 #include "LArSIMple3DEnergyDeposit.hh"
 

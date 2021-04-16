@@ -29,12 +29,10 @@ public:
 
 private:
 
-  //virtual void ConstructEM();
-  
-  G4double cutForGamma;
-  G4double cutForElectron;
-  G4double cutForPositron;
-  G4double cutForProton;
+  G4double fCutForGamma;
+  G4double fCutForElectron;
+  G4double fCutForPositron;
+  G4double fCutForProton;
 };
 
 #endif

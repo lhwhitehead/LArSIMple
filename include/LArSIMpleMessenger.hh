@@ -1,5 +1,5 @@
 #ifndef LArSIMpleMessenger_h
-#define LArSIMpleMessenger_h 1
+#define LArSIMpleMessenger_h 
 
 class LArSIMpleEventAction;
 class G4UIdirectory;
@@ -21,8 +21,6 @@ class LArSIMpleMessenger: public G4UImessenger
 
   private:
     LArSIMpleEventAction* fEventAction;
-    //LArSIMpleSteppingVerbose* fSteppingVerbose;
-    //LArSIMpleDetectorConstruction* fDetectorConstruction;
 
     G4UIdirectory*      fLArSIMpleDir;
 

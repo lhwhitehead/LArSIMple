@@ -1,5 +1,5 @@
-#ifndef DetectorConstruction_h
-#define DetectorConstruction_h 1
+#ifndef LArSIMpleDetectorConstruction_h
+#define LArSIMpleDetectorConstruction_h
 
 #include "G4VUserDetectorConstruction.hh"
 #include "globals.hh"

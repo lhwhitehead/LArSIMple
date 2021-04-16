@@ -1,5 +1,5 @@
 #ifndef LArSIMpleDetectorMessenger_h
-#define LArSIMpleDetectorMessenger_h 1
+#define LArSIMpleDetectorMessenger_h
 
 class LArSIMpleDetectorConstruction;
 class G4UIdirectory;
@@ -8,7 +8,7 @@ class G4UIcmdWithABool;
 class G4UIcmdWithADoubleAndUnit;
 
 #include "G4UImessenger.hh"
-#include "globals.hh"
+//#include "globals.hh"
 
 class LArSIMpleDetectorMessenger: public G4UImessenger
 {
@@ -43,5 +43,4 @@ class LArSIMpleDetectorMessenger: public G4UImessenger
 };
 
 #endif
-
 

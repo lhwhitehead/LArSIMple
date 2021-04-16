@@ -51,10 +51,10 @@ LArSIMplePhysicsList::LArSIMplePhysicsList() : QGSP_BIC_HP() {
   this->defaultCutValue = 0.05*CLHEP::mm; //standard = 0.5 mm
   //this->defaultCutValue     = 0.001*CLHEP::mm; //for mylar
   //defaultCutValue     = 1*CLHEP::mm;
-  cutForGamma         = defaultCutValue;
-  cutForElectron      = defaultCutValue;
-  cutForPositron      = defaultCutValue;
-  cutForProton        = defaultCutValue; 
+  fCutForGamma         = defaultCutValue;
+  fCutForElectron      = defaultCutValue;
+  fCutForPositron      = defaultCutValue;
+  fCutForProton        = defaultCutValue; 
 
   //ConstructEM();
   

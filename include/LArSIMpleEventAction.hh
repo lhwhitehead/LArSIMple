@@ -1,5 +1,5 @@
 #ifndef LArSIMpleEventAction_h
-#define LArSIMpleEventAction_h 1
+#define LArSIMpleEventAction_h
 
 #include <map>
 

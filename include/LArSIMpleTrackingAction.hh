@@ -1,5 +1,5 @@
 #ifndef LArSIMpleTrackingAction_h
-#define LArSIMpleTrackingAction_h 1
+#define LArSIMpleTrackingAction_h
 
 #include "G4UserTrackingAction.hh"
 #include "G4VProcess.hh"
@@ -10,14 +10,14 @@ class G4Track;
 
 class LArSIMpleTrackingAction : public G4UserTrackingAction
 {
-public:
+  public:
   LArSIMpleTrackingAction(LArSIMpleEventAction*);
   virtual ~LArSIMpleTrackingAction();
 
   void PreUserTrackingAction(const G4Track*);
   void PostUserTrackingAction(const G4Track*);
-    
-private:
+  
+  private:
   LArSIMpleEventAction* fEventAction;
 
 };

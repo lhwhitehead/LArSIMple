@@ -38,7 +38,7 @@ class LArSIMpleNestedParameterisation : public G4VNestedParameterisation
 
 inline G4Material* LArSIMpleNestedParameterisation::GetMaterial(G4int idx) const
 {
-  if(idx < fMaterials.size())
+  if(static_cast<unsigned int>(idx) < fMaterials.size())
     return fMaterials.at(idx);
   else
     return nullptr;

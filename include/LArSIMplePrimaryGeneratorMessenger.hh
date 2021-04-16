@@ -1,5 +1,5 @@
 #ifndef LArSIMplePrimaryGeneratorMessenger_h
-#define LArSIMplePrimaryGeneratorMessenger_h 1
+#define LArSIMplePrimaryGeneratorMessenger_h 
 
 class LArSIMplePrimaryGeneratorAction;
 class G4UIdirectory;
