@@ -34,3 +34,8 @@ bin/
 *.exe
 *.out
 *.app
+
+# Output files
+*.gz
+*.root
+*.info

@@ -58,10 +58,10 @@ LArSIMplePhysicsList::LArSIMplePhysicsList() : QGSP_BIC_HP() {
 
   //ConstructEM();
   
-  this->RemovePhysics(new G4EmStandardPhysics());
-  this->RemovePhysics(new G4EmExtraPhysics());
-
-  this->RegisterPhysics( new G4EmLivermorePhysics() );
+//  this->RemovePhysics(new G4EmStandardPhysics());
+//  this->RemovePhysics(new G4EmExtraPhysics());
+//
+//  this->RegisterPhysics( new G4EmLivermorePhysics() );
 
 }
 

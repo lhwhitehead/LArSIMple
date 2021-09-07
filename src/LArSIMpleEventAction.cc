@@ -29,8 +29,7 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 LArSIMpleEventAction::LArSIMpleEventAction(LArSIMplePrimaryGeneratorAction* LArSIMplePGA) 
-  : fGenAction(LArSIMplePGA) {
-  
+  : fGenAction(LArSIMplePGA) { 
   fOutputFileBase="hits_3d";
   fHitThreshold = 0.;
   fMessenger = new LArSIMpleMessenger(this);
