@@ -3,6 +3,7 @@
 #include "LArSIMpleMessenger.hh"
 #include "LArSIMpleHitFeatureUtils.hh"
 #include "LArSIMpleOutputWriter.hh"
+#include "LArSIMpleTrueNeutrinoEvent.hh"
 
 #include "G4Event.hh"
 #include "G4EventManager.hh"
@@ -28,8 +29,8 @@
 #include "zlib.h"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
-LArSIMpleEventAction::LArSIMpleEventAction(LArSIMplePrimaryGeneratorAction* LArSIMplePGA) 
-  : fGenAction(LArSIMplePGA) { 
+LArSIMpleEventAction::LArSIMpleEventAction(LArSIMplePrimaryGeneratorAction* genAction) 
+  : fGenAction(genAction) { 
   fOutputFileBase="hits_3d";
   fHitThreshold = 0.;
   fMessenger = new LArSIMpleMessenger(this);
@@ -93,7 +94,7 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event* evt) {
     writer.WriteOutputZipAndInfoFiles(fOutputFileBase,fEnergyDeposits);
 
   if(fWriteRootFile)
-    writer.WriteRootFile(fOutputFileBase,fEnergyDeposits);
+    writer.WriteRootFile(fOutputFileBase,fEnergyDeposits,fGenAction->GetTrueNeutrinoEventPointer());
 
   fTrackIDToTrackData.clear();
   fEnergyDeposits.clear();

@@ -11,6 +11,7 @@ class G4GeneralParticleSource;
 class G4Event;
 class LArSIMplePrimaryGeneratorMessenger;
 class LArSIMpleDetectorConstruction;
+class LArSIMpleTrueNeutrinoEvent;
 
 class LArSIMplePrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction {
 
@@ -31,11 +32,16 @@ public:
 
   void SetUseRandomNeutrinoVertex(bool val) {fUseRandomNeutrinoVertex = val;};
   void SetNeutrinoVertex(G4ThreeVector vec) {fNeutrinoVertex = vec;}; 
+
+  const LArSIMpleTrueNeutrinoEvent* GetTrueNeutrinoEventPointer() {return fNeutrinoEvent;};
 private:
 
   G4GeneralParticleSource* fParticleGun;
   LArSIMplePrimaryGeneratorMessenger* fMessenger;
   LArSIMpleNeutrinoInputParser fNeutrinoInputParser;
+
+  // Pointer such that it can be null
+  LArSIMpleTrueNeutrinoEvent *fNeutrinoEvent;
 
   bool fUseNeutrinos;
   std::string fNeutrinoFileName;

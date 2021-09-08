@@ -19,6 +19,7 @@ LArSIMplePrimaryGeneratorAction::LArSIMplePrimaryGeneratorAction(const LArSIMple
 {  
   fParticleGun = new G4GeneralParticleSource();
   fMessenger = new LArSIMplePrimaryGeneratorMessenger(this);
+  fNeutrinoEvent = nullptr;
 }
 
 LArSIMplePrimaryGeneratorAction::~LArSIMplePrimaryGeneratorAction()
@@ -39,18 +40,17 @@ void LArSIMplePrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
       fNeutrinoInputParser.ReadFile(fNeutrinoFileName, fNeutrinoFileType);
     }
 
-    LArSIMpleTrueNeutrinoEvent neutrinoEvent;
     if (fNeutrinoInputParser.GetNEvents() >= eventNumber)
     {
-      neutrinoEvent = fNeutrinoInputParser.GetEvent(eventNumber);
+      fNeutrinoEvent = new LArSIMpleTrueNeutrinoEvent(fNeutrinoInputParser.GetEvent(eventNumber));
     }
     else
     {
       std::cerr << "Requested event number is greater than the number of neutrinos. Processing the last one again." << std::endl;
-      neutrinoEvent = fNeutrinoInputParser.GetEvent(fNeutrinoInputParser.GetNEvents() - 1);  
+      fNeutrinoEvent = new LArSIMpleTrueNeutrinoEvent(fNeutrinoInputParser.GetEvent(fNeutrinoInputParser.GetNEvents() - 1));
     }
 
-    const std::vector<LArSIMpleTrueParticle> finalStateParticles = neutrinoEvent.GetFinalStateParticles();
+    const std::vector<LArSIMpleTrueParticle> finalStateParticles = fNeutrinoEvent->GetFinalStateParticles();
     G4ThreeVector neutrinoVertex = fNeutrinoVertex;
     if (fUseRandomNeutrinoVertex)
       this->RandomiseVertex(neutrinoVertex); 

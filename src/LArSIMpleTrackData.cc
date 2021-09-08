@@ -27,6 +27,12 @@ LArSIMpleTrackData::LArSIMpleTrackData(const LArSIMpleTrackData &rhs)
   fIsFoldable = rhs.IsFoldable();
 }
 
+LArSIMpleTrackData LArSIMpleTrackData::operator=(const LArSIMpleTrackData &rhs)
+{
+  LArSIMpleTrackData obj = LArSIMpleTrackData(rhs);
+  return obj;
+}
+
 LArSIMpleTrackData::~LArSIMpleTrackData()
 {
 

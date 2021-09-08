@@ -44,6 +44,8 @@ class LArSIMpleTrueNeutrinoEvent
   void SetInteractionVertex(G4ThreeVector pos) {fInteractionVertex = pos;};
   G4ThreeVector GetInteractionVertex() const {return fInteractionVertex;};
 
+  int GetNeutrinoPDGCode() const {return fNeutrino.GetPDGCode();};
+  float GetNeutrinoEnergy() const {return fNeutrino.GetEnergy();};
   LArSIMpleNeutrinoFlavourType GetNeutrinoFlavour() const {return fFlavour;};
   LArSIMpleNeutrinoInteractionType GetInteractionType() const {return fInteractionType;};
   void SetInteractionType(const LArSIMpleNeutrinoInteractionType intType) {fInteractionType = intType;};

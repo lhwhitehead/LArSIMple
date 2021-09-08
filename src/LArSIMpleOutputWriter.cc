@@ -4,6 +4,7 @@
 
 #include "LArSIMpleOutputWriter.hh"
 #include "LArSIMple3DEnergyDeposit.hh"
+#include "LArSIMpleTrueNeutrinoEvent.hh"
 
 #include "TFile.h"
 #include "TTree.h"
@@ -84,54 +85,82 @@ void LArSIMpleOutputWriter::WriteOutputZipAndInfoFiles(const std::string &base, 
 }
 
 // This is very specific and hardcoded
-void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::vector<LArSIMple3DEnergyDeposit> &hits) const
+void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::vector<LArSIMple3DEnergyDeposit> &hits, const LArSIMpleTrueNeutrinoEvent *evt) const
 {
   std::stringstream rootFileName;
   rootFileName << base << "_test_event_" << fEventNumber << ".root";
   TTree *outputTree = new TTree("hits","");
   outputTree->SetDirectory(0);
 
-  float posX, posY, posZ;
-  float charge;
-  float angle, dotProduct;
-  float neighboursR1, neighboursR2, neighboursR3;
-  float chargeR1, chargeR2, chargeR3;
-  int pdg, trackid;
-  outputTree->Branch("x",&posX,"x/F");
-  outputTree->Branch("y",&posY,"y/F");
-  outputTree->Branch("z",&posZ,"z/F");
-  outputTree->Branch("charge",&charge,"charge/F");
-  outputTree->Branch("angle",&angle,"angle/F");
-  outputTree->Branch("dotProduct",&dotProduct,"dotProduct/F");
-  outputTree->Branch("neighboursR1",&neighboursR1,"neighboursR1/F");
-  outputTree->Branch("neighboursR2",&neighboursR2,"neighboursR2/F");
-  outputTree->Branch("neighboursR3",&neighboursR3,"neighboursR3/F");
-  outputTree->Branch("chargeR1",&chargeR1,"chargeR1/F");
-  outputTree->Branch("chargeR2",&chargeR2,"chargeR2/F");
-  outputTree->Branch("chargeR3",&chargeR3,"chargeR3/F");
-  outputTree->Branch("pdg",&pdg,"pdg/I");
-  outputTree->Branch("trackid",&trackid,"trackid/I");
+  // Each event consists the basic event information and a number of vectors
+
+  // Event level information
+  int eventNumber;
+  outputTree->Branch("eventNumber",&eventNumber,"eventNumber/I");
+  eventNumber = fEventNumber;
+
+  // Specific for neutrino events
+  int neutrinoPdg;
+  float neutrinoEnergy;
+  int nFinalStates;
+  int interactionType;
+  if (nullptr != evt)
+  {
+    outputTree->Branch("neutrinoPdg",&neutrinoPdg,"neutrinoPdg/I");
+    outputTree->Branch("neutrinoEnergy",&neutrinoEnergy,"neutrinoEnergy/F");
+    outputTree->Branch("nFinalStates",&nFinalStates,"nFinalStates/I");
+    outputTree->Branch("interactionType",&interactionType,"interactionType/I");
+
+    neutrinoPdg = evt->GetNeutrinoPDGCode();
+    neutrinoEnergy = evt->GetNeutrinoEnergy();
+    nFinalStates = evt->GetNumberOfFinalStateParticles();
+    interactionType = static_cast<int>(evt->GetInteractionType());
+  }
+  
+  // Hit level information
+  std::vector<float> posX, posY, posZ;
+  std::vector<float> charge;
+  std::vector<float> angle, dotProduct;
+  std::vector<float> neighboursR1, neighboursR2, neighboursR3;
+  std::vector<float> chargeR1, chargeR2, chargeR3;
+  std::vector<int> pdg, trackid;
+
+  outputTree->Branch("x",&posX);
+  outputTree->Branch("y",&posY);
+  outputTree->Branch("z",&posZ);
+  outputTree->Branch("charge",&charge);
+  outputTree->Branch("angle",&angle);
+  outputTree->Branch("dotProduct",&dotProduct);
+  outputTree->Branch("neighboursR1",&neighboursR1);
+  outputTree->Branch("neighboursR2",&neighboursR2);
+  outputTree->Branch("neighboursR3",&neighboursR3);
+  outputTree->Branch("chargeR1",&chargeR1);
+  outputTree->Branch("chargeR2",&chargeR2);
+  outputTree->Branch("chargeR3",&chargeR3);
+  outputTree->Branch("pdg",&pdg);
+  outputTree->Branch("trackid",&trackid);
 
   for(unsigned int h = 0; h < hits.size(); ++h)
   {
     const LArSIMple3DEnergyDeposit &hit = hits.at(h);
-    posX = hit.GetX();
-    posY = hit.GetY();
-    posZ = hit.GetZ();
+    posX.push_back(hit.GetX());
+    posY.push_back(hit.GetY());
+    posZ.push_back(hit.GetZ());
     const std::vector<float> features = hit.GetFeatures();
-    charge = features.at(0);
-    angle = features.at(1);
-    dotProduct = features.at(2);
-    neighboursR1 = features.at(3);
-    neighboursR2 = features.at(4);
-    neighboursR3 = features.at(5);
-    chargeR1 = features.at(6);
-    chargeR2 = features.at(7);
-    chargeR3 = features.at(8);
-    pdg = hit.GetParticlePDG();
-    trackid = hit.GetParticleTrackID();
-    outputTree->Fill();
+    charge.push_back(features.at(0));
+    angle.push_back(features.at(1));
+    dotProduct.push_back(features.at(2));
+    neighboursR1.push_back(features.at(3));
+    neighboursR2.push_back(features.at(4));
+    neighboursR3.push_back(features.at(5));
+    chargeR1.push_back(features.at(6));
+    chargeR2.push_back(features.at(7));
+    chargeR3.push_back(features.at(8));
+    pdg.push_back(hit.GetParticlePDG());
+    trackid.push_back(hit.GetParticleTrackID());
   }
+
+  outputTree->Fill();
 
   TFile *outputFile = new TFile(rootFileName.str().c_str(),"recreate");
   outputFile->cd();

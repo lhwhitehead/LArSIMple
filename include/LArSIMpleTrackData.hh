@@ -9,6 +9,8 @@ class LArSIMpleTrackData
   LArSIMpleTrackData();
   LArSIMpleTrackData(const G4Track* track);
   LArSIMpleTrackData(const LArSIMpleTrackData &rhs);
+  LArSIMpleTrackData operator=(const LArSIMpleTrackData &rhs);
+
   ~LArSIMpleTrackData();
 
   int GetTrackID() const {return fTrackID;};
