@@ -24,7 +24,9 @@ class LArSIMpleEventAction : public G4UserEventAction {
   virtual void EndOfEventAction(const G4Event*);
  
   void Add3DEnergyDeposit(LArSIMple3DEnergyDeposit edep);
-  void SetOutputFileBase(std::string base) {fOutputFileBase = base;};
+
+  void SetOutputFileDirectory(std::string val) {fOutputFileDirectory = val;};
+  void SetOutputFilePrefix(std::string val) {fOutputFilePrefix = val;};
  
   const LArSIMpleTrackData GetTrackDataFromTrackID(const int trackID) const;
   void AddTrack(const G4Track *track);
@@ -44,7 +46,8 @@ class LArSIMpleEventAction : public G4UserEventAction {
 
   unsigned int fEventID;
   double fHitThreshold;
-  std::string fOutputFileBase;
+  std::string fOutputFileDirectory;
+  std::string fOutputFilePrefix;
 
   bool fWriteZipAndInfoFiles;
   bool fWriteRootFile;

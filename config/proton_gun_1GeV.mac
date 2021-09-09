@@ -1,4 +1,5 @@
-/LArSIMple/OutputFileBase LArSIMple_proton
+/LArSIMple/OutputFileDir /dune/data/users/lwhite86/LArSIMple/
+/LArSIMple/OutputFilePrefix LArSIMple_proton
 
 /random/setSeeds 1234 5678
 

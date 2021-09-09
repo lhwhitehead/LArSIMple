@@ -4,7 +4,8 @@
 /LArSIMple/UseRandomNeutrinoVertex false 
 /LArSIMple/SetNeutrinoVertex 0.0 0.0 -200. cm 
 
-/LArSIMple/OutputFileBase LArSIMple_neutrino
+/LArSIMple/OutputFileDir /dune/data/users/lwhite86/LArSIMple/
+/LArSIMple/OutputFilePrefix LArSIMple_neutrino
 
 /random/setSeeds 1234 5678
 

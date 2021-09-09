@@ -1,8 +1,6 @@
 #include "LArSIMpleMessenger.hh"
-
-//#include "LArSIMpleDetectorConstruction.hh"
 #include "LArSIMpleEventAction.hh"
-//#include "LArSIMpleSteppingVerbose.hh"
+
 #include "G4UIdirectory.hh"
 #include "G4UIcommand.hh"
 #include "G4UIparameter.hh"
@@ -10,20 +8,21 @@
 #include "G4UIcmdWithABool.hh"
 #include "G4UIcmdWithADoubleAndUnit.hh"
 
-//LArSIMpleMessenger::LArSIMpleMessenger(LArSIMpleEventAction* ptra, LArSIMpleSteppingVerbose* ptsv, LArSIMpleDetectorConstruction* ptgc)
-//  :fEventAction(ptra),fSteppingVerbose(ptsv),fDetectorConstruction(ptgc)
-//LArSIMpleMessenger::LArSIMpleMessenger(LArSIMpleEventAction* ptra, LArSIMpleSteppingVerbose* ptsv)
-//  :fEventAction(ptra),fSteppingVerbose(ptsv)
 LArSIMpleMessenger::LArSIMpleMessenger(LArSIMpleEventAction* ptra)
   :fEventAction(ptra)
 { 
   fLArSIMpleDir = new G4UIdirectory("/LArSIMple/");
   fLArSIMpleDir->SetGuidance("Commands to select I/O options");
 
-  fOutputFileBase = new G4UIcmdWithAString("/LArSIMple/OutputFileBase",this);
-  fOutputFileBase->SetGuidance("The base part of the output file name (to be appended with event number etc)");
-  fOutputFileBase->SetParameterName("OutputFileBase",true);
-  fOutputFileBase->SetDefaultValue("hits_3d");
+  fOutputFileDir = new G4UIcmdWithAString("/LArSIMple/OutputFileDir",this);
+  fOutputFileDir->SetGuidance("The directory where output files will be written");
+  fOutputFileDir->SetParameterName("OutputFileDir",true);
+  fOutputFileDir->SetDefaultValue("");
+
+  fOutputFilePrefix = new G4UIcmdWithAString("/LArSIMple/OutputFilePrefix",this);
+  fOutputFilePrefix->SetGuidance("The base part of the output file name (to be appended with event number etc)");
+  fOutputFilePrefix->SetParameterName("OutputFilePrefix",true);
+  fOutputFilePrefix->SetDefaultValue("hits_3d");
 
   fWriteZipAndInfoFiles = new G4UIcmdWithABool("/LArSIMple/WriteZipAndInfoFiles",this);
   fWriteZipAndInfoFiles->SetGuidance("Write output files in .gz and .info (default option)");
@@ -49,15 +48,21 @@ LArSIMpleMessenger::LArSIMpleMessenger(LArSIMpleEventAction* ptra)
 LArSIMpleMessenger::~LArSIMpleMessenger()
 {
   delete fLArSIMpleDir;
-  delete fOutputFileBase;
+  delete fOutputFileDir;
+  delete fOutputFilePrefix;
+  delete fWriteZipAndInfoFiles;
+  delete fWriteRootFile;
+  delete fFoldBackTruthInfo;
   delete fHitThreshold;
 }
 
 void LArSIMpleMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
 {
 
-  if(command == fOutputFileBase)
-    fEventAction->SetOutputFileBase(newValue);
+  if(command == fOutputFileDir)
+    fEventAction->SetOutputFileDirectory(newValue);
+  if(command == fOutputFilePrefix)
+    fEventAction->SetOutputFilePrefix(newValue);
   if(command == fWriteZipAndInfoFiles)
     fEventAction->SetWriteZipAndInfoFiles(fWriteZipAndInfoFiles->GetNewBoolValue(newValue));
   if(command == fWriteRootFile)

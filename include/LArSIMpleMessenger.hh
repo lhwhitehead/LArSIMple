@@ -24,7 +24,8 @@ class LArSIMpleMessenger: public G4UImessenger
 
     G4UIdirectory*      fLArSIMpleDir;
 
-    G4UIcmdWithAString* fOutputFileBase;
+    G4UIcmdWithAString* fOutputFileDir;
+    G4UIcmdWithAString* fOutputFilePrefix;
     G4UIcmdWithABool* fWriteZipAndInfoFiles;
     G4UIcmdWithABool* fWriteRootFile;
 

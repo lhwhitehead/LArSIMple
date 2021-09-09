@@ -31,7 +31,8 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 LArSIMpleEventAction::LArSIMpleEventAction(LArSIMplePrimaryGeneratorAction* genAction) 
   : fGenAction(genAction) { 
-  fOutputFileBase="hits_3d";
+  fOutputFileDirectory="";
+  fOutputFilePrefix="hits_3d";
   fHitThreshold = 0.;
   fMessenger = new LArSIMpleMessenger(this);
   fWriteZipAndInfoFiles = true;
@@ -91,10 +92,10 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event* evt) {
   LArSIMpleOutputWriter writer(fEventID);
 
   if(fWriteZipAndInfoFiles)
-    writer.WriteOutputZipAndInfoFiles(fOutputFileBase,fEnergyDeposits);
+    writer.WriteOutputZipAndInfoFiles(fOutputFileDirectory+fOutputFilePrefix,fEnergyDeposits);
 
   if(fWriteRootFile)
-    writer.WriteRootFile(fOutputFileBase,fEnergyDeposits,fGenAction->GetTrueNeutrinoEventPointer());
+    writer.WriteRootFile(fOutputFileDirectory+fOutputFilePrefix,fEnergyDeposits,fGenAction->GetTrueNeutrinoEventPointer());
 
   fTrackIDToTrackData.clear();
   fEnergyDeposits.clear();
