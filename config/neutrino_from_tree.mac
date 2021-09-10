@@ -1,0 +1,12 @@
+/LArSIMple/UseNeutrinoEvents true
+/LArSIMple/NeutrinoInputFile /dune/data/users/lwhite86/genie/test_tree.root
+/LArSIMple/NeutrinoFileType 1
+/LArSIMple/UseRandomNeutrinoVertex false 
+/LArSIMple/SetNeutrinoVertex 0.0 0.0 -200. cm 
+
+/LArSIMple/OutputFileDir /dune/data/users/lwhite86/LArSIMple/
+/LArSIMple/OutputFilePrefix LArSIMple_neutrino
+
+/random/setSeeds 1234 5678
+
+/run/beamOn 5 

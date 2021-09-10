@@ -109,9 +109,103 @@ void LArSIMpleNeutrinoInputParser::ReadFromNuanceTrackerFile(const std::string &
 
 void LArSIMpleNeutrinoInputParser::ReadFromGENIETreeFile(const std::string &filename)
 {
-  TChain *input = new TChain("some_name");
+  TChain *input = new TChain("gst");
   input->Add(filename.c_str());
 
+  // This isn't a full list of variables, just the key ones for now
+  // Interaction details
+  int nuanceCode;
+  double vertexX;
+  double vertexY;
+  double vertexZ;
+  input->SetBranchAddress("nuance_code",&nuanceCode);
+  input->SetBranchAddress("vtxx",&vertexX);
+  input->SetBranchAddress("vtxy",&vertexY);
+  input->SetBranchAddress("vtxz",&vertexZ);
+
+  // The neutrino
+  int neutrinoPdg;
+  double neutrinoEnergy;
+  double neutrinoPx;
+  double neutrinoPy;
+  double neutrinoPz;
+  input->SetBranchAddress("neu",&neutrinoPdg);
+  input->SetBranchAddress("Ev",&neutrinoEnergy);
+  input->SetBranchAddress("pxv",&neutrinoPx);
+  input->SetBranchAddress("pyv",&neutrinoPy);
+  input->SetBranchAddress("pzv",&neutrinoPz);
+
+  // Target
+  int targetPdg;
+  double targetEnergy;
+  double targetPx;
+  double targetPy;
+  double targetPz;
+  input->SetBranchAddress("tgt",&targetPdg);
+  input->SetBranchAddress("En", &targetEnergy);
+  input->SetBranchAddress("pxn",&targetPx);
+  input->SetBranchAddress("pyn",&targetPy);
+  input->SetBranchAddress("pzn",&targetPz);
+
+  // Leading lepton is considered separately
+  int leptonPdg;
+  double leptonEnergy;
+  double leptonPx;
+  double leptonPy;
+  double leptonPz;
+  input->SetBranchAddress("fspl",&leptonPdg);
+  input->SetBranchAddress("El", &leptonEnergy);
+  input->SetBranchAddress("pxl",&leptonPx);
+  input->SetBranchAddress("pyl",&leptonPy);
+  input->SetBranchAddress("pzl",&leptonPz);
+
+  // Final-state hadrons with information stored as arrays. Set this to 100 elements to
+  // hopefully avoid anything going wrong
+  const unsigned int nAllowedFSPs = 100;
+  int nFinalStates;
+  int finalPdg[nAllowedFSPs];
+  double finalEnergy[nAllowedFSPs];
+  double finalPx[nAllowedFSPs];
+  double finalPy[nAllowedFSPs];
+  double finalPz[nAllowedFSPs];
+  input->SetBranchAddress("nf",&nFinalStates);
+  input->SetBranchAddress("pdgf",&finalPdg[0]);
+  input->SetBranchAddress("Ef",&finalEnergy[0]);
+  input->SetBranchAddress("pxf",&finalPx[0]);
+  input->SetBranchAddress("pyf",&finalPy[0]);
+  input->SetBranchAddress("pzf",&finalPz[0]);
+
+  for (unsigned int e = 0; e < input->GetEntries(); ++e)
+  {
+    input->GetEntry(e);
+
+    LArSIMpleTrueNeutrinoEvent newEvent;
+
+    // Interaction first
+    newEvent.SetInteractionType(this->ConvertNuanceCode(nuanceCode));
+    G4ThreeVector vtx(vertexX,vertexY,vertexZ);
+    newEvent.SetInteractionVertex(vtx);
+
+    // Neutrino - NB: vtx doesn't make sense for the neutrino, but that's ok
+    newEvent.AddNeutrino(vtx,G4ThreeVector(neutrinoPx,neutrinoPy,neutrinoPz).unit(),neutrinoEnergy*1000.,neutrinoPdg);
+
+    // Target
+    newEvent.AddTarget(vtx,G4ThreeVector(targetPx,targetPy,targetPz).unit(),targetEnergy*1000.,targetPdg);
+
+    // Leading lepton - this is treated like any other final state particle by LArSIMple
+    newEvent.AddFinalStateParticle(vtx,G4ThreeVector(leptonPx,leptonPy,leptonPz).unit(),leptonEnergy*1000.,leptonPdg);
+
+    // Final state hadrons
+    if (nFinalStates > static_cast<int>(nAllowedFSPs))
+      nFinalStates = static_cast<int>(nAllowedFSPs);
+
+    for (unsigned int h = 0; h < static_cast<unsigned int>(nFinalStates); ++h)
+      newEvent.AddFinalStateParticle(vtx,G4ThreeVector(finalPx[h],finalPy[h],finalPz[h]).unit(),finalEnergy[h]*1000.,finalPdg[h]);
+
+    fNeutrinoEvents.push_back(newEvent);
+  }
+
+  input->ResetBranchAddresses(); 
   delete input;
   input = nullptr;
 }

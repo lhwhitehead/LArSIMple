@@ -59,4 +59,11 @@ unsigned int LArSIMpleTrueNeutrinoEvent::GetNParticles(const int pdg) const
   return nMatches;
 }
 
+void LArSIMpleTrueNeutrinoEvent::Print() const
+{
+  std::cout << "True neutrino event summary" << std::endl;
+  std::cout << " - Neutrino: " << fNeutrino.GetPDGCode() << ", " << fNeutrino.GetEnergy() << std::endl;
+  for(unsigned int i = 0; i < fFinalStateParticles.size(); ++i)
+    std::cout << " - Final state: " << fFinalStateParticles[i].GetPDGCode() << ", " << fFinalStateParticles[i].GetEnergy() << std::endl;
+}
 

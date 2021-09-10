@@ -24,6 +24,8 @@ enum class LArSIMpleNeutrinoInteractionType
   kNCRES,
   kNCDIS,
   kNCOther,
+  // Not in nuance codes, but we can include them?
+  kCC2P2H,
   kDummy = 999
 };
 
@@ -60,6 +62,8 @@ class LArSIMpleTrueNeutrinoEvent
   unsigned int GetNPiZero() const   {return this->GetNParticles(111);};
   unsigned int GetNNeutrons() const {return this->GetNParticles(2112);};
   unsigned int GetNPhotons() const  {return this->GetNParticles(22);};
+
+  void Print() const;
 
   private:
 
