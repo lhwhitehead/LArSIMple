@@ -75,7 +75,7 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event* evt) {
 
   std::cout << "Got " << fEnergyDeposits.size() << " 3D energy deposits" << std::endl;
 
-  LArSIMpleHitFeatureUtils hitUtils(fEnergyDeposits,fWireAngleU,fWireAngleV,fWireAngleW);
+  LArSIMpleHitFeatureUtils hitUtils(fEnergyDeposits);
 
   // Get neighbours and charge for different radii
   std::vector<double> radii = {3, 10, 30}; // Measured in cm
@@ -84,14 +84,15 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event* evt) {
 
   for(unsigned int hitIdx = 0; hitIdx < fEnergyDeposits.size(); ++hitIdx)
   {
+    LArSIMple3DEnergyDeposit &eDep = fEnergyDeposits.at(hitIdx);
     // Get the UVW projections
-    fEnergyDeposits.at(hitIdx).SetUVW(hitUtils.GetUVW(fEnergyDeposits.at(hitIdx).GetY(),fEnergyDeposits.at(hitIdx).GetZ()));
-    fEnergyDeposits.at(hitIdx).AddFeature(hitUtils.GetAngleToNeighbours(hitIdx)); 
-    fEnergyDeposits.at(hitIdx).AddFeature(hitUtils.GetDotProductToNeighbours(hitIdx));
+    eDep.SetUVW(hitUtils.GetUVW(eDep.GetY(),eDep.GetZ(),fWireAngleU,fWireAngleV,fWireAngleW));
+    eDep.AddFeature(hitUtils.GetAngleToNeighbours(hitIdx)); 
+    eDep.AddFeature(hitUtils.GetDotProductToNeighbours(hitIdx));
     for(unsigned int radius = 0; radius < radii.size(); ++radius)
-      fEnergyDeposits.at(hitIdx).AddFeature(neighbours.at(hitIdx).at(radius));
+      eDep.AddFeature(neighbours.at(hitIdx).at(radius));
     for(unsigned int radius = 0; radius < radii.size(); ++radius)
-      fEnergyDeposits.at(hitIdx).AddFeature(charges.at(hitIdx).at(radius));
+      eDep.AddFeature(charges.at(hitIdx).at(radius));
   }
 
   LArSIMpleOutputWriter writer(fEventID);

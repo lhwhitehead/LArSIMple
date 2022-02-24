@@ -10,10 +10,9 @@ class LArSIMpleHitFeatureUtils
  {
   public:
   LArSIMpleHitFeatureUtils(const std::vector<LArSIMple3DEnergyDeposit> &hits);
-  LArSIMpleHitFeatureUtils(const std::vector<LArSIMple3DEnergyDeposit> &hits, double wireAngleU, double wireAngleV, double wireAngleW);
   ~LArSIMpleHitFeatureUtils();
 
-  std::vector<double> GetUVW(const double y, const double z);
+  std::vector<double> GetUVW(const double y, const double z, const double wireAngleU, const double wireAngleV, const double wireAngleW);
 
   std::map<unsigned int, unsigned int> GetNearestNeighbourMap() const {return fNearestNeighbourMap;};
   double GetAngleToNeighbours(const unsigned int idx) const;
@@ -27,11 +26,6 @@ class LArSIMpleHitFeatureUtils
   void FillNeighbourMap();
 
   const std::vector<LArSIMple3DEnergyDeposit> &fHits;
-
-  // Angles of the wire planes w.r.t y
-  double fWireAngleU;
-  double fWireAngleV;
-  double fWireAngleW;
 
   // Nearest neighbours, stored using the index of fHits
   std::map<unsigned int, unsigned int> fNearestNeighbourMap;
