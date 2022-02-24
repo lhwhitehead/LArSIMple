@@ -1,0 +1,12 @@
+/LArSIMple/OutputFileDir /dune/data/users/lwhite86/LArSIMple/
+/LArSIMple/OutputFilePrefix LArSIMple_proton
+
+/random/setSeeds 1234 5678
+
+/gps/particle anti_proton
+/gps/pos/type Point
+/gps/pos/centre 0 0 -200 cm
+/gps/energy 1371 MeV
+/gps/direction 0 0 1
+
+/run/beamOn 5 

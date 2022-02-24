@@ -1,5 +1,6 @@
 /LArSIMple/UseNeutrinoEvents true
 /LArSIMple/NeutrinoInputFile /dune/data/users/lwhite86/genie/test_tracker.dat
+#/LArSIMple/NeutrinoInputFile /dune/data/users/lwhite86/genie/test_nuwro_numu_10.dat
 /LArSIMple/NeutrinoFileType 0
 /LArSIMple/UseRandomNeutrinoVertex false 
 /LArSIMple/SetNeutrinoVertex 0.0 0.0 -200. cm 

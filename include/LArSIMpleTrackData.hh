@@ -1,6 +1,8 @@
 #ifndef LArSIMpleTrackData_h
 #define LArSIMpleTrackData_h
 
+#include <string>
+
 class G4Track;
 
 class LArSIMpleTrackData
@@ -16,6 +18,7 @@ class LArSIMpleTrackData
   int GetTrackID() const {return fTrackID;};
   int GetParentID() const {return fParentID;};
   int GetPDG() const {return fPDG;};
+  std::string GetProcess() const {return fProcess;};
   bool IsFoldable() const {return fIsFoldable;};
 
   private:
@@ -24,6 +27,7 @@ class LArSIMpleTrackData
   int fTrackID;
   int fParentID;
   int fPDG;
+  std::string fProcess;
   bool fIsFoldable;
 };
 

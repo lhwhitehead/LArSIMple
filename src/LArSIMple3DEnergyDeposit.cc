@@ -3,7 +3,7 @@
 #include "G4ThreeVector.hh"
 
 LArSIMple3DEnergyDeposit::LArSIMple3DEnergyDeposit() :
-  fPosX(0.), fPosY(0.), fPosZ(0.), fTime(0.), fEnergy(0.),
+  fPosX(0.), fPosY(0.), fPosZ(0.), fTime(0.), fEnergy(0.), fDeDx(0.),
   fParticlePDG(0), fParticleTrackID(0)
 {
 
@@ -13,6 +13,7 @@ LArSIMple3DEnergyDeposit::LArSIMple3DEnergyDeposit(const LArSIMple3DEnergyDeposi
 {
   this->SetPositionAndTime(rhs.GetPosition(), rhs.GetTime());
   this->SetEnergy(rhs.GetEnergy());
+  this->SetDeDx(rhs.GetDeDx());
   this->SetParticleInfo(rhs.GetParticlePDG(), rhs.GetParticleTrackID());
 }
 

@@ -119,7 +119,7 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
   
   // Hit level information
   std::vector<float> posX, posY, posZ;
-  std::vector<float> charge;
+  std::vector<float> charge, dedx;
   std::vector<float> angle, dotProduct;
   std::vector<float> neighboursR1, neighboursR2, neighboursR3;
   std::vector<float> chargeR1, chargeR2, chargeR3;
@@ -129,6 +129,7 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
   outputTree->Branch("y",&posY);
   outputTree->Branch("z",&posZ);
   outputTree->Branch("charge",&charge);
+  outputTree->Branch("dedx",&dedx);
   outputTree->Branch("angle",&angle);
   outputTree->Branch("dotProduct",&dotProduct);
   outputTree->Branch("neighboursR1",&neighboursR1);
@@ -148,18 +149,20 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
     posZ.push_back(hit.GetZ());
     const std::vector<float> features = hit.GetFeatures();
     charge.push_back(features.at(0));
-    angle.push_back(features.at(1));
-    dotProduct.push_back(features.at(2));
-    neighboursR1.push_back(features.at(3));
-    neighboursR2.push_back(features.at(4));
-    neighboursR3.push_back(features.at(5));
-    chargeR1.push_back(features.at(6));
-    chargeR2.push_back(features.at(7));
-    chargeR3.push_back(features.at(8));
+    dedx.push_back(features.at(1));
+    angle.push_back(features.at(2));
+    dotProduct.push_back(features.at(3));
+    neighboursR1.push_back(features.at(4));
+    neighboursR2.push_back(features.at(5));
+    neighboursR3.push_back(features.at(6));
+    chargeR1.push_back(features.at(7));
+    chargeR2.push_back(features.at(8));
+    chargeR3.push_back(features.at(9));
     pdg.push_back(hit.GetParticlePDG());
     trackid.push_back(hit.GetParticleTrackID());
   }
 
+  std::cout << "Creating ROOT TTree with " << posX.size() << " hits" << std::endl; 
   outputTree->Fill();
 
   TFile *outputFile = new TFile(rootFileName.str().c_str(),"recreate");

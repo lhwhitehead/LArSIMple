@@ -61,7 +61,9 @@ void LArSIMpleSteppingAction::UserSteppingAction(const G4Step* aStep)
 //    G4EmSaturation* birksSup = G4LossTableManager::Instance()->EmSaturation();
 //    const double eVis = birksSup->VisibleEnergyDeposition(track->GetParticleDefinition(), track->GetMaterialCutsCouple(), aStep->GetStepLength(), aStep->GetTotalEnergyDeposit(), aStep->GetNonIonizingEnergyDeposit());
 //    energyDeposit.SetEnergy(eVis);
-    energyDeposit.SetEnergy(aStep->GetTotalEnergyDeposit() - aStep->GetNonIonizingEnergyDeposit());
+    const double energy = aStep->GetTotalEnergyDeposit() - aStep->GetNonIonizingEnergyDeposit();
+    energyDeposit.SetEnergy(energy);
+    energyDeposit.SetDeDx(energy / (aStep->GetDeltaPosition().mag() / CLHEP::cm));
     fEventAction->Add3DEnergyDeposit(energyDeposit);
   }
 }
@@ -78,6 +80,7 @@ void LArSIMpleSteppingAction::GetFoldedTrackIDAndPDG(const G4Track *track, int &
     if(trkData.IsFoldable())
     {
       foldedTrackID = trkData.GetParentID();
+      std::cout << "Folding track: " << trkData.GetPDG() << ", " << trkData.GetTrackID() << ", " << track->GetCreatorProcess()->GetProcessName() << " to parent " << trkData.GetParentID() << " with pdg " << fEventAction->GetTrackDataFromTrackID(trkData.GetParentID()).GetPDG() << std::endl;
     }
     else
     {

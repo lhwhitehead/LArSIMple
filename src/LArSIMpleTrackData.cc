@@ -1,3 +1,5 @@
+#include <string>
+
 #include "LArSIMpleTrackData.hh"
 
 #include "G4Track.hh"
@@ -8,6 +10,7 @@ LArSIMpleTrackData::LArSIMpleTrackData()
   fTrackID = 0;
   fParentID = 0;
   fPDG = 0;
+  fProcess = "";
   fIsFoldable = false;
 }
 
@@ -16,7 +19,9 @@ LArSIMpleTrackData::LArSIMpleTrackData(const G4Track *track)
   fTrackID = track->GetTrackID();
   fParentID = track->GetParentID();
   fPDG = track->GetParticleDefinition()->GetPDGEncoding();
+  fProcess = track->GetCreatorProcess()->GetProcessName();
   fIsFoldable = this->CanTrackBeFolded(track);
+  if(!fIsFoldable) std::cout << "Created unfoldable track: " << fTrackID << ", " << fParentID << ", " << fPDG << ", " << fProcess << std::endl;
 }
 
 LArSIMpleTrackData::LArSIMpleTrackData(const LArSIMpleTrackData &rhs)
@@ -24,6 +29,7 @@ LArSIMpleTrackData::LArSIMpleTrackData(const LArSIMpleTrackData &rhs)
   fTrackID = rhs.GetTrackID();
   fParentID = rhs.GetParentID();
   fPDG = rhs.GetPDG();
+  fProcess = rhs.GetProcess();
   fIsFoldable = rhs.IsFoldable();
 }
 
@@ -40,9 +46,11 @@ LArSIMpleTrackData::~LArSIMpleTrackData()
 
 bool LArSIMpleTrackData::CanTrackBeFolded(const G4Track *track) const
 { 
+
   // Primary particle first
   if(fParentID == 0)
   {
+    std::cout << "Primary particle with pdg = " << track->GetParticleDefinition()->GetPDGEncoding() << std::endl;
     return false;
   }
   // Check if secondaries have processes we don't want to consider as particles
@@ -57,8 +65,8 @@ bool LArSIMpleTrackData::CanTrackBeFolded(const G4Track *track) const
        || process.find("Brem")            != std::string::npos
        || process.find("phot")            != std::string::npos
        || process.find("Photo")           != std::string::npos
-       || process.find("Ion")             != std::string::npos
-       || process.find("annihil")         != std::string::npos)
+       || process.find("Ion")             != std::string::npos)
+//       || process.find("annihil")         != std::string::npos)
     {
       return true;
     }

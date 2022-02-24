@@ -18,12 +18,14 @@ class LArSIMple3DEnergyDeposit
   double GetZ() const {return fPosZ;};
   double GetTime() const {return fTime;};
   double GetEnergy() const {return fEnergy;};
+  double GetDeDx() const {return fDeDx;};
   int GetParticlePDG() const {return fParticlePDG;};
   int GetParticleTrackID() const {return fParticleTrackID;};
 
   void SetPositionAndTime(const double x, const double y, const double z, const double time);
   void SetPositionAndTime(const G4ThreeVector &pos, const double time);
   void SetEnergy(const double energy);
+  void SetDeDx(const double dedx);
   void SetParticleInfo(const int pdg, const int trackID);
 
   void AddFeature(const float val) {fFeatures.push_back(val);};
@@ -44,12 +46,13 @@ class LArSIMple3DEnergyDeposit
   double fTime;
 
   double fEnergy;
-  std::vector<float> fFeatures;
+  double fDeDx;
 
   // Information about the particle that created the energy
   int fParticlePDG;
   int fParticleTrackID;
 
+  std::vector<float> fFeatures;
 };
 
 inline G4ThreeVector LArSIMple3DEnergyDeposit::GetPosition() const
@@ -80,6 +83,12 @@ inline void LArSIMple3DEnergyDeposit::SetEnergy(const double energy)
   fEnergy = energy;
   // Add the energy as the first feature... we should also allow for calibration later
   fFeatures.push_back(fEnergy);
+}
+
+inline void LArSIMple3DEnergyDeposit::SetDeDx(const double dedx)
+{
+  fDeDx = dedx;
+  fFeatures.push_back(fDeDx);
 }
 
 inline void LArSIMple3DEnergyDeposit::SetParticleInfo(const int pdg, const int trackID)
