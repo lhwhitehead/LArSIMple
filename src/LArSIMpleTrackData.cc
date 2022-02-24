@@ -24,7 +24,6 @@ LArSIMpleTrackData::LArSIMpleTrackData(const G4Track *track)
   else
     fProcess = track->GetCreatorProcess()->GetProcessName();
   fIsFoldable = this->CanTrackBeFolded(track);
-  if(!fIsFoldable) std::cout << "Created unfoldable track: " << fTrackID << ", " << fParentID << ", " << fPDG << ", " << fProcess << std::endl;
 }
 
 LArSIMpleTrackData::LArSIMpleTrackData(const LArSIMpleTrackData &rhs)
@@ -67,6 +66,8 @@ bool LArSIMpleTrackData::CanTrackBeFolded(const G4Track *track) const
        || fProcess.find("Brem")            != std::string::npos
        || fProcess.find("phot")            != std::string::npos
        || fProcess.find("Photo")           != std::string::npos
+       || fProcess.find("muMinusCapture")  != std::string::npos
+       || fProcess.find("Radioactive")     != std::string::npos
        || fProcess.find("Ion")             != std::string::npos)
 //       || process.find("annihil")         != std::string::npos)
     {

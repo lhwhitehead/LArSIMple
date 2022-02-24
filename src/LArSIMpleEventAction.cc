@@ -34,6 +34,9 @@ LArSIMpleEventAction::LArSIMpleEventAction(LArSIMplePrimaryGeneratorAction* genA
   fOutputFileDirectory="";
   fOutputFilePrefix="hits_3d";
   fHitThreshold = 0.;
+  fWireAngleU=35.9;
+  fWireAngleV=-35.9;
+  fWireAngleW=0.0;
   fMessenger = new LArSIMpleMessenger(this);
   fWriteZipAndInfoFiles = true;
   fWriteRootFile = false;
@@ -72,7 +75,7 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event* evt) {
 
   std::cout << "Got " << fEnergyDeposits.size() << " 3D energy deposits" << std::endl;
 
-  LArSIMpleHitFeatureUtils hitUtils(fEnergyDeposits);
+  LArSIMpleHitFeatureUtils hitUtils(fEnergyDeposits,fWireAngleU,fWireAngleV,fWireAngleW);
 
   // Get neighbours and charge for different radii
   std::vector<double> radii = {3, 10, 30}; // Measured in cm

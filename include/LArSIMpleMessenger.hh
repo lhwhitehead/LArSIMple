@@ -5,6 +5,7 @@ class LArSIMpleEventAction;
 class G4UIdirectory;
 class G4UIcmdWithAString;
 class G4UIcmdWithADoubleAndUnit;
+class G4UIcmdWithADouble;
 class G4UIcmdWithABool;
 
 #include "G4UImessenger.hh"
@@ -32,6 +33,10 @@ class LArSIMpleMessenger: public G4UImessenger
     G4UIcmdWithABool* fFoldBackTruthInfo;
 
     G4UIcmdWithADoubleAndUnit* fHitThreshold;
+
+    G4UIcmdWithADouble* fWireAngleU;
+    G4UIcmdWithADouble* fWireAngleV;
+    G4UIcmdWithADouble* fWireAngleW;
 };
 
 #endif

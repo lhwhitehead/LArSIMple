@@ -7,6 +7,7 @@
 #include "G4UIcmdWithAString.hh"
 #include "G4UIcmdWithABool.hh"
 #include "G4UIcmdWithADoubleAndUnit.hh"
+#include "G4UIcmdWithADouble.hh"
 
 LArSIMpleMessenger::LArSIMpleMessenger(LArSIMpleEventAction* ptra)
   :fEventAction(ptra)
@@ -43,6 +44,21 @@ LArSIMpleMessenger::LArSIMpleMessenger(LArSIMpleEventAction* ptra)
   fHitThreshold->SetGuidance("Energy threshold for saving hits");
   fHitThreshold->SetParameterName("HitThreshold",true);
   fHitThreshold->SetDefaultValue(0.01);
+
+  fWireAngleU = new G4UIcmdWithADouble("/LArSIMple/WireAngleU",this);
+  fWireAngleU->SetGuidance("Angle of the U wires to the verticle");
+  fWireAngleU->SetParameterName("WireAngleU",true);
+  fWireAngleU->SetDefaultValue(35.9);
+
+  fWireAngleV = new G4UIcmdWithADouble("/LArSIMple/WireAngleV",this);
+  fWireAngleV->SetGuidance("Angle of the v wires to the verticle");
+  fWireAngleV->SetParameterName("WireAngleV",true);
+  fWireAngleV->SetDefaultValue(-35.9);
+
+  fWireAngleW = new G4UIcmdWithADouble("/LArSIMple/WireAngleW",this);
+  fWireAngleW->SetGuidance("Angle of the W wires to the verticle");
+  fWireAngleW->SetParameterName("WireAngleW",true);
+  fWireAngleW->SetDefaultValue(0.0);
 }
 
 LArSIMpleMessenger::~LArSIMpleMessenger()
@@ -54,6 +70,9 @@ LArSIMpleMessenger::~LArSIMpleMessenger()
   delete fWriteRootFile;
   delete fFoldBackTruthInfo;
   delete fHitThreshold;
+  delete fWireAngleU;
+  delete fWireAngleV;
+  delete fWireAngleW;
 }
 
 void LArSIMpleMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
@@ -71,5 +90,10 @@ void LArSIMpleMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
     fEventAction->SetFoldBackTruthInfo(fFoldBackTruthInfo->GetNewBoolValue(newValue));
   if(command == fHitThreshold)
     fEventAction->SetHitThreshold(fHitThreshold->GetNewDoubleValue(newValue));
-
+  if(command == fWireAngleU)
+    fEventAction->SetWireAngleU(fWireAngleU->GetNewDoubleValue(newValue));
+  if(command == fWireAngleV)
+    fEventAction->SetWireAngleV(fWireAngleV->GetNewDoubleValue(newValue));
+  if(command == fWireAngleW)
+    fEventAction->SetWireAngleW(fWireAngleW->GetNewDoubleValue(newValue));
 }

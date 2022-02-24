@@ -12,6 +12,12 @@ LArSIMpleHitFeatureUtils::LArSIMpleHitFeatureUtils(const std::vector<LArSIMple3D
   this->FillNeighbourMap();
 }
 
+LArSIMpleHitFeatureUtils::LArSIMpleHitFeatureUtils(const std::vector<LArSIMple3DEnergyDeposit> &hits, double wireAngleU, double wireAngleV, double wireAngleW) :
+  fHits(hits), fWireAngleU(wireAngleU), fWireAngleV(wireAngleV), fWireAngleW(wireAngleW)
+{
+  this->FillNeighbourMap();
+}
+
 LArSIMpleHitFeatureUtils::~LArSIMpleHitFeatureUtils(){
 
 }

@@ -40,6 +40,10 @@ class LArSIMpleEventAction : public G4UserEventAction {
   bool FoldBackTruthInfo() const {return fFoldBackTruthInfo;};
   void SetFoldBackTruthInfo(const bool val) {fFoldBackTruthInfo = val;}; 
 
+  void SetWireAngleU(double angle) {fWireAngleU = angle;};
+  void SetWireAngleV(double angle) {fWireAngleV = angle;};
+  void SetWireAngleW(double angle) {fWireAngleW = angle;};
+
   private:  
   LArSIMplePrimaryGeneratorAction* fGenAction;
   LArSIMpleMessenger* fMessenger;
@@ -52,6 +56,10 @@ class LArSIMpleEventAction : public G4UserEventAction {
   bool fWriteZipAndInfoFiles;
   bool fWriteRootFile;
   bool fFoldBackTruthInfo;
+
+  double fWireAngleU;
+  double fWireAngleV;
+  double fWireAngleW;
 
   std::vector<LArSIMple3DEnergyDeposit> fEnergyDeposits;
 

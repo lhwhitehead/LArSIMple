@@ -10,6 +10,7 @@ class LArSIMpleHitFeatureUtils
  {
   public:
   LArSIMpleHitFeatureUtils(const std::vector<LArSIMple3DEnergyDeposit> &hits);
+  LArSIMpleHitFeatureUtils(const std::vector<LArSIMple3DEnergyDeposit> &hits, double wireAngleU, double wireAngleV, double wireAngleW);
   ~LArSIMpleHitFeatureUtils();
 
   std::vector<double> GetUVW(const double y, const double z);

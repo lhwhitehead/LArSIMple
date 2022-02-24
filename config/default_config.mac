@@ -10,6 +10,10 @@
 /LArSIMple/VoxeliseLAr true
 /LArSIMple/CheckOverlaps true
 
+/LArSIMple/WireAngleU 35.9
+/LArSIMple/WireAngleV -35.9
+/LArSIMple/WireAngleW 0.0
+
 # Output files
 /LArSIMple/WriteZipAndInfoFiles true
 /LArSIMple/WriteRootFile true
