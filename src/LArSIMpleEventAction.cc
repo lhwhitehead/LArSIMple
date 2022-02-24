@@ -81,6 +81,8 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event* evt) {
 
   for(unsigned int hitIdx = 0; hitIdx < fEnergyDeposits.size(); ++hitIdx)
   {
+    // Get the UVW projections
+    fEnergyDeposits.at(hitIdx).SetUVW(hitUtils.GetUVW(fEnergyDeposits.at(hitIdx).GetY(),fEnergyDeposits.at(hitIdx).GetZ()));
     fEnergyDeposits.at(hitIdx).AddFeature(hitUtils.GetAngleToNeighbours(hitIdx)); 
     fEnergyDeposits.at(hitIdx).AddFeature(hitUtils.GetDotProductToNeighbours(hitIdx));
     for(unsigned int radius = 0; radius < radii.size(); ++radius)

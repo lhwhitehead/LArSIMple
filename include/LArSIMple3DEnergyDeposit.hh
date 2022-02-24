@@ -16,6 +16,9 @@ class LArSIMple3DEnergyDeposit
   double GetX() const {return fPosX;};
   double GetY() const {return fPosY;};
   double GetZ() const {return fPosZ;};
+  double GetU() const {return fPosU;};
+  double GetV() const {return fPosV;};
+  double GetW() const {return fPosW;};
   double GetTime() const {return fTime;};
   double GetEnergy() const {return fEnergy;};
   double GetDeDx() const {return fDeDx;};
@@ -24,6 +27,7 @@ class LArSIMple3DEnergyDeposit
 
   void SetPositionAndTime(const double x, const double y, const double z, const double time);
   void SetPositionAndTime(const G4ThreeVector &pos, const double time);
+  void SetUVW(const std::vector<double> &uvw);
   void SetEnergy(const double energy);
   void SetDeDx(const double dedx);
   void SetParticleInfo(const int pdg, const int trackID);
@@ -44,6 +48,11 @@ class LArSIMple3DEnergyDeposit
   double fPosY;
   double fPosZ;
   double fTime;
+
+  // Wire planes
+  double fPosU;
+  double fPosV;
+  double fPosW;
 
   double fEnergy;
   double fDeDx;
@@ -104,6 +113,10 @@ inline std::vector<float> LArSIMple3DEnergyDeposit::GetFlatRepresentation() cons
   flatOutput.push_back(fPosX);
   flatOutput.push_back(fPosY);
   flatOutput.push_back(fPosZ);
+  // Now for the projections
+  flatOutput.push_back(fPosU);
+  flatOutput.push_back(fPosV);
+  flatOutput.push_back(fPosW);
   // Now add any features
   for(const float &feature : fFeatures)
     flatOutput.push_back(feature);

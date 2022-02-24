@@ -19,7 +19,10 @@ LArSIMpleTrackData::LArSIMpleTrackData(const G4Track *track)
   fTrackID = track->GetTrackID();
   fParentID = track->GetParentID();
   fPDG = track->GetParticleDefinition()->GetPDGEncoding();
-  fProcess = track->GetCreatorProcess()->GetProcessName();
+  if (fParentID == 0)
+    fProcess = "primary";
+  else
+    fProcess = track->GetCreatorProcess()->GetProcessName();
   fIsFoldable = this->CanTrackBeFolded(track);
   if(!fIsFoldable) std::cout << "Created unfoldable track: " << fTrackID << ", " << fParentID << ", " << fPDG << ", " << fProcess << std::endl;
 }
@@ -56,16 +59,15 @@ bool LArSIMpleTrackData::CanTrackBeFolded(const G4Track *track) const
   // Check if secondaries have processes we don't want to consider as particles
   else
   {
-    std::string process = track->GetCreatorProcess()->GetProcessName();
-    if(process.find("conv")           != std::string::npos
-       || process.find("LowEnConversion") != std::string::npos
-       || process.find("Pair")            != std::string::npos
-       || process.find("compt")           != std::string::npos
-       || process.find("Compt")           != std::string::npos
-       || process.find("Brem")            != std::string::npos
-       || process.find("phot")            != std::string::npos
-       || process.find("Photo")           != std::string::npos
-       || process.find("Ion")             != std::string::npos)
+    if(fProcess.find("conv")           != std::string::npos
+       || fProcess.find("LowEnConversion") != std::string::npos
+       || fProcess.find("Pair")            != std::string::npos
+       || fProcess.find("compt")           != std::string::npos
+       || fProcess.find("Compt")           != std::string::npos
+       || fProcess.find("Brem")            != std::string::npos
+       || fProcess.find("phot")            != std::string::npos
+       || fProcess.find("Photo")           != std::string::npos
+       || fProcess.find("Ion")             != std::string::npos)
 //       || process.find("annihil")         != std::string::npos)
     {
       return true;

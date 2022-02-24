@@ -7,13 +7,23 @@
 #include <map>
 
 LArSIMpleHitFeatureUtils::LArSIMpleHitFeatureUtils(const std::vector<LArSIMple3DEnergyDeposit> &hits) :
-  fHits(hits)
+  fHits(hits), fWireAngleU(35.9), fWireAngleV(-35.9), fWireAngleW(0.0)
 {
   this->FillNeighbourMap();
 }
 
 LArSIMpleHitFeatureUtils::~LArSIMpleHitFeatureUtils(){
 
+}
+
+std::vector<double> LArSIMpleHitFeatureUtils::GetUVW(const double y, const double z)
+{
+  const double degreesToRadians{3.14159265358979323846 / 180.};
+  std::vector<double> uvw;
+  uvw.push_back(z * std::cos(fWireAngleU * degreesToRadians) - y * std::sin(fWireAngleU * degreesToRadians));
+  uvw.push_back(z * std::cos(fWireAngleV * degreesToRadians) - y * std::sin(fWireAngleV * degreesToRadians));
+  uvw.push_back(z * std::cos(fWireAngleW * degreesToRadians) - y * std::sin(fWireAngleW * degreesToRadians));
+  return uvw;
 }
 
 void LArSIMpleHitFeatureUtils::FillNeighbourMap(){

@@ -119,6 +119,7 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
   
   // Hit level information
   std::vector<float> posX, posY, posZ;
+  std::vector<float> posU, posV, posW;
   std::vector<float> charge, dedx;
   std::vector<float> angle, dotProduct;
   std::vector<float> neighboursR1, neighboursR2, neighboursR3;
@@ -128,6 +129,9 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
   outputTree->Branch("x",&posX);
   outputTree->Branch("y",&posY);
   outputTree->Branch("z",&posZ);
+  outputTree->Branch("u",&posU);
+  outputTree->Branch("v",&posV);
+  outputTree->Branch("w",&posW);
   outputTree->Branch("charge",&charge);
   outputTree->Branch("dedx",&dedx);
   outputTree->Branch("angle",&angle);
@@ -147,6 +151,9 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
     posX.push_back(hit.GetX());
     posY.push_back(hit.GetY());
     posZ.push_back(hit.GetZ());
+    posU.push_back(hit.GetU());
+    posV.push_back(hit.GetV());
+    posW.push_back(hit.GetW());
     const std::vector<float> features = hit.GetFeatures();
     charge.push_back(features.at(0));
     dedx.push_back(features.at(1));
