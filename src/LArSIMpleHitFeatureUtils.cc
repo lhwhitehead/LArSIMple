@@ -49,15 +49,15 @@ void LArSIMpleHitFeatureUtils::FillNeighbourMap(){
 
 double LArSIMpleHitFeatureUtils::GetAngleToNeighbours(const unsigned int idx) const
 {
-  G4ThreeVector vec1 = fHits.at(fNearestNeighbourMap.at(idx)).GetPosition() - fHits.at(idx).GetPosition();
-  G4ThreeVector vec2 = fHits.at(fSecondNeighbourMap.at(idx)).GetPosition() - fHits.at(idx).GetPosition();
+  const G4ThreeVector vec1 = fHits.at(fNearestNeighbourMap.at(idx)).GetPosition() - fHits.at(idx).GetPosition();
+  const G4ThreeVector vec2 = fHits.at(fSecondNeighbourMap.at(idx)).GetPosition() - fHits.at(idx).GetPosition();
   return vec1.angle(vec2);
 }
 
 double LArSIMpleHitFeatureUtils::GetDotProductToNeighbours(const unsigned int idx) const
 {
-  G4ThreeVector vec1 = fHits.at(fNearestNeighbourMap.at(idx)).GetPosition() - fHits.at(idx).GetPosition();
-  G4ThreeVector vec2 = fHits.at(fSecondNeighbourMap.at(idx)).GetPosition() - fHits.at(idx).GetPosition();
+  const G4ThreeVector vec1 = fHits.at(fNearestNeighbourMap.at(idx)).GetPosition() - fHits.at(idx).GetPosition();
+  const G4ThreeVector vec2 = fHits.at(fSecondNeighbourMap.at(idx)).GetPosition() - fHits.at(idx).GetPosition();
   return vec1.dot(vec2);
 }
 
