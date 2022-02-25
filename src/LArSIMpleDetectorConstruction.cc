@@ -9,24 +9,9 @@
 #include "G4LogicalVolume.hh"
 #include "G4PVPlacement.hh"
 #include "G4PVReplica.hh"
-#include "G4UniformMagField.hh"
-#include "G4Tubs.hh"
 #include "G4PVParameterised.hh"
-
 #include "G4UserLimits.hh"
-
 #include "G4GeometryManager.hh"
-#include "G4PhysicalVolumeStore.hh"
-#include "G4LogicalVolumeStore.hh"
-#include "G4SolidStore.hh"
-#include "G4EmSaturation.hh"
-#include "G4LossTableManager.hh"
-#include "G4Region.hh"
-
-#include "G4SDManager.hh"
-
-#include "G4VisAttributes.hh"
-#include "G4Colour.hh"
 
 #include <iostream>
 #include <fstream>
