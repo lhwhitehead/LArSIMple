@@ -65,8 +65,6 @@ public:
   void SetCheckOverlaps(bool check) {fCheckOverlaps = check;};
 
   void PrintDetectorSummary() const;
-//  void ReadInFile(std::string, G4double[], G4double[], G4double);
-//  void ConvertToEnergy(G4int, G4double[], G4double[], G4double);
 
 private:
 
@@ -94,8 +92,6 @@ private:
 
   LArSIMpleDetectorMessenger* fDetectorMessenger;  //pointer to the Messenger
 
-//  LArSIMpleSD*              DetectorSD;   //pointer to sensitive detectors
-
 private:
 
   void DefineMaterials();  
@@ -105,4 +101,3 @@ private:
 };
 
 #endif
-

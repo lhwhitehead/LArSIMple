@@ -22,7 +22,6 @@ LArSIMpleDetectorConstruction::LArSIMpleDetectorConstruction() :
    fSolidLArBox(nullptr),fLogicLArBox(nullptr),fPhysiLArBox(nullptr)
 {
   fDetectorMessenger = new LArSIMpleDetectorMessenger(this);
-
 }
 
 
@@ -102,16 +101,13 @@ void LArSIMpleDetectorConstruction::ConstructLArVoxels()
   //  e.g. nested parameterisation handles material and transfomation of voxels.)
   LArSIMpleNestedParameterisation* paramVoxels
     = new LArSIMpleNestedParameterisation(materials, voxelSize / 2., voxelSize / 2., voxelSize / 2., nCellsZ);
-  //G4VPhysicalVolume * physiPhantomSens =
+
   new G4PVParameterised("LArBox_zSlices",     // their name
                           logVoxel,    // their logical volume
                           logXRep,           // Mother logical volume
                           kUndefined,        // Are placed along this axis 
                           nCellsZ,           // Number of cells
                           paramVoxels);     // Parameterisation.
-  //   Optimization flag is avaiable for,
-  //    kUndefined, kXAxis, kYAxis, kZAxis.
-  //
   std::cout << "Constructed voxels" << std::endl;
 }
 
