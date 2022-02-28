@@ -64,7 +64,14 @@ void LArSIMplePrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
     for (const LArSIMpleTrueParticle &part : finalStateParticles)
     {
       // Get the particle mass and hence kinetic energy
-      particleGun->SetParticleDefinition(particleTable->FindParticle(part.GetPDGCode()));
+      // First, check if this particle exists in G4. If now, ignore for now
+      G4ParticleDefinition *particleDef = particleTable->FindParticle(part.GetPDGCode());
+      if (particleDef == nullptr)
+      {
+        std::cerr << "LArSimplePrimaryGeneratorAction :: unknown particle found: " << part.GetPDGCode() << std::endl; 
+        continue;
+      }
+      particleGun->SetParticleDefinition(particleDef);
       const G4double mass = particleGun->GetParticleDefinition()->GetPDGMass();
       const G4double ekin = part.GetEnergy() - mass;
     
