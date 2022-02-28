@@ -124,7 +124,7 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
   std::vector<float> angle, dotProduct;
   std::vector<float> neighboursR1, neighboursR2, neighboursR3;
   std::vector<float> chargeR1, chargeR2, chargeR3;
-  std::vector<int> pdg, trackid;
+  std::vector<int> pdg, trackid, process;
 
   outputTree->Branch("x",&posX);
   outputTree->Branch("y",&posY);
@@ -144,6 +144,7 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
   outputTree->Branch("chargeR3",&chargeR3);
   outputTree->Branch("pdg",&pdg);
   outputTree->Branch("trackid",&trackid);
+  outputTree->Branch("process",&process);
 
   for(unsigned int h = 0; h < hits.size(); ++h)
   {
@@ -167,6 +168,7 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
     chargeR3.push_back(features.at(9));
     pdg.push_back(hit.GetParticlePDG());
     trackid.push_back(hit.GetParticleTrackID());
+    process.push_back(hit.GetParticleProcess());
   }
 
   std::cout << "Creating ROOT TTree with " << posX.size() << " hits" << std::endl; 

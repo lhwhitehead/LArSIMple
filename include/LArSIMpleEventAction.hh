@@ -28,7 +28,7 @@ class LArSIMpleEventAction : public G4UserEventAction {
   void SetOutputFileDirectory(std::string val) {fOutputFileDirectory = val;};
   void SetOutputFilePrefix(std::string val) {fOutputFilePrefix = val;};
  
-  const LArSIMpleTrackData GetTrackDataFromTrackID(const int trackID) const;
+  LArSIMpleTrackData GetTrackDataFromTrackID(const int trackID) const;
   void AddTrack(const G4Track *track);
 
   double GetHitThreshold() const {return fHitThreshold;};

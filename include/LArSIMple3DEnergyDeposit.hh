@@ -24,13 +24,14 @@ class LArSIMple3DEnergyDeposit
   double GetDeDx() const {return fDeDx;};
   int GetParticlePDG() const {return fParticlePDG;};
   int GetParticleTrackID() const {return fParticleTrackID;};
+  int GetParticleProcess() const {return fParticleProcess;};
 
   void SetPositionAndTime(const double x, const double y, const double z, const double time);
   void SetPositionAndTime(const G4ThreeVector &pos, const double time);
   void SetUVW(const std::vector<double> &uvw);
   void SetEnergy(const double energy);
   void SetDeDx(const double dedx);
-  void SetParticleInfo(const int pdg, const int trackID);
+  void SetParticleInfo(const int pdg, const int trackID, const int processCode);
 
   void AddFeature(const float val) {fFeatures.push_back(val);};
   std::vector<float> GetFeatures() const {return fFeatures;};
@@ -60,6 +61,7 @@ class LArSIMple3DEnergyDeposit
   // Information about the particle that created the energy
   int fParticlePDG;
   int fParticleTrackID;
+  int fParticleProcess;
 
   std::vector<float> fFeatures;
 };
@@ -100,10 +102,11 @@ inline void LArSIMple3DEnergyDeposit::SetDeDx(const double dedx)
   fFeatures.push_back(fDeDx);
 }
 
-inline void LArSIMple3DEnergyDeposit::SetParticleInfo(const int pdg, const int trackID)
+inline void LArSIMple3DEnergyDeposit::SetParticleInfo(const int pdg, const int trackID, const int processCode)
 {
   fParticlePDG = pdg;
   fParticleTrackID = trackID;
+  fParticleProcess = processCode;
 }
 
 inline std::vector<float> LArSIMple3DEnergyDeposit::GetFlatRepresentation() const
@@ -123,7 +126,7 @@ inline std::vector<float> LArSIMple3DEnergyDeposit::GetFlatRepresentation() cons
   // Truth information
   flatOutput.push_back(fParticlePDG);
   flatOutput.push_back(fParticleTrackID);
-
+  flatOutput.push_back(fParticleProcess);
   return flatOutput;
 }
 

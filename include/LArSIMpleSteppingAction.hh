@@ -21,7 +21,7 @@ class LArSIMpleSteppingAction : public G4UserSteppingAction
   private:
   LArSIMpleEventAction* fEventAction;
 
-  void GetFoldedTrackIDAndPDG(const G4Track*, int &foldedTrackID, int &foldedTrackPDG);
+  void GetFoldedTrackInfo(const G4Track*, int &foldedTrackID, int &foldedTrackPDG, int &foldedTrackProcess);
 };
 
 #endif

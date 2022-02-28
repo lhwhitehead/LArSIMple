@@ -51,11 +51,13 @@ void LArSIMpleSteppingAction::UserSteppingAction(const G4Step* aStep)
     const G4Track *track = aStep->GetTrack();
     int foldedTrackID = track->GetTrackID();
     int foldedTrackPDG = track->GetParticleDefinition()->GetPDGEncoding();
-
+    int foldedTrackProcess = static_cast<int>(fEventAction->GetTrackDataFromTrackID(track->GetTrackID()).GetProcessCode());
+    
     if(fEventAction->FoldBackTruthInfo())
-      this->GetFoldedTrackIDAndPDG(track,foldedTrackID,foldedTrackPDG);
-
-    energyDeposit.SetParticleInfo(foldedTrackPDG,foldedTrackID);
+    {
+      this->GetFoldedTrackInfo(track,foldedTrackID,foldedTrackPDG,foldedTrackProcess);
+    }
+    energyDeposit.SetParticleInfo(foldedTrackPDG,foldedTrackID,foldedTrackProcess);
 
     // Allow for Birk's suppression when considering energy
 //    G4EmSaturation* birksSup = G4LossTableManager::Instance()->EmSaturation();
@@ -68,7 +70,7 @@ void LArSIMpleSteppingAction::UserSteppingAction(const G4Step* aStep)
   }
 }
 
-void LArSIMpleSteppingAction::GetFoldedTrackIDAndPDG(const G4Track *track, int &foldedTrackID, int &foldedTrackPDG)
+void LArSIMpleSteppingAction::GetFoldedTrackInfo(const G4Track *track, int &foldedTrackID, int &foldedTrackPDG, int &foldedTrackProcess)
 {
   // Values for foldedTrackID and foldedTrackPDG set to those of the G4Track track already
 
@@ -84,8 +86,10 @@ void LArSIMpleSteppingAction::GetFoldedTrackIDAndPDG(const G4Track *track, int &
     }
     else
     {
+      std::cout << "Not folding track: " << trkData.GetPDG() << ", " << trkData.GetTrackID() << ", " << track->GetCreatorProcess()->GetProcessName() << " to parent " << trkData.GetParentID() << " with pdg " << fEventAction->GetTrackDataFromTrackID(foldedTrackID).GetPDG() << std::endl;
       foldedTrackID = trkData.GetTrackID();
       foldedTrackPDG = trkData.GetPDG();
+      foldedTrackProcess = static_cast<int>(fEventAction->GetTrackDataFromTrackID(foldedTrackID).GetProcessCode());
       keepFolding = false;
     }
   }

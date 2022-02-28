@@ -107,27 +107,27 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event* evt) {
   fEnergyDeposits.clear();
 }
 
-const LArSIMpleTrackData LArSIMpleEventAction::GetTrackDataFromTrackID(const int trackID) const{
+LArSIMpleTrackData LArSIMpleEventAction::GetTrackDataFromTrackID(const int trackID) const{
   if(fTrackIDToTrackData.count(trackID) != 0)
   {
     return fTrackIDToTrackData.at(trackID);
   }
   else
   {
-    std::cerr << "- Track " << trackID << " not found in the map... returning empty track data object" << std::endl;
+    std::cout << "- Track " << trackID << " not found in the map... returning empty track data object" << std::endl;
     return LArSIMpleTrackData();
   }
 }
 
 void LArSIMpleEventAction::AddTrack(const G4Track *track){
-  const int trackID = track->GetTrackID();
+  int trackID = track->GetTrackID();
   if(fTrackIDToTrackData.count(trackID) == 0)
   {
-    fTrackIDToTrackData[trackID] = LArSIMpleTrackData(track);
+    fTrackIDToTrackData.insert(std::make_pair(trackID,LArSIMpleTrackData(track)));
   }
   else
   {
-    std::cerr << "- Track " << trackID << " already exists in the map... doing nothing" << std::endl;
+    std::cout << "- Track " << trackID << " already exists in the map... doing nothing" << std::endl;
   }
 }
 
