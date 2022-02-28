@@ -82,11 +82,11 @@ void LArSIMpleSteppingAction::GetFoldedTrackInfo(const G4Track *track, int &fold
     if(trkData.IsFoldable())
     {
       foldedTrackID = trkData.GetParentID();
-      std::cout << "Folding track: " << trkData.GetPDG() << ", " << trkData.GetTrackID() << ", " << track->GetCreatorProcess()->GetProcessName() << " to parent " << trkData.GetParentID() << " with pdg " << fEventAction->GetTrackDataFromTrackID(trkData.GetParentID()).GetPDG() << std::endl;
+//      std::cout << "Folding track: " << trkData.GetPDG() << ", " << trkData.GetTrackID() << ", " << track->GetCreatorProcess()->GetProcessName() << " to parent " << trkData.GetParentID() << " with pdg " << fEventAction->GetTrackDataFromTrackID(trkData.GetParentID()).GetPDG() << std::endl;
     }
     else
     {
-      std::cout << "Not folding track: " << trkData.GetPDG() << ", " << trkData.GetTrackID() << ", " << track->GetCreatorProcess()->GetProcessName() << " to parent " << trkData.GetParentID() << " with pdg " << fEventAction->GetTrackDataFromTrackID(foldedTrackID).GetPDG() << std::endl;
+//      std::cout << "Not folding track: " << trkData.GetPDG() << ", " << trkData.GetTrackID() << ", " << track->GetCreatorProcess()->GetProcessName() << " to parent " << trkData.GetParentID() << " with pdg " << fEventAction->GetTrackDataFromTrackID(foldedTrackID).GetPDG() << std::endl;
       foldedTrackID = trkData.GetTrackID();
       foldedTrackPDG = trkData.GetPDG();
       foldedTrackProcess = static_cast<int>(fEventAction->GetTrackDataFromTrackID(foldedTrackID).GetProcessCode());
