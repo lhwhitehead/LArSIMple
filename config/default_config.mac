@@ -15,11 +15,11 @@
 /LArSIMple/WireAngleW 0.0
 
 # Output files
-/LArSIMple/WriteZipAndInfoFiles true
+/LArSIMple/WriteZipAndInfoFiles false
 /LArSIMple/WriteRootFile true
 
 # Truth
-/LArSIMple/FoldBackTruthInfo true
+/LArSIMple/FoldBackTruthInfo false
 
 # Physics
 /LArSIMple/HitThreshold 0.1 MeV
