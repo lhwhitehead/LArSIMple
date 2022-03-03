@@ -72,7 +72,15 @@ void LArSIMpleSteppingAction::UserSteppingAction(const G4Step* aStep)
 
 void LArSIMpleSteppingAction::GetFoldedTrackInfo(const G4Track *track, int &foldedTrackID, int &foldedTrackPDG, int &foldedTrackProcess)
 {
-  // Values for foldedTrackID and foldedTrackPDG set to those of the G4Track track already
+  // Have we already folded this track before?
+  if (fEventAction->GetFoldedTrackAssoc(track->GetTrackID()) != -1)
+  {
+    const LArSIMpleTrackData &trkData = fEventAction->GetTrackDataFromTrackID(track->GetTrackID());
+    foldedTrackID = trkData.GetTrackID();
+    foldedTrackPDG = trkData.GetPDG();
+    foldedTrackProcess = static_cast<int>(trkData.GetProcessCode());
+    return;
+  }
 
   // We need to iterate through the parent links until we find a track that isn't foldable
   bool keepFolding = fEventAction->GetTrackDataFromTrackID(track->GetTrackID()).IsFoldable();
@@ -90,6 +98,7 @@ void LArSIMpleSteppingAction::GetFoldedTrackInfo(const G4Track *track, int &fold
       foldedTrackID = trkData.GetTrackID();
       foldedTrackPDG = trkData.GetPDG();
       foldedTrackProcess = static_cast<int>(fEventAction->GetTrackDataFromTrackID(foldedTrackID).GetProcessCode());
+      fEventAction->AddFoldedTrackAssoc(track->GetTrackID(),foldedTrackID);
       keepFolding = false;
     }
   }

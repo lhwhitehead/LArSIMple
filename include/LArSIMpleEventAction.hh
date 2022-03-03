@@ -30,6 +30,8 @@ class LArSIMpleEventAction : public G4UserEventAction {
  
   LArSIMpleTrackData GetTrackDataFromTrackID(const int trackID) const;
   void AddTrack(const G4Track *track);
+  void AddFoldedTrackAssoc(const int trackID, const int foldedTrackID);
+  int GetFoldedTrackAssoc(const int trackID) const;
 
   double GetHitThreshold() const {return fHitThreshold;};
   void SetHitThreshold(const double threshold) {fHitThreshold = threshold;};
@@ -65,12 +67,25 @@ class LArSIMpleEventAction : public G4UserEventAction {
 
   // Tracks can be transient so keep track of the type
   std::map<int,LArSIMpleTrackData> fTrackIDToTrackData;
- 
+
+  // Map to link tracks together that can be folded
+  std::map<int,int> fTrackIDToFoldedTrackID; 
 };
 
 inline void LArSIMpleEventAction::Add3DEnergyDeposit(LArSIMple3DEnergyDeposit edep)
 {
   fEnergyDeposits.push_back(edep);
+}
+
+inline void LArSIMpleEventAction::AddFoldedTrackAssoc(const int trackID, const int foldedTrackID)
+{
+  if (fTrackIDToFoldedTrackID.count(trackID) == 0)
+    fTrackIDToFoldedTrackID.insert(std::make_pair(trackID,foldedTrackID));
+}
+
+inline int LArSIMpleEventAction::GetFoldedTrackAssoc(const int trackID) const
+{
+  return (fTrackIDToFoldedTrackID.count(trackID) != 0) ? fTrackIDToFoldedTrackID.at(trackID) : -1;
 }
 
 #endif

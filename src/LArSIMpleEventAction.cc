@@ -51,25 +51,16 @@ LArSIMpleEventAction::~LArSIMpleEventAction()
 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
-void LArSIMpleEventAction::BeginOfEventAction(const G4Event* evt) {
-
+void LArSIMpleEventAction::BeginOfEventAction(const G4Event* evt)
+{
   fEventID = evt->GetEventID();
   if(fEventID%1000==0 || (fEventID%100==0 && fEventID<1000))
     std::cout << "\n---> Beginning of event: " << fEventID << std::endl;
-
-  // get ID for hits collection
-//  if (detectorCollID==-1) {
-//    G4SDManager *SDman = G4SDManager::GetSDMpointer();
-//    detectorCollID = SDman->GetCollectionID("detectorCollection");
-//  }
-  
-
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
-void LArSIMpleEventAction::EndOfEventAction(const G4Event* evt) {
-
-  fEventID = evt->GetEventID();
+void LArSIMpleEventAction::EndOfEventAction(const G4Event*)
+{
   if(fEventID%1000==0 || (fEventID%100==0 && fEventID<1000))
     std::cout << "\n---> Ending of event: " << fEventID << std::endl;
 
@@ -120,14 +111,7 @@ LArSIMpleTrackData LArSIMpleEventAction::GetTrackDataFromTrackID(const int track
 }
 
 void LArSIMpleEventAction::AddTrack(const G4Track *track){
-  int trackID = track->GetTrackID();
-  if(fTrackIDToTrackData.count(trackID) == 0)
-  {
-    fTrackIDToTrackData.insert(std::make_pair(trackID,LArSIMpleTrackData(track)));
-  }
-  else
-  {
-    std::cout << "- Track " << trackID << " already exists in the map... doing nothing" << std::endl;
-  }
+  if(fTrackIDToTrackData.count(track->GetTrackID()) == 0)
+    fTrackIDToTrackData.insert(std::make_pair(track->GetTrackID(),LArSIMpleTrackData(track)));
 }
 
