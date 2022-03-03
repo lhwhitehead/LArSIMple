@@ -9,7 +9,6 @@ class G4UIcmdWithABool;
 class G4UIcmdWith3VectorAndUnit;
 
 #include "G4UImessenger.hh"
-#include "globals.hh"
 
 class LArSIMplePrimaryGeneratorMessenger: public G4UImessenger
 {

@@ -3,7 +3,6 @@
 
 #include "G4UserSteppingAction.hh"
 #include "G4VProcess.hh"
-#include "globals.hh"
 
 class LArSIMpleEventAction;
 class G4Step;

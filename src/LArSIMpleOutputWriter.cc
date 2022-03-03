@@ -29,7 +29,7 @@ void LArSIMpleOutputWriter::WriteOutputZipAndInfoFiles(const std::string &base, 
   // Flatten the hits
   for (const LArSIMple3DEnergyDeposit &hit : hits)
   {
-    std::vector<float> flatHit = hit.GetFlatRepresentation();
+    const std::vector<float> flatHit = hit.GetFlatRepresentation();
     flatVec.insert(flatVec.end(),flatHit.begin(),flatHit.end());
   }
 

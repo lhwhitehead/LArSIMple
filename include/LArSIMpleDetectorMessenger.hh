@@ -8,7 +8,6 @@ class G4UIcmdWithABool;
 class G4UIcmdWithADoubleAndUnit;
 
 #include "G4UImessenger.hh"
-//#include "globals.hh"
 
 class LArSIMpleDetectorMessenger: public G4UImessenger
 {

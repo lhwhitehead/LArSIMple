@@ -2,7 +2,6 @@
 #define LArSIMpleRunAction_h 
 
 #include "G4UserRunAction.hh"
-#include "globals.hh"
 
 class G4Run;
 

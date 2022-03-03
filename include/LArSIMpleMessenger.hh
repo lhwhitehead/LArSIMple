@@ -9,7 +9,6 @@ class G4UIcmdWithADouble;
 class G4UIcmdWithABool;
 
 #include "G4UImessenger.hh"
-#include "globals.hh"
 
 class LArSIMpleMessenger: public G4UImessenger
 {

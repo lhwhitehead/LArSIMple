@@ -2,8 +2,6 @@
 #define LArSIMpleTrackingAction_h
 
 #include "G4UserTrackingAction.hh"
-#include "G4VProcess.hh"
-#include "globals.hh"
 
 class LArSIMpleEventAction;
 class G4Track;

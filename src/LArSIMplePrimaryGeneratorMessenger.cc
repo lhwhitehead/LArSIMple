@@ -10,10 +10,6 @@
 #include "G4UIcmdWithAnInteger.hh"
 #include "G4UIcmdWith3VectorAndUnit.hh"
 
-//LArSIMplePrimaryGeneratorMessenger::LArSIMplePrimaryGeneratorMessenger(LArSIMplePrimaryGeneratorAction* ptra, LArSIMpleSteppingVerbose* ptsv, LArSIMpleDetectorConstruction* ptgc)
-//  :fPrimaryGeneratorAction(ptra),fSteppingVerbose(ptsv),fDetectorConstruction(ptgc)
-//LArSIMplePrimaryGeneratorMessenger::LArSIMplePrimaryGeneratorMessenger(LArSIMplePrimaryGeneratorAction* ptra, LArSIMpleSteppingVerbose* ptsv)
-//  :fPrimaryGeneratorAction(ptra),fSteppingVerbose(ptsv)
 LArSIMplePrimaryGeneratorMessenger::LArSIMplePrimaryGeneratorMessenger(LArSIMplePrimaryGeneratorAction* ptrpga)
   :fPrimaryGeneratorAction(ptrpga)
 { 
@@ -53,6 +49,7 @@ LArSIMplePrimaryGeneratorMessenger::~LArSIMplePrimaryGeneratorMessenger()
   delete fNeutrinoFileType;
   delete fUseNeutrinos;
   delete fUseRandomNeutrinoVertex;
+  delete fNeutrinoVertex;
 }
 
 void LArSIMplePrimaryGeneratorMessenger::SetNewValue(G4UIcommand* command,G4String newValue)

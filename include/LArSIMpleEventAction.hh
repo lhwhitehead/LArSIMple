@@ -14,7 +14,6 @@ class LArSIMplePrimaryGeneratorAction;
 class LArSIMpleMessenger;
 class G4Track;
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 class LArSIMpleEventAction : public G4UserEventAction {
   
   public:
