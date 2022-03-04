@@ -7,26 +7,7 @@
 
 #include "G4Event.hh"
 #include "G4EventManager.hh"
-#include "G4HCofThisEvent.hh"
-#include "G4VHitsCollection.hh"
 #include "G4Track.hh"
-
-#include "G4TrajectoryContainer.hh"
-#include "G4Trajectory.hh"
-#include "G4VVisManager.hh"
-#include "G4TrajectoryContainer.hh" 
-
-#include "G4SDManager.hh"
-#include "G4UImanager.hh"
-#include "G4UnitsTable.hh"
-#include "G4ios.hh"
-#include <fstream>
-#include <iomanip>
-
-#include "TFile.h"
-#include "TTree.h"
-
-#include "zlib.h"
 
 LArSIMpleEventAction::LArSIMpleEventAction(LArSIMplePrimaryGeneratorAction* genAction) 
   : fGenAction(genAction) { 
@@ -63,6 +44,7 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event*)
   if (fEnergyDeposits.size() < 3)
   {
     std::cerr << "Need at least three 3D energy deposits - moving to next event" << std::endl;
+    this->CleanUp();
     return;
   }
 
@@ -94,8 +76,7 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event*)
   if(fWriteRootFile)
     writer.WriteRootFile(fOutputFileDirectory+fOutputFilePrefix,fEnergyDeposits,fGenAction->GetTrueNeutrinoEventPointer());
 
-  fTrackIDToTrackData.clear();
-  fEnergyDeposits.clear();
+  this->CleanUp();
 }
 
 LArSIMpleTrackData LArSIMpleEventAction::GetTrackDataFromTrackID(const int trackID) const{
@@ -113,5 +94,12 @@ LArSIMpleTrackData LArSIMpleEventAction::GetTrackDataFromTrackID(const int track
 void LArSIMpleEventAction::AddTrack(const G4Track *track){
   if(fTrackIDToTrackData.count(track->GetTrackID()) == 0)
     fTrackIDToTrackData.insert(std::make_pair(track->GetTrackID(),LArSIMpleTrackData(track)));
+}
+
+void LArSIMpleEventAction::CleanUp()
+{
+  fEnergyDeposits.clear();
+  fTrackIDToTrackData.clear();
+  fTrackIDToFoldedTrackID.clear();
 }
 

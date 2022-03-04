@@ -46,6 +46,8 @@ class LArSIMpleEventAction : public G4UserEventAction {
   void SetWireAngleW(double angle) {fWireAngleW = angle;};
 
   private:  
+  void CleanUp();
+
   LArSIMplePrimaryGeneratorAction* fGenAction;
   LArSIMpleMessenger* fMessenger;
 
