@@ -28,7 +28,6 @@
 
 #include "zlib.h"
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 LArSIMpleEventAction::LArSIMpleEventAction(LArSIMplePrimaryGeneratorAction* genAction) 
   : fGenAction(genAction) { 
   fOutputFileDirectory="";
@@ -43,14 +42,10 @@ LArSIMpleEventAction::LArSIMpleEventAction(LArSIMplePrimaryGeneratorAction* genA
   fFoldBackTruthInfo = true;
 }
 
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 LArSIMpleEventAction::~LArSIMpleEventAction() 
 {
 }
 
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 void LArSIMpleEventAction::BeginOfEventAction(const G4Event* evt)
 {
   fEventID = evt->GetEventID();
@@ -58,13 +53,18 @@ void LArSIMpleEventAction::BeginOfEventAction(const G4Event* evt)
     std::cout << "\n---> Beginning of event: " << fEventID << std::endl;
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 void LArSIMpleEventAction::EndOfEventAction(const G4Event*)
 {
   if(fEventID%1000==0 || (fEventID%100==0 && fEventID<1000))
     std::cout << "\n---> Ending of event: " << fEventID << std::endl;
 
   std::cout << "Got " << fEnergyDeposits.size() << " 3D energy deposits" << std::endl;
+
+  if (fEnergyDeposits.size() < 3)
+  {
+    std::cerr << "Need at least three 3D energy deposits - moving to next event" << std::endl;
+    return;
+  }
 
   LArSIMpleHitFeatureUtils hitUtils(fEnergyDeposits);
 
