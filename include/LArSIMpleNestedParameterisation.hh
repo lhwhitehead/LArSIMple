@@ -2,8 +2,8 @@
 #define LArSIMpleNestedParameterisation_h
 
 #include "G4VNestedParameterisation.hh"
+#include "G4Material.hh"
 
-class G4Material;
 class G4VTouchable;
 class G4VPhysicalVolume;
 
