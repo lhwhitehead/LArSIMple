@@ -2,7 +2,8 @@
 #define LArSIMpleOutputWriter_h
 
 #include "LArSIMple3DEnergyDeposit.hh"
-#include "LArSIMpleTrueNeutrinoEvent.hh"
+
+class LArSIMpleTrueNeutrinoEvent;
 
 class LArSIMpleOutputWriter
 {  

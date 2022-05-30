@@ -20,7 +20,7 @@ LArSIMpleTrackData::LArSIMpleTrackData(const G4Track *track)
   fTrackID = track->GetTrackID();
   fParentID = track->GetParentID();
   fPDG = track->GetParticleDefinition()->GetPDGEncoding();
-  if (fParentID == 0)
+  if(fParentID == 0)
     fProcess = "primary";
   else
     fProcess = track->GetCreatorProcess()->GetProcessName();
@@ -50,7 +50,6 @@ LArSIMpleTrackData::~LArSIMpleTrackData()
 
 bool LArSIMpleTrackData::CanTrackBeFolded(const G4Track *track) const
 { 
-
   // Primary particle first
   if(fParentID == 0)
   {
@@ -71,7 +70,6 @@ bool LArSIMpleTrackData::CanTrackBeFolded(const G4Track *track) const
        || fProcess.find("muMinusCapture")  != std::string::npos
        || fProcess.find("Radioactive")     != std::string::npos
        || fProcess.find("Ion")             != std::string::npos)
-//       || process.find("annihil")         != std::string::npos)
     {
       return true;
     }

@@ -25,6 +25,7 @@ LArSIMplePrimaryGeneratorAction::LArSIMplePrimaryGeneratorAction(const LArSIMple
 LArSIMplePrimaryGeneratorAction::~LArSIMplePrimaryGeneratorAction()
 {
   delete fParticleGun;
+  delete fMessenger;
 }
 
 void LArSIMplePrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
@@ -32,15 +33,15 @@ void LArSIMplePrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   const unsigned int eventNumber = static_cast<unsigned int>(anEvent->GetEventID());
 
   // Check if we are processing neutrinos
-  if (this->UseNeutrinos())
+  if(this->UseNeutrinos())
   {
-    if (fNeutrinoInputParser.GetNEvents() == 0)
+    if(fNeutrinoInputParser.GetNEvents() == 0)
     {
       // Check that the neutrino parser is ready if we request neutrino events
       fNeutrinoInputParser.ReadFile(fNeutrinoFileName, fNeutrinoFileType);
     }
 
-    if (fNeutrinoInputParser.GetNEvents() >= eventNumber)
+    if(fNeutrinoInputParser.GetNEvents() >= eventNumber)
     {
       fNeutrinoEvent = new LArSIMpleTrueNeutrinoEvent(fNeutrinoInputParser.GetEvent(eventNumber));
     }
@@ -50,9 +51,8 @@ void LArSIMplePrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
       fNeutrinoEvent = new LArSIMpleTrueNeutrinoEvent(fNeutrinoInputParser.GetEvent(fNeutrinoInputParser.GetNEvents() - 1));
     }
 
-    const std::vector<LArSIMpleTrueParticle> finalStateParticles = fNeutrinoEvent->GetFinalStateParticles();
     G4ThreeVector neutrinoVertex = fNeutrinoVertex;
-    if (fUseRandomNeutrinoVertex)
+    if(fUseRandomNeutrinoVertex)
       this->RandomiseVertex(neutrinoVertex); 
     const double vertexTime = 0.; // Hard code for now
 
@@ -61,12 +61,13 @@ void LArSIMplePrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
     G4ParticleTable *particleTable = G4ParticleTable::GetParticleTable();
 
     // We need to fire all of the final-state particles
-    for (const LArSIMpleTrueParticle &part : finalStateParticles)
+    const std::vector<LArSIMpleTrueParticle> finalStateParticles = fNeutrinoEvent->GetFinalStateParticles();
+    for(const LArSIMpleTrueParticle &part : finalStateParticles)
     {
       // Get the particle mass and hence kinetic energy
       // First, check if this particle exists in G4. If now, ignore for now
       G4ParticleDefinition *particleDef = particleTable->FindParticle(part.GetPDGCode());
-      if (particleDef == nullptr)
+      if(particleDef == nullptr)
       {
         std::cerr << "LArSimplePrimaryGeneratorAction :: unknown particle found: " << part.GetPDGCode() << std::endl; 
         continue;

@@ -13,9 +13,9 @@ class LArSIMplePrimaryGeneratorMessenger;
 class LArSIMpleDetectorConstruction;
 class LArSIMpleTrueNeutrinoEvent;
 
-class LArSIMplePrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction {
-
-public:
+class LArSIMplePrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
+{
+  public:
   LArSIMplePrimaryGeneratorAction(const LArSIMpleDetectorConstruction *detCon);
   ~LArSIMplePrimaryGeneratorAction();
   
@@ -34,7 +34,7 @@ public:
   void SetNeutrinoVertex(G4ThreeVector vec) {fNeutrinoVertex = vec;}; 
 
   const LArSIMpleTrueNeutrinoEvent* GetTrueNeutrinoEventPointer() {return fNeutrinoEvent;};
-private:
+  private:
 
   G4GeneralParticleSource* fParticleGun;
   LArSIMplePrimaryGeneratorMessenger* fMessenger;

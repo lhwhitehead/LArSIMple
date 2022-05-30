@@ -17,7 +17,6 @@ class LArSIMpleTrackingAction : public G4UserTrackingAction
   
   private:
   LArSIMpleEventAction* fEventAction;
-
 };
 
 #endif

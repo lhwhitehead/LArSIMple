@@ -26,8 +26,8 @@ std::vector<double> LArSIMpleHitFeatureUtils::GetUVW(const double y, const doubl
   return uvw;
 }
 
-void LArSIMpleHitFeatureUtils::FillNeighbourMap(){
-
+void LArSIMpleHitFeatureUtils::FillNeighbourMap()
+{
   for(unsigned int idx1 = 0; idx1 < fHits.size(); ++idx1)
   {
     double minDist = std::numeric_limits<double>::max();

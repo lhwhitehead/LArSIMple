@@ -1,25 +1,24 @@
 #ifndef LArSIMpleDetectorMessenger_h
 #define LArSIMpleDetectorMessenger_h
 
+#include "G4UImessenger.hh"
+
 class LArSIMpleDetectorConstruction;
 class G4UIdirectory;
 class G4UIcmdWithAString;
 class G4UIcmdWithABool;
 class G4UIcmdWithADoubleAndUnit;
 
-#include "G4UImessenger.hh"
-
 class LArSIMpleDetectorMessenger: public G4UImessenger
 {
- public:
+  public:
   LArSIMpleDetectorMessenger(LArSIMpleDetectorConstruction* ptgc);
   ~LArSIMpleDetectorMessenger();
   
- public:
-  void     SetNewValue(G4UIcommand* command, G4String newValues);
+  public:
+  void SetNewValue(G4UIcommand* command, G4String newValues);
   
- private:
-
+  private:
   LArSIMpleDetectorConstruction* fDetectorConstruction;
 
   G4UIdirectory*      fLArSIMpleDir;

@@ -54,21 +54,21 @@ LArSIMplePrimaryGeneratorMessenger::~LArSIMplePrimaryGeneratorMessenger()
 
 void LArSIMplePrimaryGeneratorMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
 {
-  if (command == fUseNeutrinos)
+  if(command == fUseNeutrinos)
     fPrimaryGeneratorAction->SetUseNeutrinos(fUseNeutrinos->GetNewBoolValue(newValue));
-  if (command == fNeutrinoFileName)
+  if(command == fNeutrinoFileName)
     fPrimaryGeneratorAction->SetNeutrinoFileName(newValue);
-  if (command == fNeutrinoFileType)
+  if(command == fNeutrinoFileType)
   {
     LArSIMpleNeutrinoInputType type(LArSIMpleNeutrinoInputType::kNotSet);
-    if (newValue == "0")
+    if(newValue == "0")
       type = LArSIMpleNeutrinoInputType::kNuanceTracker;
-    if (newValue == "1")
+    if(newValue == "1")
       type = LArSIMpleNeutrinoInputType::kGENIETree;
     fPrimaryGeneratorAction->SetNeutrinoFileType(type);   
   }
-  if (command == fNeutrinoVertex)
+  if(command == fNeutrinoVertex)
     fPrimaryGeneratorAction->SetNeutrinoVertex(fNeutrinoVertex->GetNew3VectorValue(newValue));
-  if (command == fUseRandomNeutrinoVertex)
+  if(command == fUseRandomNeutrinoVertex)
     fPrimaryGeneratorAction->SetUseRandomNeutrinoVertex(fUseRandomNeutrinoVertex->GetNewBoolValue(newValue));
 }

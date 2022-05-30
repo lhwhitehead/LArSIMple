@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "LArSIMpleTrueParticle.hh"
-
+#include "G4ThreeVector.hh"
 enum class LArSIMpleNeutrinoFlavourType
 {
   kNuE,
@@ -78,7 +78,6 @@ class LArSIMpleTrueNeutrinoEvent
   LArSIMpleNeutrinoInteractionType fInteractionType;
 
   std::vector<LArSIMpleTrueParticle> fFinalStateParticles;
-
 };
 
 #endif

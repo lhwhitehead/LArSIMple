@@ -20,9 +20,7 @@ LArSIMpleNestedParameterisation::~LArSIMpleNestedParameterisation()
 
 }
 
-G4Material* LArSIMpleNestedParameterisation::ComputeMaterial(G4VPhysicalVolume*,
-                                      const G4int, 
-                                      const G4VTouchable*)
+G4Material* LArSIMpleNestedParameterisation::ComputeMaterial(G4VPhysicalVolume*, const G4int, const G4VTouchable*)
 {
   // We only ever have argon so in all cases we do the same
   return fMaterials[0];
@@ -31,7 +29,7 @@ G4Material* LArSIMpleNestedParameterisation::ComputeMaterial(G4VPhysicalVolume*,
 void LArSIMpleNestedParameterisation::ComputeTransformation(const G4int repNo, G4VPhysicalVolume* currentPV) const
 {
   // Get the z coordinate for this replica, starting as -ve values
-  const float zPos = ( -fNRepZ / 2 + repNo + 0.5) * fSizeZ;  //(-fNRepZ+1+2*repNo)*fSizeZ;
+  const float zPos = ( -fNRepZ / 2 + repNo + 0.5) * fSizeZ;
   currentPV->SetTranslation(G4ThreeVector(0.,0.,zPos));
 }
 

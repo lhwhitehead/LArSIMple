@@ -28,7 +28,6 @@ class LArSIMpleTrueParticle
   G4ThreeVector fDirection;
   double fEnergy;
   int fPDGCode;
-
 };
 
 #endif

@@ -8,13 +8,12 @@ class G4Run;
 class LArSIMpleRunAction : public G4UserRunAction
 {
   public:
-    LArSIMpleRunAction();
-   ~LArSIMpleRunAction();
+  LArSIMpleRunAction();
+ ~LArSIMpleRunAction();
 
   public:
-    void BeginOfRunAction(const G4Run*);
-    void EndOfRunAction(const G4Run*);
-
+  void BeginOfRunAction(const G4Run*);
+  void EndOfRunAction(const G4Run*);
 };
 
 #endif

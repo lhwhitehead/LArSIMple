@@ -11,11 +11,8 @@
 #include "G4PVReplica.hh"
 #include "G4PVParameterised.hh"
 #include "G4UserLimits.hh"
-#include "G4GeometryManager.hh"
 
 #include <iostream>
-#include <fstream>
-#include <sstream>
 
 LArSIMpleDetectorConstruction::LArSIMpleDetectorConstruction() :
    fSolidWorld(nullptr),fLogicWorld(nullptr),fPhysiWorld(nullptr),
@@ -24,11 +21,9 @@ LArSIMpleDetectorConstruction::LArSIMpleDetectorConstruction() :
   fDetectorMessenger = new LArSIMpleDetectorMessenger(this);
 }
 
-
 LArSIMpleDetectorConstruction::~LArSIMpleDetectorConstruction()
 {}
-  
-  
+    
 G4VPhysicalVolume* LArSIMpleDetectorConstruction::Construct()
 {
   this->DefineMaterials(); 

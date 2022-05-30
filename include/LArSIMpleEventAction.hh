@@ -80,7 +80,7 @@ inline void LArSIMpleEventAction::Add3DEnergyDeposit(LArSIMple3DEnergyDeposit ed
 
 inline void LArSIMpleEventAction::AddFoldedTrackAssoc(const int trackID, const int foldedTrackID)
 {
-  if (fTrackIDToFoldedTrackID.count(trackID) == 0)
+  if(fTrackIDToFoldedTrackID.count(trackID) == 0)
     fTrackIDToFoldedTrackID.insert(std::make_pair(trackID,foldedTrackID));
 }
 

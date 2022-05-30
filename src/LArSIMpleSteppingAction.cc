@@ -18,13 +18,14 @@ LArSIMpleSteppingAction::~LArSIMpleSteppingAction()
 
 }
 
-G4VProcess* LArSIMpleSteppingAction::GetCurrentProcess() {
+G4VProcess* LArSIMpleSteppingAction::GetCurrentProcess()
+{
   return fpSteppingManager->GetfCurrentProcess();
 }
 
 void LArSIMpleSteppingAction::UserSteppingAction(const G4Step* aStep)
 {
-  if (aStep->GetPreStepPoint()->GetTouchableHandle()->GetVolume()->GetName().contains("LArBox"))
+  if(aStep->GetPreStepPoint()->GetTouchableHandle()->GetVolume()->GetName().contains("LArBox"))
   {
     LArSIMple3DEnergyDeposit energyDeposit;
 
@@ -55,7 +56,7 @@ void LArSIMpleSteppingAction::UserSteppingAction(const G4Step* aStep)
 void LArSIMpleSteppingAction::GetFoldedTrackInfo(const G4Track *track, int &foldedTrackID, int &foldedTrackPDG, int &foldedTrackProcess)
 {
   // Have we already folded this track before?
-  if (fEventAction->GetFoldedTrackAssoc(track->GetTrackID()) != -1)
+  if(fEventAction->GetFoldedTrackAssoc(track->GetTrackID()) != -1)
   {
     const LArSIMpleTrackData &trkData = fEventAction->GetTrackDataFromTrackID(track->GetTrackID());
     foldedTrackID = trkData.GetTrackID();
@@ -72,11 +73,9 @@ void LArSIMpleSteppingAction::GetFoldedTrackInfo(const G4Track *track, int &fold
     if(trkData.IsFoldable())
     {
       foldedTrackID = trkData.GetParentID();
-//      std::cout << "Folding track: " << trkData.GetPDG() << ", " << trkData.GetTrackID() << ", " << track->GetCreatorProcess()->GetProcessName() << " to parent " << trkData.GetParentID() << " with pdg " << fEventAction->GetTrackDataFromTrackID(trkData.GetParentID()).GetPDG() << std::endl;
     }
     else
     {
-//      std::cout << "Not folding track: " << trkData.GetPDG() << ", " << trkData.GetTrackID() << ", " << track->GetCreatorProcess()->GetProcessName() << " to parent " << trkData.GetParentID() << " with pdg " << fEventAction->GetTrackDataFromTrackID(foldedTrackID).GetPDG() << std::endl;
       foldedTrackID = trkData.GetTrackID();
       foldedTrackPDG = trkData.GetPDG();
       foldedTrackProcess = static_cast<int>(fEventAction->GetTrackDataFromTrackID(foldedTrackID).GetProcessCode());

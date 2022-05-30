@@ -16,7 +16,7 @@ LArSIMpleNeutrinoInputParser::~LArSIMpleNeutrinoInputParser()
 
 void LArSIMpleNeutrinoInputParser::ReadFile(const std::string &filename, const LArSIMpleNeutrinoInputType type)
 {
-  if (LArSIMpleNeutrinoInputType::kNuanceTracker == type)
+  if(LArSIMpleNeutrinoInputType::kNuanceTracker == type)
     this->ReadFromNuanceTrackerFile(filename);
   else if (LArSIMpleNeutrinoInputType::kGENIETree == type)
     this->ReadFromGENIETreeFile(filename);
@@ -32,7 +32,7 @@ void LArSIMpleNeutrinoInputParser::ReadFromNuanceTrackerFile(const std::string &
 
   // Keep going until we reach the stop command or we have the number of events that we want
   // Each iteration of this loops reads one entire event
-  while (true)
+  while(true)
   {    
     // Nuance tracker files have a very specific format for each event
     const int lineSize = 100;
@@ -40,14 +40,14 @@ void LArSIMpleNeutrinoInputParser::ReadFromNuanceTrackerFile(const std::string &
     std::vector<std::string> token = this->ReadNuanceTrackerLine(inputFile, lineSize, inBuf);
  
     // Check we haven't reached the end of the input file 
-    if (token.size() == 0 || token[0] == "stop")
+    if(token.size() == 0 || token[0] == "stop")
     {
       std::cout << "End of nuance vector file!" << std::endl;
       break;
     }
     
     // The first line in the file says "begin"
-    if (token[0] != "begin") {
+    if(token[0] != "begin") {
       std::cout << "Unexpected first line begins with " << token[0] << std::endl;
       break;
     } 
@@ -56,7 +56,6 @@ void LArSIMpleNeutrinoInputParser::ReadFromNuanceTrackerFile(const std::string &
   
     // Read the nuance line - the second token is the interaction type
     token = this->ReadNuanceTrackerLine(inputFile, lineSize, inBuf);
-    // The nuance line contains the interaction mode. Bag it and tag it
     newEvent.SetInteractionType(this->ConvertNuanceCode(std::atoi(token[1].c_str())));
   
     // Read the interaction vertex line
@@ -79,10 +78,9 @@ void LArSIMpleNeutrinoInputParser::ReadFromNuanceTrackerFile(const std::string &
     newEvent.AddTarget(pos,dir,energy,pdg);
   
     // Now read the outgoing particles
-    while (token = this->ReadNuanceTrackerLine(inputFile, lineSize, inBuf), token[0] == "track") {
-      // We are only interested in the particles
-      // that leave the nucleus, tagged by "0" 
-      if (token[6] == "0") {
+    while(token = this->ReadNuanceTrackerLine(inputFile, lineSize, inBuf), token[0] == "track") {
+      // We are only interested in the particles that leave the nucleus, tagged by "0" 
+      if(token[6] == "0") {
         pdg = std::atoi(token[1].c_str());
         energy = std::atof(token[2].c_str());
         dir = G4ThreeVector(std::atof(token[3].c_str()), std::atof(token[4].c_str()), std::atof(token[5].c_str()));
@@ -92,7 +90,7 @@ void LArSIMpleNeutrinoInputParser::ReadFromNuanceTrackerFile(const std::string &
     }
 
     // We should now have read the "end" line, but let's make sure
-    if (token[0] == "end")
+    if(token[0] == "end")
     {
       fNeutrinoEvents.push_back(newEvent);
     }
@@ -175,7 +173,7 @@ void LArSIMpleNeutrinoInputParser::ReadFromGENIETreeFile(const std::string &file
   input->SetBranchAddress("pyf",&finalPy[0]);
   input->SetBranchAddress("pzf",&finalPz[0]);
 
-  for (unsigned int e = 0; e < input->GetEntries(); ++e)
+  for(unsigned int e = 0; e < input->GetEntries(); ++e)
   {
     input->GetEntry(e);
 
@@ -196,10 +194,10 @@ void LArSIMpleNeutrinoInputParser::ReadFromGENIETreeFile(const std::string &file
     newEvent.AddFinalStateParticle(vtx,G4ThreeVector(leptonPx,leptonPy,leptonPz).unit(),leptonEnergy*1000.,leptonPdg);
 
     // Final state hadrons
-    if (nFinalStates > static_cast<int>(nAllowedFSPs))
+    if(nFinalStates > static_cast<int>(nAllowedFSPs))
       nFinalStates = static_cast<int>(nAllowedFSPs);
 
-    for (unsigned int h = 0; h < static_cast<unsigned int>(nFinalStates); ++h)
+    for(unsigned int h = 0; h < static_cast<unsigned int>(nFinalStates); ++h)
       newEvent.AddFinalStateParticle(vtx,G4ThreeVector(finalPx[h],finalPy[h],finalPz[h]).unit(),finalEnergy[h]*1000.,finalPdg[h]);
 
     fNeutrinoEvents.push_back(newEvent);

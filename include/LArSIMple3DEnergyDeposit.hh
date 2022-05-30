@@ -130,5 +130,4 @@ inline std::vector<float> LArSIMple3DEnergyDeposit::GetFlatRepresentation() cons
   return flatOutput;
 }
 
-
 #endif

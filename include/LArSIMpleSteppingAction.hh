@@ -2,11 +2,11 @@
 #define LArSIMpleSteppingAction_h
 
 #include "G4UserSteppingAction.hh"
-#include "G4VProcess.hh"
 
 class LArSIMpleEventAction;
 class G4Step;
 class G4Track;
+class G4VProcess;
 
 class LArSIMpleSteppingAction : public G4UserSteppingAction
 {
