@@ -1,6 +1,8 @@
 #ifndef LArSIMpleOutputWriter_h
 #define LArSIMpleOutputWriter_h
 
+#include <vector>
+
 #include "LArSIMple3DEnergyDeposit.hh"
 
 class LArSIMpleTrueNeutrinoEvent;
@@ -12,7 +14,8 @@ class LArSIMpleOutputWriter
   virtual ~LArSIMpleOutputWriter();
 
   void WriteOutputZipAndInfoFiles(const std::string &base, const std::vector<LArSIMple3DEnergyDeposit> &hits) const;
-  void WriteRootFile(const std::string &base, const std::vector<LArSIMple3DEnergyDeposit> &hits, const LArSIMpleTrueNeutrinoEvent *evt) const; 
+  void WriteRootFile(const std::string &base, const std::vector<LArSIMple3DEnergyDeposit> &hits, const LArSIMpleTrueNeutrinoEvent *evt,
+                     const std::vector<double> &wireAngles) const; 
 
   void SetEventNumber(unsigned int eventNumber) {fEventNumber = eventNumber;};
 
