@@ -56,6 +56,9 @@ void LArSIMplePrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
       this->RandomiseVertex(neutrinoVertex); 
     const double vertexTime = 0.; // Hard code for now
 
+    // Store the vertex positon
+    fNeutrinoEvent->SetInteractionVertex(neutrinoVertex);
+
     // Use a particle gun for the neutrinos as it is more convenient
     G4ParticleGun *particleGun = new G4ParticleGun();
     G4ParticleTable *particleTable = G4ParticleTable::GetParticleTable();
