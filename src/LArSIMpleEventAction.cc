@@ -74,8 +74,10 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event*)
     writer.WriteOutputZipAndInfoFiles(fOutputFileDirectory+fOutputFilePrefix,fEnergyDeposits);
 
   if(fWriteRootFile)
-    writer.WriteRootFile(fOutputFileDirectory+fOutputFilePrefix,fEnergyDeposits,fGenAction->GetTrueNeutrinoEventPointer());
-
+  {
+    const std::vector<double> wireAngles{fWireAngleU,fWireAngleV,fWireAngleW};
+    writer.WriteRootFile(fOutputFileDirectory+fOutputFilePrefix,fEnergyDeposits,fGenAction->GetTrueNeutrinoEventPointer(), wireAngles);
+  }
   this->CleanUp();
 }
 

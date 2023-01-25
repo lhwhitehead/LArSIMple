@@ -65,6 +65,8 @@ void LArSIMplePrimaryGeneratorMessenger::SetNewValue(G4UIcommand* command,G4Stri
       type = LArSIMpleNeutrinoInputType::kNuanceTracker;
     if(newValue == "1")
       type = LArSIMpleNeutrinoInputType::kGENIETree;
+    if(newValue == "2")
+      type = LArSIMpleNeutrinoInputType::kGiBUUText;
     fPrimaryGeneratorAction->SetNeutrinoFileType(type);   
   }
   if(command == fNeutrinoVertex)

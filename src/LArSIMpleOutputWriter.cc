@@ -85,10 +85,11 @@ void LArSIMpleOutputWriter::WriteOutputZipAndInfoFiles(const std::string &base, 
 }
 
 // This is very specific and hardcoded
-void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::vector<LArSIMple3DEnergyDeposit> &hits, const LArSIMpleTrueNeutrinoEvent *evt) const
+void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::vector<LArSIMple3DEnergyDeposit> &hits, const LArSIMpleTrueNeutrinoEvent *evt,
+                                          const std::vector<double> &wireAngles) const
 {
   std::stringstream rootFileName;
-  rootFileName << base << "_test_event_" << fEventNumber << ".root";
+  rootFileName << base << "_event_" << fEventNumber << ".root";
   TTree *outputTree = new TTree("hits","");
   outputTree->SetDirectory(0);
 
@@ -116,6 +117,15 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
     nFinalStates = evt->GetNumberOfFinalStateParticles();
     interactionType = static_cast<int>(evt->GetInteractionType());
   }
+
+  // Wire angles
+  float wireAngleU = wireAngles.at(0);
+  float wireAngleV = wireAngles.at(1);
+  float wireAngleW = wireAngles.at(2);
+
+  outputTree->Branch("wireAngleU",&wireAngleU,"wireAngleU/F");
+  outputTree->Branch("wireAngleV",&wireAngleV,"wireAngleV/F");
+  outputTree->Branch("wireAngleW",&wireAngleW,"wireAngleW/F");
   
   // Hit level information
   std::vector<float> posX, posY, posZ;

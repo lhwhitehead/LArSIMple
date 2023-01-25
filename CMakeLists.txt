@@ -29,6 +29,9 @@ include(${Geant4_USE_FILE})
 # Find ROOT (required package)
 #
 find_package(ROOT REQUIRED)
+message(${ROOT_LIBRARIES})
+find_library(ROOT_LIB_EG EG)
+message(${ROOT_LIB_EG})
 
 #----------------------------------------------------------------------------
 # Locate sources and headers for this project
@@ -44,7 +47,7 @@ file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
 # Add the executable, and link it to the Geant4, ROOT and zlib libraries
 #
 add_executable(LArSIMple LArSIMple.cc ${sources} ${headers})
-target_link_libraries(LArSIMple ${Geant4_LIBRARIES} ${ROOT_LIBRARIES} z)
+target_link_libraries(LArSIMple ${Geant4_LIBRARIES} ${ROOT_LIBRARIES} ${ROOT_LIB_EG} z)
 target_compile_options(LArSIMple PRIVATE -Wno-misleading-indentation)
 
 #----------------------------------------------------------------------------

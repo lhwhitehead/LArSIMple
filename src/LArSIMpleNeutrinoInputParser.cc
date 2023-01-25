@@ -1,8 +1,9 @@
 #include <fstream>
 
 #include "LArSIMpleNeutrinoInputParser.hh"
-
+#include "TMath.h"
 #include "TChain.h"
+#include "TDatabasePDG.h"
 
 LArSIMpleNeutrinoInputParser::LArSIMpleNeutrinoInputParser()
 {
@@ -14,14 +15,21 @@ LArSIMpleNeutrinoInputParser::~LArSIMpleNeutrinoInputParser()
 
 }
 
-void LArSIMpleNeutrinoInputParser::ReadFile(const std::string &filename, const LArSIMpleNeutrinoInputType type)
+void LArSIMpleNeutrinoInputParser::ReadFile(const std::string &filename, const LArSIMpleNeutrinoInputType inputType)
 {
-  if(LArSIMpleNeutrinoInputType::kNuanceTracker == type)
+  if(LArSIMpleNeutrinoInputType::kNuanceTracker == inputType)
     this->ReadFromNuanceTrackerFile(filename);
-  else if (LArSIMpleNeutrinoInputType::kGENIETree == type)
+  else if (LArSIMpleNeutrinoInputType::kGENIETree == inputType)
     this->ReadFromGENIETreeFile(filename);
+  else if (LArSIMpleNeutrinoInputType::kGiBUUText == inputType)
+    this->ReadFromGiBUUTextFile(filename);
   else
-    std::cerr << "Error: neutrino file format not set" << std::endl;
+  {
+    std::cerr << "Error: neutrino file format not set - " << static_cast<int>(inputType) << std::endl;
+    return;
+  }
+  std::cout << "Read " << fNeutrinoEvents.size() << " from file " << filename << std::endl;
+  
 }
 
 void LArSIMpleNeutrinoInputParser::ReadFromNuanceTrackerFile(const std::string &filename)
@@ -206,5 +214,142 @@ void LArSIMpleNeutrinoInputParser::ReadFromGENIETreeFile(const std::string &file
   input->ResetBranchAddresses(); 
   delete input;
   input = nullptr;
+}
+
+void LArSIMpleNeutrinoInputParser::ReadFromGiBUUTextFile(const std::string &filename)
+{
+  TDatabasePDG *database = new TDatabasePDG();
+
+  std::cout << "Reading GiBUU neutrino events from " << filename << std::endl;
+  std::ifstream inputFile(filename.c_str());
+
+  const int lineSize = 250;
+  char inBuf[lineSize];
+  std::vector<std::string> token = this->ReadGiBUUTextLine(inputFile, lineSize, inBuf);
+  std::cout << "Got " << token.size() << " tokens:" << std::endl;
+  for(const std::string &t : token)
+    std::cout << " - " << t << std::endl;
+ 
+  // Check we haven't reached the end of the input file 
+  if(token.size() == 0)
+  {
+    std::cout << "Error in GiBUU text file!" << std::endl;
+    return;
+  }
+    
+  // The first line in the file contains a comment starting with #
+  if(token[0] != "#") {
+    std::cout << "Unexpected first line begins with " << token[0] << std::endl;
+    return;
+  } 
+
+  // We want to keep reading until we reach the end of the file. There is no delimiter between events, so we have to keep track
+  // of the event number (token two)
+  int currentEvent{1};
+
+  // Event loop
+  while(true)
+  { 
+//    std::cout << "Processing new event: " << fNeutrinoEvents.size() << std::endl; 
+    // Create a new neutrino event ready for filling
+    LArSIMpleTrueNeutrinoEvent newEvent;
+    int lineNumber = 1;
+    bool finishedProcessing{false};
+
+    // Particle loop
+    // Line format: run   event   type   charge   weight   x   y   z   E   px   py   pz   history   interactionType   E_nu
+    while(true)
+    {
+      token = this->ReadGiBUUTextLine(inputFile, lineSize, inBuf);
+      // If this line is empty then we need to stop processing
+      if(token.size() == 0)
+      {
+        if(lineNumber == 1)
+        {
+          finishedProcessing = true;
+          break;
+        }
+        else
+        {
+//          std::cout << "Finished reading event " << currentEvent << " with " << lineNumber-1 << " particles" << std::endl;
+          fNeutrinoEvents.emplace_back(newEvent);
+          break;
+        }
+      }
+
+//      std::cout << token.at(1) << ", " << token.at(2) << ", " << token.at(8) << std::endl;
+
+      // If the event changes then we need to store the event and move on
+      if(std::atoi(token.at(1).c_str()) != currentEvent)
+      {
+//        std::cout << "Finished reading event " << currentEvent << " with " << lineNumber-1 << " particles" << std::endl;
+        fNeutrinoEvents.emplace_back(newEvent);
+        ++currentEvent;
+        lineNumber = 1;
+        newEvent = LArSIMpleTrueNeutrinoEvent();
+      }
+
+      // First line is the leading lepton
+      if(lineNumber == 1)
+      {
+        // Interaction first
+        const int leptonPdg = GetPDGCodeFromGiBUU(std::atoi(token.at(2).c_str()), std::atoi(token.at(3).c_str()));
+        newEvent.SetInteractionType(this->ConvertGiBUUCode(std::atoi(token.at(13).c_str()), leptonPdg % 2));
+
+        const G4ThreeVector vtx(std::atof(token.at(5).c_str()),std::atof(token.at(6).c_str()),std::atof(token.at(7).c_str()));
+        newEvent.SetInteractionVertex(vtx);
+
+        // Neutrino - we don't have a line for this, but make a dummy momentum vector using E_nu
+        const G4ThreeVector nuMom(0.0, 0.0, std::atof(token.at(14).c_str())*1000.);
+        // GiBUU doesn't give us the neutrino flavour, but we can get it using the leading lepton
+        const int neutrinoPdg = leptonPdg % 2 == 0 ? leptonPdg : (leptonPdg > 0 ? leptonPdg + 1 : leptonPdg - 1);
+        newEvent.AddNeutrino(vtx,nuMom.unit(),std::atof(token.at(14).c_str())*1000.,neutrinoPdg);
+
+        // Now for the leading lepton
+        const G4ThreeVector leptonMom(std::atof(token.at(9).c_str()),std::atof(token.at(10).c_str()),std::atof(token.at(11).c_str()));
+        newEvent.AddFinalStateParticle(vtx,leptonMom.unit(),std::atof(token.at(8).c_str())*1000.,leptonPdg);
+
+//        std::cout << "Interaction type = " << static_cast<int>(newEvent.GetInteractionType()) << std::endl;
+//        std::cout << "Neutrino momentum = " << nuMom << std::endl;
+//        std::cout << "Lepton momentum =  " << leptonMom << std::endl;
+      }
+      // Second line is the target nucleon
+      else if (lineNumber == 2)
+      {
+        const G4ThreeVector vtx(newEvent.GetInteractionVertex());
+        const int targetPdg = GetPDGCodeFromGiBUU(std::atoi(token.at(2).c_str()), std::atoi(token.at(3).c_str()));
+        const G4ThreeVector targetMom(std::atof(token.at(9).c_str()), std::atof(token.at(10).c_str()), std::atof(token.at(11).c_str()));
+
+        newEvent.AddTarget(vtx,targetMom.unit(),std::atof(token.at(8).c_str())*1000.,targetPdg);
+//        std::cout << "Target momentum = " << targetMom << std::endl;
+      }
+      // All other lines are just final state particles that we want to keep
+      else
+      {
+        const G4ThreeVector vtx(newEvent.GetInteractionVertex());
+        const int fspPdg = GetPDGCodeFromGiBUU(std::atoi(token.at(2).c_str()), std::atoi(token.at(3).c_str()));
+        const G4ThreeVector fspMom(std::atof(token.at(9).c_str()), std::atof(token.at(10).c_str()), std::atof(token.at(11).c_str()));
+
+        // Occasionally find neutrons with energy slightly less that their rest mass? Try fixing it
+        float energy = std::atof(token.at(8).c_str());
+        if (fspPdg == 2112)
+        {
+          const float mass = database->GetParticle(fspPdg)->Mass();
+          if(energy < mass)
+          {
+            std::cout << "Energy less than rest mass... calculating using momentum vector" << std::endl;
+            energy = TMath::Sqrt(fspMom.mag2() + mass*mass);
+          }
+        }
+        newEvent.AddFinalStateParticle(vtx,fspMom.unit(),energy*1000.,fspPdg);
+//        std::cout << "Final state particle momentum = " << fspMom << std::endl;
+      }
+      ++lineNumber;
+    } // End particle loop
+
+    if(finishedProcessing)
+      break;
+  } // End event loop
+
 }
 

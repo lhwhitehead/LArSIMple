@@ -42,7 +42,9 @@ void LArSIMpleSteppingAction::UserSteppingAction(const G4Step* aStep)
     
     if(fEventAction->FoldBackTruthInfo())
     {
+//      std::cout << "Before folding: " << foldedTrackID << " " << foldedTrackPDG << " " << foldedTrackProcess << " :: ";
       this->GetFoldedTrackInfo(track,foldedTrackID,foldedTrackPDG,foldedTrackProcess);
+//      std::cout << "after folding: " << foldedTrackID << " " << foldedTrackPDG << " " << foldedTrackProcess << std::endl;
     }
     energyDeposit.SetParticleInfo(foldedTrackPDG,foldedTrackID,foldedTrackProcess);
 
@@ -56,9 +58,10 @@ void LArSIMpleSteppingAction::UserSteppingAction(const G4Step* aStep)
 void LArSIMpleSteppingAction::GetFoldedTrackInfo(const G4Track *track, int &foldedTrackID, int &foldedTrackPDG, int &foldedTrackProcess)
 {
   // Have we already folded this track before?
-  if(fEventAction->GetFoldedTrackAssoc(track->GetTrackID()) != -1)
+  const int foldedAssoc = fEventAction->GetFoldedTrackAssoc(track->GetTrackID());
+  if(foldedAssoc != -1)
   {
-    const LArSIMpleTrackData &trkData = fEventAction->GetTrackDataFromTrackID(track->GetTrackID());
+    const LArSIMpleTrackData &trkData = fEventAction->GetTrackDataFromTrackID(foldedAssoc);
     foldedTrackID = trkData.GetTrackID();
     foldedTrackPDG = trkData.GetPDG();
     foldedTrackProcess = static_cast<int>(trkData.GetProcessCode());

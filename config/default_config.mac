@@ -19,7 +19,7 @@
 /LArSIMple/WriteRootFile true
 
 # Truth
-/LArSIMple/FoldBackTruthInfo false
+/LArSIMple/FoldBackTruthInfo true
 
 # Physics
 /LArSIMple/HitThreshold 0.1 MeV
