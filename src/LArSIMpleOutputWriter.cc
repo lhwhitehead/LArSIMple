@@ -101,10 +101,11 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
   eventNumber = fEventNumber;
 
   // Specific for neutrino events
-  int neutrinoPdg;
-  float neutrinoEnergy;
-  int nFinalStates;
-  int interactionType;
+  int neutrinoPdg{0};
+  float neutrinoEnergy{0.f};
+  int nFinalStates{0};
+  int interactionType{0};
+  float interactionVtxX{0.f}, interactionVtxY{0.f}, interactionVtxZ{0.f};
   if (nullptr != evt)
   {
     outputTree->Branch("neutrinoPdg",&neutrinoPdg,"neutrinoPdg/I");
@@ -112,10 +113,19 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
     outputTree->Branch("nFinalStates",&nFinalStates,"nFinalStates/I");
     outputTree->Branch("interactionType",&interactionType,"interactionType/I");
 
+    outputTree->Branch("interactionVtxX",&interactionVtxX,"interactionVtxX/F");
+    outputTree->Branch("interactionVtxY",&interactionVtxY,"interactionVtxY/F");
+    outputTree->Branch("interactionVtxZ",&interactionVtxZ,"interactionVtxZ/F");
+
     neutrinoPdg = evt->GetNeutrinoPDGCode();
     neutrinoEnergy = evt->GetNeutrinoEnergy();
     nFinalStates = evt->GetNumberOfFinalStateParticles();
     interactionType = static_cast<int>(evt->GetInteractionType());
+
+    const G4ThreeVector interactionVtx = evt->GetInteractionVertex();
+    interactionVtxX = interactionVtx.x();
+    interactionVtxY = interactionVtx.y();
+    interactionVtxZ = interactionVtx.z();
   }
 
   // Wire angles
