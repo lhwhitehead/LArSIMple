@@ -69,13 +69,15 @@ bool LArSIMpleTrackData::CanTrackBeFolded(const G4Track *track) const
        || fProcess.find("Photo")           != std::string::npos
        || fProcess.find("muMinusCapture")  != std::string::npos
        || fProcess.find("Radioactive")     != std::string::npos
-       || fProcess.find("Ion")             != std::string::npos)
+       || fProcess.find("eIon")             != std::string::npos//)
+       || fProcess.find("annih")             != std::string::npos)
     {
       return true;
     }
     // Otherwise these are particles that we want to keep
     else
     {
+//      std::cout << "Unfoldable process = " << fProcess << std::endl;
       return false;
     }
   }
