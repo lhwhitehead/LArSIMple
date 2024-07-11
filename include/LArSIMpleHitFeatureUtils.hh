@@ -12,8 +12,6 @@ public:
     LArSIMpleHitFeatureUtils(const std::vector<LArSIMple3DEnergyDeposit> &hits);
     ~LArSIMpleHitFeatureUtils();
 
-    std::vector<double> GetUVW(const double y, const double z, const double wireAngleU, const double wireAngleV, const double wireAngleW);
-
     std::map<unsigned int, unsigned int> GetNearestNeighbourMap() const
     {
         return fNearestNeighbourMap;

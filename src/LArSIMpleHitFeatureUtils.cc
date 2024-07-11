@@ -16,16 +16,6 @@ LArSIMpleHitFeatureUtils::~LArSIMpleHitFeatureUtils()
 {
 }
 
-std::vector<double> LArSIMpleHitFeatureUtils::GetUVW(const double y, const double z, const double wireAngleU, const double wireAngleV, const double wireAngleW)
-{
-    const double degreesToRadians{3.14159265358979323846 / 180.};
-    std::vector<double> uvw;
-    uvw.emplace_back(z * std::cos(wireAngleU * degreesToRadians) - y * std::sin(wireAngleU * degreesToRadians));
-    uvw.emplace_back(z * std::cos(wireAngleV * degreesToRadians) - y * std::sin(wireAngleV * degreesToRadians));
-    uvw.emplace_back(z * std::cos(wireAngleW * degreesToRadians) - y * std::sin(wireAngleW * degreesToRadians));
-    return uvw;
-}
-
 void LArSIMpleHitFeatureUtils::FillNeighbourMap()
 {
     for (unsigned int idx1 = 0; idx1 < fHits.size(); ++idx1)

@@ -61,7 +61,7 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event *)
         LArSIMple3DEnergyDeposit &eDep = fEnergyDeposits.at(hitIdx);
         const G4ThreeVector &pos = eDep.GetPosition();
         // Get the UVW projections
-        eDep.SetUVW(hitUtils.GetUVW(pos.getY(), pos.getZ(), fWireAngleU, fWireAngleV, fWireAngleW));
+        eDep.CalculateUVW(fWireAngleU, fWireAngleV, fWireAngleW);
         eDep.AddFeature(hitUtils.GetAngleToNeighbours(hitIdx));
         eDep.AddFeature(hitUtils.GetDotProductToNeighbours(hitIdx));
         for (unsigned int radius = 0; radius < radii.size(); ++radius)

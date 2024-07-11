@@ -40,7 +40,7 @@ public:
 
     void SetPositionAndTime(const double x, const double y, const double z, const double time);
     void SetPositionAndTime(const G4ThreeVector &pos, const double time);
-    void SetUVW(const std::vector<double> &uvw);
+    void CalculateUVW(const double wireAngleU, const double wireAngleV, const double wireAngleW);
     void SetEnergy(const double energy);
     void SetDeDx(const double dedx);
     void SetParticleInfo(const int pdg, const int trackID, const int processCode);

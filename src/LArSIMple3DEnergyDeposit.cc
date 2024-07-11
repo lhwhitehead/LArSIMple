@@ -30,13 +30,12 @@ LArSIMple3DEnergyDeposit::~LArSIMple3DEnergyDeposit()
 {
 }
 
-void LArSIMple3DEnergyDeposit::SetUVW(const std::vector<double> &uvw)
+void LArSIMple3DEnergyDeposit::CalculateUVW(const double wireAngleU, const double wireAngleV, const double wireAngleW)
 {
-    if (uvw.size() != 3)
-        std::cerr << "LArSIMple3DEnergyDeposit::SetUVW needs a vector with three elements" << std::endl;
-    fPosU = uvw.at(0);
-    fPosV = uvw.at(1);
-    fPosW = uvw.at(2);
+    const double degreesToRadians{3.14159265358979323846 / 180.};
+    fPosU = fPosZ * std::cos(wireAngleU * degreesToRadians) - fPosY * std::sin(wireAngleU * degreesToRadians);
+    fPosV = fPosZ * std::cos(wireAngleV * degreesToRadians) - fPosY * std::sin(wireAngleV * degreesToRadians);
+    fPosW = fPosZ * std::cos(wireAngleW * degreesToRadians) - fPosY * std::sin(wireAngleW * degreesToRadians);
 }
 
 void LArSIMple3DEnergyDeposit::PrintSummary() const
