@@ -30,7 +30,7 @@ LArSIMplePrimaryGeneratorAction::~LArSIMplePrimaryGeneratorAction()
 
 void LArSIMplePrimaryGeneratorAction::GeneratePrimaries(G4Event *anEvent)
 {
-    const unsigned int eventNumber = static_cast<unsigned int>(anEvent->GetEventID());
+    const unsigned int eventNumber{static_cast<unsigned int>(anEvent->GetEventID())};
 
     // Check if we are processing neutrinos
     if (this->UseNeutrinos())
@@ -54,7 +54,7 @@ void LArSIMplePrimaryGeneratorAction::GeneratePrimaries(G4Event *anEvent)
         G4ThreeVector neutrinoVertex = fNeutrinoVertex;
         if (fUseRandomNeutrinoVertex)
             this->RandomiseVertex(neutrinoVertex);
-        const double vertexTime = 0.; // Hard code for now
+        const double vertexTime{0.}; // Hard code for now
 
         // Store the vertex positon
         fNeutrinoEvent->SetInteractionVertex(neutrinoVertex);
@@ -76,8 +76,8 @@ void LArSIMplePrimaryGeneratorAction::GeneratePrimaries(G4Event *anEvent)
                 continue;
             }
             particleGun->SetParticleDefinition(particleDef);
-            const G4double mass = particleGun->GetParticleDefinition()->GetPDGMass();
-            const G4double ekin = part.GetEnergy() - mass;
+            const G4double mass{particleGun->GetParticleDefinition()->GetPDGMass()};
+            const G4double ekin{part.GetEnergy() - mass};
 
             particleGun->SetParticleEnergy(ekin);
             particleGun->SetParticlePosition(neutrinoVertex);
@@ -96,13 +96,13 @@ void LArSIMplePrimaryGeneratorAction::GeneratePrimaries(G4Event *anEvent)
 void LArSIMplePrimaryGeneratorAction::RandomiseVertex(G4ThreeVector &vtx) const
 {
     // Choose a random position within the LAr volume (at least 1m from the edges)
-    const float buffer(1000.f);
-    const float minX = fDetectorConstruction->GetLArSizeMinX() + buffer;
-    const float maxX = fDetectorConstruction->GetLArSizeMaxX() - buffer;
-    const float minY = fDetectorConstruction->GetLArSizeMinY() + buffer;
-    const float maxY = fDetectorConstruction->GetLArSizeMaxY() - buffer;
-    const float minZ = fDetectorConstruction->GetLArSizeMinZ() + buffer;
-    const float maxZ = fDetectorConstruction->GetLArSizeMaxZ() - buffer;
+    const float buffer{1000.f};
+    const float minX{fDetectorConstruction->GetLArSizeMinX() + buffer};
+    const float maxX{fDetectorConstruction->GetLArSizeMaxX() - buffer};
+    const float minY{fDetectorConstruction->GetLArSizeMinY() + buffer};
+    const float maxY{fDetectorConstruction->GetLArSizeMaxY() - buffer};
+    const float minZ{fDetectorConstruction->GetLArSizeMinZ() + buffer};
+    const float maxZ{fDetectorConstruction->GetLArSizeMaxZ() - buffer};
 
     vtx.setX(minX + G4UniformRand() * (maxX - minX));
     vtx.setY(minY + G4UniformRand() * (maxY - minY));

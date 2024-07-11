@@ -63,6 +63,8 @@ public:
     };
 
 private:
+    void RandomiseVertex(G4ThreeVector &vtx) const;
+
     G4GeneralParticleSource *fParticleGun;
     LArSIMplePrimaryGeneratorMessenger *fMessenger;
     LArSIMpleNeutrinoInputParser fNeutrinoInputParser;
@@ -78,8 +80,6 @@ private:
     G4ThreeVector fNeutrinoVertex;
 
     const LArSIMpleDetectorConstruction *fDetectorConstruction;
-
-    void RandomiseVertex(G4ThreeVector &vtx) const;
 };
 
 #endif

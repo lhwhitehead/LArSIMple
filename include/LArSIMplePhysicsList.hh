@@ -10,7 +10,6 @@ public:
     LArSIMplePhysicsList();
     virtual ~LArSIMplePhysicsList();
 
-public:
     virtual void SetCuts();
 
 private:

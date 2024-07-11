@@ -22,26 +22,29 @@ public:
     ~LArSIMpleNeutrinoInputParser();
 
     void ReadFile(const std::string &filename, const LArSIMpleNeutrinoInputType type);
-    void ReadFromNuanceTrackerFile(const std::string &filename);
-    void ReadFromGENIETreeFile(const std::string &filename);
-    void ReadFromGiBUUTextFile(const std::string &filename);
 
-    unsigned int GetNEvents() const
-    {
-        return fNeutrinoEvents.size();
-    };
+    unsigned int GetNEvents() const;
 
     LArSIMpleTrueNeutrinoEvent GetEvent(unsigned int e);
 
 private:
+    void ReadFromNuanceTrackerFile(const std::string &filename);
+    void ReadFromGENIETreeFile(const std::string &filename);
+    void ReadFromGiBUUTextFile(const std::string &filename);
     LArSIMpleNeutrinoInteractionType ConvertNuanceCode(int code);
     LArSIMpleNeutrinoInteractionType ConvertGiBUUCode(int code, bool iscc);
     std::vector<std::string> ReadNuanceTrackerLine(std::ifstream &inFile, int lineSize, char *inBuf);
     std::vector<std::string> ReadGiBUUTextLine(std::ifstream &inFile, int lineSize, char *inBuf);
     std::vector<std::string> TokeniseString(std::string separators, std::string input);
     int GetPDGCodeFromGiBUU(const int pid, const int charge);
+
     std::vector<LArSIMpleTrueNeutrinoEvent> fNeutrinoEvents;
 };
+
+inline unsigned int LArSIMpleNeutrinoInputParser::GetNEvents() const
+{
+    return fNeutrinoEvents.size();
+}
 
 inline LArSIMpleNeutrinoInteractionType LArSIMpleNeutrinoInputParser::ConvertNuanceCode(int code)
 {

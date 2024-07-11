@@ -35,19 +35,15 @@ void LArSIMpleSteppingAction::UserSteppingAction(const G4Step *aStep)
         energyDeposit.SetPositionAndTime((stepPoint->GetPosition() / CLHEP::cm), stepPoint->GetGlobalTime());
 
         const G4Track *track = aStep->GetTrack();
-        int foldedTrackID = track->GetTrackID();
-        int foldedTrackPDG = track->GetParticleDefinition()->GetPDGEncoding();
-        int foldedTrackProcess = static_cast<int>(fEventAction->GetTrackDataFromTrackID(track->GetTrackID()).GetProcessCode());
+        int foldedTrackID{track->GetTrackID()};
+        int foldedTrackPDG{track->GetParticleDefinition()->GetPDGEncoding()};
+        int foldedTrackProcess{static_cast<int>(fEventAction->GetTrackDataFromTrackID(track->GetTrackID()).GetProcessCode())};
 
         if (fEventAction->FoldBackTruthInfo())
-        {
-            //      std::cout << "Before folding: " << foldedTrackID << " " << foldedTrackPDG << " " << foldedTrackProcess << " :: ";
             this->GetFoldedTrackInfo(track, foldedTrackID, foldedTrackPDG, foldedTrackProcess);
-            //      std::cout << "after folding: " << foldedTrackID << " " << foldedTrackPDG << " " << foldedTrackProcess << std::endl;
-        }
         energyDeposit.SetParticleInfo(foldedTrackPDG, foldedTrackID, foldedTrackProcess);
 
-        const double energy = aStep->GetTotalEnergyDeposit() - aStep->GetNonIonizingEnergyDeposit();
+        const double energy{aStep->GetTotalEnergyDeposit() - aStep->GetNonIonizingEnergyDeposit()};
         energyDeposit.SetEnergy(energy);
         energyDeposit.SetDeDx(energy / (aStep->GetDeltaPosition().mag() / CLHEP::cm));
         fEventAction->Add3DEnergyDeposit(energyDeposit);
@@ -57,7 +53,7 @@ void LArSIMpleSteppingAction::UserSteppingAction(const G4Step *aStep)
 void LArSIMpleSteppingAction::GetFoldedTrackInfo(const G4Track *track, int &foldedTrackID, int &foldedTrackPDG, int &foldedTrackProcess)
 {
     // Have we already folded this track before?
-    const int foldedAssoc = fEventAction->GetFoldedTrackAssoc(track->GetTrackID());
+    const int foldedAssoc{fEventAction->GetFoldedTrackAssoc(track->GetTrackID())};
     if (foldedAssoc != -1)
     {
         const LArSIMpleTrackData &trkData = fEventAction->GetTrackDataFromTrackID(foldedAssoc);
@@ -68,7 +64,7 @@ void LArSIMpleSteppingAction::GetFoldedTrackInfo(const G4Track *track, int &fold
     }
 
     // We need to iterate through the parent links until we find a track that isn't foldable
-    bool keepFolding = fEventAction->GetTrackDataFromTrackID(track->GetTrackID()).IsFoldable();
+    bool keepFolding{fEventAction->GetTrackDataFromTrackID(track->GetTrackID()).IsFoldable()};
     while (keepFolding)
     {
         const LArSIMpleTrackData trkData = fEventAction->GetTrackDataFromTrackID(foldedTrackID);

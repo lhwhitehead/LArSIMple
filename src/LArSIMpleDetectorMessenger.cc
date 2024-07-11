@@ -8,8 +8,8 @@
 #include "G4UIdirectory.hh"
 #include "G4UIparameter.hh"
 
-LArSIMpleDetectorMessenger::LArSIMpleDetectorMessenger(LArSIMpleDetectorConstruction *ptgc) :
-    fDetectorConstruction(ptgc)
+LArSIMpleDetectorMessenger::LArSIMpleDetectorMessenger(LArSIMpleDetectorConstruction *pDetector) :
+    fDetectorConstruction(pDetector)
 {
     fLArSIMpleDir = new G4UIdirectory("/LArSIMple/");
     fLArSIMpleDir->SetGuidance("Commands to select I/O options");
@@ -63,9 +63,13 @@ LArSIMpleDetectorMessenger::LArSIMpleDetectorMessenger(LArSIMpleDetectorConstruc
 
 LArSIMpleDetectorMessenger::~LArSIMpleDetectorMessenger()
 {
+    delete fWorldWidth;
+    delete fWorldHeight;
+    delete fWorldLength;
     delete fDetectorWidth;
     delete fDetectorHeight;
     delete fDetectorLength;
+    delete fVoxeliseLAr;
     delete fCheckOverlaps;
     delete fLArSIMpleDir;
 }

@@ -49,32 +49,6 @@ public:
         fWorldSizeZ = length;
     };
 
-    float GetWorldSizeMinX() const
-    {
-        return -1.f * fWorldSizeX / 2.f;
-    };
-    float GetWorldSizeMinY() const
-    {
-        return -1.f * fWorldSizeY / 2.f;
-    };
-    float GetWorldSizeMinZ() const
-    {
-        return -1.f * fWorldSizeZ / 2.f;
-    };
-
-    float GetWorldSizeMaxX() const
-    {
-        return fWorldSizeX / 2.f;
-    };
-    float GetWorldSizeMaxY() const
-    {
-        return fWorldSizeY / 2.f;
-    };
-    float GetWorldSizeMaxZ() const
-    {
-        return fWorldSizeZ / 2.f;
-    };
-
     float GetLArWidth() const
     {
         return fLArSizeX;
@@ -148,6 +122,11 @@ public:
     void PrintDetectorSummary() const;
 
 private:
+    void DefineMaterials();
+    void ConstructWorld();
+    void ConstructLArBox();
+    void ConstructLArVoxels();
+
     float fWorldSizeX;
     float fWorldSizeY;
     float fWorldSizeZ;
@@ -171,12 +150,6 @@ private:
     G4VPhysicalVolume *fPhysiLArBox;
 
     LArSIMpleDetectorMessenger *fDetectorMessenger; //pointer to the Messenger
-
-private:
-    void DefineMaterials();
-    void ConstructWorld();
-    void ConstructLArBox();
-    void ConstructLArVoxels();
 };
 
 #endif

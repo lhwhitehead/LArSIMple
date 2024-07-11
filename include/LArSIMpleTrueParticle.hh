@@ -27,32 +27,6 @@ public:
         return fPDGCode;
     };
 
-    double GetX() const
-    {
-        return fPosition.x();
-    };
-    double GetY() const
-    {
-        return fPosition.y();
-    };
-    double GetZ() const
-    {
-        return fPosition.z();
-    };
-
-    double GetDirX() const
-    {
-        return fDirection.x();
-    };
-    double GetDirY() const
-    {
-        return fDirection.y();
-    };
-    double GetDirZ() const
-    {
-        return fDirection.z();
-    };
-
 private:
     G4ThreeVector fPosition;
     G4ThreeVector fDirection;

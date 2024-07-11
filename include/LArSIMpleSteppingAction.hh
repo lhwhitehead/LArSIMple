@@ -18,9 +18,9 @@ public:
     G4VProcess *GetCurrentProcess();
 
 private:
-    LArSIMpleEventAction *fEventAction;
-
     void GetFoldedTrackInfo(const G4Track *, int &foldedTrackID, int &foldedTrackPDG, int &foldedTrackProcess);
+
+    LArSIMpleEventAction *fEventAction;
 };
 
 #endif

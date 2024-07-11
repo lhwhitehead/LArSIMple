@@ -11,7 +11,6 @@ public:
     LArSIMpleRunAction();
     ~LArSIMpleRunAction();
 
-public:
     void BeginOfRunAction(const G4Run *);
     void EndOfRunAction(const G4Run *);
 };

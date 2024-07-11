@@ -12,10 +12,9 @@ class G4UIcmdWithADoubleAndUnit;
 class LArSIMpleDetectorMessenger : public G4UImessenger
 {
 public:
-    LArSIMpleDetectorMessenger(LArSIMpleDetectorConstruction *ptgc);
+    LArSIMpleDetectorMessenger(LArSIMpleDetectorConstruction *pDetector);
     ~LArSIMpleDetectorMessenger();
 
-public:
     void SetNewValue(G4UIcommand *command, G4String newValues);
 
 private:

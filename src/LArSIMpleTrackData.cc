@@ -5,14 +5,14 @@
 #include "G4Track.hh"
 #include "G4VProcess.hh"
 
-LArSIMpleTrackData::LArSIMpleTrackData()
+LArSIMpleTrackData::LArSIMpleTrackData() :
+    fTrackID(0),
+    fParentID(0),
+    fPDG(0),
+    fProcess(""),
+    fProcessCode(LArSIMpleProcessTable::MC_PROC_UNKNOWN),
+    fIsFoldable(false)
 {
-    fTrackID = 0;
-    fParentID = 0;
-    fPDG = 0;
-    fProcess = "";
-    fProcessCode = LArSIMpleProcessTable::MC_PROC_UNKNOWN;
-    fIsFoldable = false;
 }
 
 LArSIMpleTrackData::LArSIMpleTrackData(const G4Track *track)

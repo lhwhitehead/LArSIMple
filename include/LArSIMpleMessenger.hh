@@ -13,7 +13,7 @@ class G4UIcmdWithABool;
 class LArSIMpleMessenger : public G4UImessenger
 {
 public:
-    LArSIMpleMessenger(LArSIMpleEventAction *ptra);
+    LArSIMpleMessenger(LArSIMpleEventAction *pEventAction);
     ~LArSIMpleMessenger();
 
 public:

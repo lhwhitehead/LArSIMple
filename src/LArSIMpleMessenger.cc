@@ -9,8 +9,8 @@
 #include "G4UIdirectory.hh"
 #include "G4UIparameter.hh"
 
-LArSIMpleMessenger::LArSIMpleMessenger(LArSIMpleEventAction *ptra) :
-    fEventAction(ptra)
+LArSIMpleMessenger::LArSIMpleMessenger(LArSIMpleEventAction *pEventAction) :
+    fEventAction(pEventAction)
 {
     fLArSIMpleDir = new G4UIdirectory("/LArSIMple/");
     fLArSIMpleDir->SetGuidance("Commands to select I/O options");
