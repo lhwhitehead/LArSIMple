@@ -140,7 +140,7 @@ inline std::vector<std::string> LArSIMpleNeutrinoInputParser::TokeniseString(std
                 if (endToken == input.npos)
                     endToken = input.size();
 
-                tokens.push_back(input.substr(startToken, endToken - startToken));
+                tokens.emplace_back(input.substr(startToken, endToken - startToken));
 
                 startToken = endToken;
             }

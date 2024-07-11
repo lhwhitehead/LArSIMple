@@ -109,7 +109,7 @@ private:
 
 inline void LArSIMpleEventAction::Add3DEnergyDeposit(LArSIMple3DEnergyDeposit edep)
 {
-    fEnergyDeposits.push_back(edep);
+    fEnergyDeposits.emplace_back(edep);
 }
 
 inline void LArSIMpleEventAction::AddFoldedTrackAssoc(const int trackID, const int foldedTrackID)

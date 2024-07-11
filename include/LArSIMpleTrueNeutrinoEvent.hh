@@ -45,7 +45,7 @@ public:
     void AddTarget(G4ThreeVector pos, G4ThreeVector dir, double energy, int pdg);
     void AddFinalStateParticle(LArSIMpleTrueParticle particle)
     {
-        fFinalStateParticles.push_back(particle);
+        fFinalStateParticles.emplace_back(particle);
     };
     void AddFinalStateParticle(G4ThreeVector pos, G4ThreeVector dir, double energy, int pdg);
 

@@ -71,7 +71,7 @@ public:
 
     void AddFeature(const float val)
     {
-        fFeatures.push_back(val);
+        fFeatures.emplace_back(val);
     };
     std::vector<float> GetFeatures() const
     {
@@ -143,13 +143,13 @@ inline void LArSIMple3DEnergyDeposit::SetEnergy(const double energy)
 {
     fEnergy = energy;
     // Add the energy as the first feature... we should also allow for calibration later
-    fFeatures.push_back(fEnergy);
+    fFeatures.emplace_back(fEnergy);
 }
 
 inline void LArSIMple3DEnergyDeposit::SetDeDx(const double dedx)
 {
     fDeDx = dedx;
-    fFeatures.push_back(fDeDx);
+    fFeatures.emplace_back(fDeDx);
 }
 
 inline void LArSIMple3DEnergyDeposit::SetParticleInfo(const int pdg, const int trackID, const int processCode)
@@ -163,20 +163,20 @@ inline std::vector<float> LArSIMple3DEnergyDeposit::GetFlatRepresentation() cons
 {
     std::vector<float> flatOutput;
     // Three position coordinates
-    flatOutput.push_back(fPosX);
-    flatOutput.push_back(fPosY);
-    flatOutput.push_back(fPosZ);
+    flatOutput.emplace_back(fPosX);
+    flatOutput.emplace_back(fPosY);
+    flatOutput.emplace_back(fPosZ);
     // Now for the projections
-    flatOutput.push_back(fPosU);
-    flatOutput.push_back(fPosV);
-    flatOutput.push_back(fPosW);
+    flatOutput.emplace_back(fPosU);
+    flatOutput.emplace_back(fPosV);
+    flatOutput.emplace_back(fPosW);
     // Now add any features
     for (const float &feature : fFeatures)
-        flatOutput.push_back(feature);
+        flatOutput.emplace_back(feature);
     // Truth information
-    flatOutput.push_back(fParticlePDG);
-    flatOutput.push_back(fParticleTrackID);
-    flatOutput.push_back(fParticleProcess);
+    flatOutput.emplace_back(fParticlePDG);
+    flatOutput.emplace_back(fParticleTrackID);
+    flatOutput.emplace_back(fParticleProcess);
     return flatOutput;
 }
 
