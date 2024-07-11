@@ -166,12 +166,17 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
     for (unsigned int h = 0; h < hits.size(); ++h)
     {
         const LArSIMple3DEnergyDeposit &hit = hits.at(h);
-        posX.emplace_back(hit.GetX());
-        posY.emplace_back(hit.GetY());
-        posZ.emplace_back(hit.GetZ());
-        posU.emplace_back(hit.GetU());
-        posV.emplace_back(hit.GetV());
-        posW.emplace_back(hit.GetW());
+
+        const G4ThreeVector &xyzPos = hit.GetPosition();
+        posX.emplace_back(xyzPos.getX());
+        posY.emplace_back(xyzPos.getY());
+        posZ.emplace_back(xyzPos.getZ());
+
+        const G4ThreeVector &uvwPos = hit.GetUVWPosition();
+        posU.emplace_back(uvwPos.getX());
+        posV.emplace_back(uvwPos.getY());
+        posW.emplace_back(uvwPos.getZ());
+
         const std::vector<float> features = hit.GetFeatures();
         charge.emplace_back(features.at(0));
         dedx.emplace_back(features.at(1));

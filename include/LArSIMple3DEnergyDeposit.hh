@@ -12,31 +12,7 @@ public:
     ~LArSIMple3DEnergyDeposit();
 
     G4ThreeVector GetPosition() const;
-    std::vector<double> GetPositionStd() const;
-    double GetX() const
-    {
-        return fPosX;
-    };
-    double GetY() const
-    {
-        return fPosY;
-    };
-    double GetZ() const
-    {
-        return fPosZ;
-    };
-    double GetU() const
-    {
-        return fPosU;
-    };
-    double GetV() const
-    {
-        return fPosV;
-    };
-    double GetW() const
-    {
-        return fPosW;
-    };
+    G4ThreeVector GetUVWPosition() const;
     double GetTime() const
     {
         return fTime;
@@ -121,9 +97,9 @@ inline G4ThreeVector LArSIMple3DEnergyDeposit::GetPosition() const
     return G4ThreeVector(fPosX, fPosY, fPosZ);
 }
 
-inline std::vector<double> LArSIMple3DEnergyDeposit::GetPositionStd() const
+inline G4ThreeVector LArSIMple3DEnergyDeposit::GetUVWPosition() const
 {
-    return std::vector<double>({fPosX, fPosY, fPosZ});
+    return G4ThreeVector(fPosU, fPosV, fPosW);
 }
 
 inline void LArSIMple3DEnergyDeposit::SetPositionAndTime(const double x, const double y, const double z, const double time)
