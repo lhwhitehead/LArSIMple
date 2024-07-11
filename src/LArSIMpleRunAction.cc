@@ -6,21 +6,17 @@
 
 LArSIMpleRunAction::LArSIMpleRunAction()
 {
-
 }
 
 LArSIMpleRunAction::~LArSIMpleRunAction()
 {
-
 }
 
-void LArSIMpleRunAction::BeginOfRunAction(const G4Run* aRun)
+void LArSIMpleRunAction::BeginOfRunAction(const G4Run *aRun)
 {
-  std::cout << "### Run " << aRun->GetRunID() << " start." << std::endl;
+    std::cout << "### Run " << aRun->GetRunID() << " start." << std::endl;
 }
 
-void LArSIMpleRunAction::EndOfRunAction(const G4Run*)
+void LArSIMpleRunAction::EndOfRunAction(const G4Run *)
 {
-
 }
-

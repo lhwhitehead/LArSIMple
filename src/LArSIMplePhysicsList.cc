@@ -2,22 +2,23 @@
 
 #include "globals.hh"
 
-LArSIMplePhysicsList::LArSIMplePhysicsList() : QGSP_BIC_HP() {
+LArSIMplePhysicsList::LArSIMplePhysicsList() :
+    QGSP_BIC_HP()
+{
 
-  this->defaultCutValue = 0.05*CLHEP::mm; //standard = 0.5 mm
-  fCutForGamma         = defaultCutValue;
-  fCutForElectron      = defaultCutValue;
-  fCutForPositron      = defaultCutValue;
-  fCutForProton        = defaultCutValue; 
+    this->defaultCutValue = 0.05 * CLHEP::mm; //standard = 0.5 mm
+    fCutForGamma = defaultCutValue;
+    fCutForElectron = defaultCutValue;
+    fCutForPositron = defaultCutValue;
+    fCutForProton = defaultCutValue;
 }
 
-
-LArSIMplePhysicsList::~LArSIMplePhysicsList() 
-{}
+LArSIMplePhysicsList::~LArSIMplePhysicsList()
+{
+}
 
 void LArSIMplePhysicsList::SetCuts()
 {
-  QGSP_BIC_HP::SetCuts();
-  SetCutsWithDefault();
+    QGSP_BIC_HP::SetCuts();
+    SetCutsWithDefault();
 }
-

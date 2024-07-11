@@ -7,87 +7,120 @@
 #include "LArSIMpleTrackData.hh"
 
 #include "G4UserEventAction.hh"
-#include "globals.hh"
 #include "G4ios.hh"
+#include "globals.hh"
 
 class LArSIMplePrimaryGeneratorAction;
 class LArSIMpleMessenger;
 class G4Track;
 
-class LArSIMpleEventAction : public G4UserEventAction {
-  
-  public:
-  LArSIMpleEventAction(LArSIMplePrimaryGeneratorAction*);
-  virtual ~LArSIMpleEventAction();
-  virtual void BeginOfEventAction(const G4Event*);
-  virtual void EndOfEventAction(const G4Event*);
- 
-  void Add3DEnergyDeposit(LArSIMple3DEnergyDeposit edep);
+class LArSIMpleEventAction : public G4UserEventAction
+{
 
-  void SetOutputFileDirectory(std::string val) {fOutputFileDirectory = val;};
-  void SetOutputFilePrefix(std::string val) {fOutputFilePrefix = val;};
- 
-  LArSIMpleTrackData GetTrackDataFromTrackID(const int trackID) const;
-  void AddTrack(const G4Track *track);
-  void AddFoldedTrackAssoc(const int trackID, const int foldedTrackID);
-  int GetFoldedTrackAssoc(const int trackID) const;
+public:
+    LArSIMpleEventAction(LArSIMplePrimaryGeneratorAction *);
+    virtual ~LArSIMpleEventAction();
+    virtual void BeginOfEventAction(const G4Event *);
+    virtual void EndOfEventAction(const G4Event *);
 
-  double GetHitThreshold() const {return fHitThreshold;};
-  void SetHitThreshold(const double threshold) {fHitThreshold = threshold;};
+    void Add3DEnergyDeposit(LArSIMple3DEnergyDeposit edep);
 
-  void SetWriteZipAndInfoFiles(const bool val) {fWriteZipAndInfoFiles = val;};
-  void SetWriteRootFile(const bool val) {fWriteRootFile = val;};
+    void SetOutputFileDirectory(std::string val)
+    {
+        fOutputFileDirectory = val;
+    };
+    void SetOutputFilePrefix(std::string val)
+    {
+        fOutputFilePrefix = val;
+    };
 
-  bool FoldBackTruthInfo() const {return fFoldBackTruthInfo;};
-  void SetFoldBackTruthInfo(const bool val) {fFoldBackTruthInfo = val;}; 
+    LArSIMpleTrackData GetTrackDataFromTrackID(const int trackID) const;
+    void AddTrack(const G4Track *track);
+    void AddFoldedTrackAssoc(const int trackID, const int foldedTrackID);
+    int GetFoldedTrackAssoc(const int trackID) const;
 
-  void SetWireAngleU(double angle) {fWireAngleU = angle;};
-  void SetWireAngleV(double angle) {fWireAngleV = angle;};
-  void SetWireAngleW(double angle) {fWireAngleW = angle;};
+    double GetHitThreshold() const
+    {
+        return fHitThreshold;
+    };
+    void SetHitThreshold(const double threshold)
+    {
+        fHitThreshold = threshold;
+    };
 
-  private:  
-  void CleanUp();
+    void SetWriteZipAndInfoFiles(const bool val)
+    {
+        fWriteZipAndInfoFiles = val;
+    };
+    void SetWriteRootFile(const bool val)
+    {
+        fWriteRootFile = val;
+    };
 
-  LArSIMplePrimaryGeneratorAction* fGenAction;
-  LArSIMpleMessenger* fMessenger;
+    bool FoldBackTruthInfo() const
+    {
+        return fFoldBackTruthInfo;
+    };
+    void SetFoldBackTruthInfo(const bool val)
+    {
+        fFoldBackTruthInfo = val;
+    };
 
-  unsigned int fEventID;
-  double fHitThreshold;
-  std::string fOutputFileDirectory;
-  std::string fOutputFilePrefix;
+    void SetWireAngleU(double angle)
+    {
+        fWireAngleU = angle;
+    };
+    void SetWireAngleV(double angle)
+    {
+        fWireAngleV = angle;
+    };
+    void SetWireAngleW(double angle)
+    {
+        fWireAngleW = angle;
+    };
 
-  bool fWriteZipAndInfoFiles;
-  bool fWriteRootFile;
-  bool fFoldBackTruthInfo;
+private:
+    void CleanUp();
 
-  double fWireAngleU;
-  double fWireAngleV;
-  double fWireAngleW;
+    LArSIMplePrimaryGeneratorAction *fGenAction;
+    LArSIMpleMessenger *fMessenger;
 
-  std::vector<LArSIMple3DEnergyDeposit> fEnergyDeposits;
+    unsigned int fEventID;
+    double fHitThreshold;
+    std::string fOutputFileDirectory;
+    std::string fOutputFilePrefix;
 
-  // Tracks can be transient so keep track of the type
-  std::map<int,LArSIMpleTrackData> fTrackIDToTrackData;
+    bool fWriteZipAndInfoFiles;
+    bool fWriteRootFile;
+    bool fFoldBackTruthInfo;
 
-  // Map to link tracks together that can be folded
-  std::map<int,int> fTrackIDToFoldedTrackID; 
+    double fWireAngleU;
+    double fWireAngleV;
+    double fWireAngleW;
+
+    std::vector<LArSIMple3DEnergyDeposit> fEnergyDeposits;
+
+    // Tracks can be transient so keep track of the type
+    std::map<int, LArSIMpleTrackData> fTrackIDToTrackData;
+
+    // Map to link tracks together that can be folded
+    std::map<int, int> fTrackIDToFoldedTrackID;
 };
 
 inline void LArSIMpleEventAction::Add3DEnergyDeposit(LArSIMple3DEnergyDeposit edep)
 {
-  fEnergyDeposits.push_back(edep);
+    fEnergyDeposits.push_back(edep);
 }
 
 inline void LArSIMpleEventAction::AddFoldedTrackAssoc(const int trackID, const int foldedTrackID)
 {
-  if(fTrackIDToFoldedTrackID.count(trackID) == 0)
-    fTrackIDToFoldedTrackID.insert(std::make_pair(trackID,foldedTrackID));
+    if (fTrackIDToFoldedTrackID.count(trackID) == 0)
+        fTrackIDToFoldedTrackID.insert(std::make_pair(trackID, foldedTrackID));
 }
 
 inline int LArSIMpleEventAction::GetFoldedTrackAssoc(const int trackID) const
 {
-  return (fTrackIDToFoldedTrackID.count(trackID) != 0) ? fTrackIDToFoldedTrackID.at(trackID) : -1;
+    return (fTrackIDToFoldedTrackID.count(trackID) != 0) ? fTrackIDToFoldedTrackID.at(trackID) : -1;
 }
 
 #endif
-

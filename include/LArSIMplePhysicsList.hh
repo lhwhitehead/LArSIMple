@@ -3,22 +3,21 @@
 
 #include "QGSP_BIC_HP.hh"
 
-class LArSIMplePhysicsList: public QGSP_BIC_HP
+class LArSIMplePhysicsList : public QGSP_BIC_HP
 
 {
 public:
-  LArSIMplePhysicsList();
-  virtual ~LArSIMplePhysicsList();
+    LArSIMplePhysicsList();
+    virtual ~LArSIMplePhysicsList();
 
 public:
-  virtual void SetCuts();
+    virtual void SetCuts();
 
 private:
-
-  G4double fCutForGamma;
-  G4double fCutForElectron;
-  G4double fCutForPositron;
-  G4double fCutForProton;
+    G4double fCutForGamma;
+    G4double fCutForElectron;
+    G4double fCutForPositron;
+    G4double fCutForProton;
 };
 
 #endif

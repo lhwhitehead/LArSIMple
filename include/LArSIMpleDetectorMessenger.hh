@@ -9,36 +9,35 @@ class G4UIcmdWithAString;
 class G4UIcmdWithABool;
 class G4UIcmdWithADoubleAndUnit;
 
-class LArSIMpleDetectorMessenger: public G4UImessenger
+class LArSIMpleDetectorMessenger : public G4UImessenger
 {
-  public:
-  LArSIMpleDetectorMessenger(LArSIMpleDetectorConstruction* ptgc);
-  ~LArSIMpleDetectorMessenger();
-  
-  public:
-  void SetNewValue(G4UIcommand* command, G4String newValues);
-  
-  private:
-  LArSIMpleDetectorConstruction* fDetectorConstruction;
+public:
+    LArSIMpleDetectorMessenger(LArSIMpleDetectorConstruction *ptgc);
+    ~LArSIMpleDetectorMessenger();
 
-  G4UIdirectory*      fLArSIMpleDir;
+public:
+    void SetNewValue(G4UIcommand *command, G4String newValues);
 
-  // Size of the LAr volume
-  G4UIcmdWithADoubleAndUnit* fWorldWidth;
-  G4UIcmdWithADoubleAndUnit* fWorldHeight;
-  G4UIcmdWithADoubleAndUnit* fWorldLength;
+private:
+    LArSIMpleDetectorConstruction *fDetectorConstruction;
 
-  // Size of the LAr volume
-  G4UIcmdWithADoubleAndUnit* fDetectorWidth;
-  G4UIcmdWithADoubleAndUnit* fDetectorHeight;
-  G4UIcmdWithADoubleAndUnit* fDetectorLength;
+    G4UIdirectory *fLArSIMpleDir;
 
-  // Voxelise the LAr volume
-  G4UIcmdWithABool* fVoxeliseLAr;
+    // Size of the LAr volume
+    G4UIcmdWithADoubleAndUnit *fWorldWidth;
+    G4UIcmdWithADoubleAndUnit *fWorldHeight;
+    G4UIcmdWithADoubleAndUnit *fWorldLength;
 
-  // Check for Overlaps
-  G4UIcmdWithABool* fCheckOverlaps;
+    // Size of the LAr volume
+    G4UIcmdWithADoubleAndUnit *fDetectorWidth;
+    G4UIcmdWithADoubleAndUnit *fDetectorHeight;
+    G4UIcmdWithADoubleAndUnit *fDetectorLength;
+
+    // Voxelise the LAr volume
+    G4UIcmdWithABool *fVoxeliseLAr;
+
+    // Check for Overlaps
+    G4UIcmdWithABool *fCheckOverlaps;
 };
 
 #endif
-

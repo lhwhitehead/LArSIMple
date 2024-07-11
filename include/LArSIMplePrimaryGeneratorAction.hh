@@ -1,9 +1,9 @@
 #ifndef LArSIMplePrimaryGeneratorAction_h
 #define LArSIMplePrimaryGeneratorAction_h 1
 
-#include "LArSIMpleNeutrinoInputParser.hh"
-#include "G4VUserPrimaryGeneratorAction.hh"
 #include "G4ThreeVector.hh"
+#include "G4VUserPrimaryGeneratorAction.hh"
+#include "LArSIMpleNeutrinoInputParser.hh"
 #include "globals.hh"
 
 class G4ParticleGun;
@@ -15,45 +15,71 @@ class LArSIMpleTrueNeutrinoEvent;
 
 class LArSIMplePrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {
-  public:
-  LArSIMplePrimaryGeneratorAction(const LArSIMpleDetectorConstruction *detCon);
-  ~LArSIMplePrimaryGeneratorAction();
-  
-  void GeneratePrimaries(G4Event* anEvent);
+public:
+    LArSIMplePrimaryGeneratorAction(const LArSIMpleDetectorConstruction *detCon);
+    ~LArSIMplePrimaryGeneratorAction();
 
-  std::string GetNeutrinoFileName() const {return fNeutrinoFileName;};
-  LArSIMpleNeutrinoInputType GetNeutrinoFileType() const {return fNeutrinoFileType;};
+    void GeneratePrimaries(G4Event *anEvent);
 
-  void SetNeutrinoFileName(std::string val) {fNeutrinoFileName = val;};
-  void SetNeutrinoFileType(LArSIMpleNeutrinoInputType val) {fNeutrinoFileType = val;};
+    std::string GetNeutrinoFileName() const
+    {
+        return fNeutrinoFileName;
+    };
+    LArSIMpleNeutrinoInputType GetNeutrinoFileType() const
+    {
+        return fNeutrinoFileType;
+    };
 
-  bool UseNeutrinos() const {return fUseNeutrinos;};
-  void SetUseNeutrinos(bool val) {fUseNeutrinos = val;};
+    void SetNeutrinoFileName(std::string val)
+    {
+        fNeutrinoFileName = val;
+    };
+    void SetNeutrinoFileType(LArSIMpleNeutrinoInputType val)
+    {
+        fNeutrinoFileType = val;
+    };
 
-  void SetUseRandomNeutrinoVertex(bool val) {fUseRandomNeutrinoVertex = val;};
-  void SetNeutrinoVertex(G4ThreeVector vec) {fNeutrinoVertex = vec;}; 
+    bool UseNeutrinos() const
+    {
+        return fUseNeutrinos;
+    };
+    void SetUseNeutrinos(bool val)
+    {
+        fUseNeutrinos = val;
+    };
 
-  const LArSIMpleTrueNeutrinoEvent* GetTrueNeutrinoEventPointer() {return fNeutrinoEvent;};
-  private:
+    void SetUseRandomNeutrinoVertex(bool val)
+    {
+        fUseRandomNeutrinoVertex = val;
+    };
+    void SetNeutrinoVertex(G4ThreeVector vec)
+    {
+        fNeutrinoVertex = vec;
+    };
 
-  G4GeneralParticleSource* fParticleGun;
-  LArSIMplePrimaryGeneratorMessenger* fMessenger;
-  LArSIMpleNeutrinoInputParser fNeutrinoInputParser;
+    const LArSIMpleTrueNeutrinoEvent *GetTrueNeutrinoEventPointer()
+    {
+        return fNeutrinoEvent;
+    };
 
-  // Pointer such that it can be null
-  LArSIMpleTrueNeutrinoEvent *fNeutrinoEvent;
+private:
+    G4GeneralParticleSource *fParticleGun;
+    LArSIMplePrimaryGeneratorMessenger *fMessenger;
+    LArSIMpleNeutrinoInputParser fNeutrinoInputParser;
 
-  bool fUseNeutrinos;
-  std::string fNeutrinoFileName;
-  LArSIMpleNeutrinoInputType fNeutrinoFileType;
+    // Pointer such that it can be null
+    LArSIMpleTrueNeutrinoEvent *fNeutrinoEvent;
 
-  bool fUseRandomNeutrinoVertex;
-  G4ThreeVector fNeutrinoVertex;
+    bool fUseNeutrinos;
+    std::string fNeutrinoFileName;
+    LArSIMpleNeutrinoInputType fNeutrinoFileType;
 
-  const LArSIMpleDetectorConstruction *fDetectorConstruction;
+    bool fUseRandomNeutrinoVertex;
+    G4ThreeVector fNeutrinoVertex;
 
-  void RandomiseVertex(G4ThreeVector &vtx) const;
+    const LArSIMpleDetectorConstruction *fDetectorConstruction;
+
+    void RandomiseVertex(G4ThreeVector &vtx) const;
 };
 
 #endif
-

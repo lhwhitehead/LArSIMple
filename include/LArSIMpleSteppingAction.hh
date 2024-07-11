@@ -10,17 +10,17 @@ class G4VProcess;
 
 class LArSIMpleSteppingAction : public G4UserSteppingAction
 {
-  public:
-  LArSIMpleSteppingAction(LArSIMpleEventAction*);
-  virtual ~LArSIMpleSteppingAction();
+public:
+    LArSIMpleSteppingAction(LArSIMpleEventAction *);
+    virtual ~LArSIMpleSteppingAction();
 
-  void UserSteppingAction(const G4Step*);
-  G4VProcess* GetCurrentProcess();
-    
-  private:
-  LArSIMpleEventAction* fEventAction;
+    void UserSteppingAction(const G4Step *);
+    G4VProcess *GetCurrentProcess();
 
-  void GetFoldedTrackInfo(const G4Track*, int &foldedTrackID, int &foldedTrackPDG, int &foldedTrackProcess);
+private:
+    LArSIMpleEventAction *fEventAction;
+
+    void GetFoldedTrackInfo(const G4Track *, int &foldedTrackID, int &foldedTrackPDG, int &foldedTrackProcess);
 };
 
 #endif

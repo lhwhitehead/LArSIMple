@@ -8,21 +8,22 @@
 class LArSIMpleTrueNeutrinoEvent;
 
 class LArSIMpleOutputWriter
-{  
-  public:
-  LArSIMpleOutputWriter(unsigned int eventNumber);
-  virtual ~LArSIMpleOutputWriter();
+{
+public:
+    LArSIMpleOutputWriter(unsigned int eventNumber);
+    virtual ~LArSIMpleOutputWriter();
 
-  void WriteOutputZipAndInfoFiles(const std::string &base, const std::vector<LArSIMple3DEnergyDeposit> &hits) const;
-  void WriteRootFile(const std::string &base, const std::vector<LArSIMple3DEnergyDeposit> &hits, const LArSIMpleTrueNeutrinoEvent *evt,
-                     const std::vector<double> &wireAngles) const; 
+    void WriteOutputZipAndInfoFiles(const std::string &base, const std::vector<LArSIMple3DEnergyDeposit> &hits) const;
+    void WriteRootFile(const std::string &base, const std::vector<LArSIMple3DEnergyDeposit> &hits, const LArSIMpleTrueNeutrinoEvent *evt,
+        const std::vector<double> &wireAngles) const;
 
-  void SetEventNumber(unsigned int eventNumber) {fEventNumber = eventNumber;};
+    void SetEventNumber(unsigned int eventNumber)
+    {
+        fEventNumber = eventNumber;
+    };
 
-  private:
-
-  unsigned int fEventNumber;
+private:
+    unsigned int fEventNumber;
 };
 
 #endif
-
