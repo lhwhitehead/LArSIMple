@@ -20,9 +20,9 @@ std::vector<double> LArSIMpleHitFeatureUtils::GetUVW(const double y, const doubl
 {
   const double degreesToRadians{3.14159265358979323846 / 180.};
   std::vector<double> uvw;
-  uvw.push_back(z * std::cos(wireAngleU * degreesToRadians) - y * std::sin(wireAngleU * degreesToRadians));
-  uvw.push_back(z * std::cos(wireAngleV * degreesToRadians) - y * std::sin(wireAngleV * degreesToRadians));
-  uvw.push_back(z * std::cos(wireAngleW * degreesToRadians) - y * std::sin(wireAngleW * degreesToRadians));
+  uvw.emplace_back(z * std::cos(wireAngleU * degreesToRadians) - y * std::sin(wireAngleU * degreesToRadians));
+  uvw.emplace_back(z * std::cos(wireAngleV * degreesToRadians) - y * std::sin(wireAngleV * degreesToRadians));
+  uvw.emplace_back(z * std::cos(wireAngleW * degreesToRadians) - y * std::sin(wireAngleW * degreesToRadians));
   return uvw;
 }
 

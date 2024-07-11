@@ -169,26 +169,26 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
   for(unsigned int h = 0; h < hits.size(); ++h)
   {
     const LArSIMple3DEnergyDeposit &hit = hits.at(h);
-    posX.push_back(hit.GetX());
-    posY.push_back(hit.GetY());
-    posZ.push_back(hit.GetZ());
-    posU.push_back(hit.GetU());
-    posV.push_back(hit.GetV());
-    posW.push_back(hit.GetW());
+    posX.emplace_back(hit.GetX());
+    posY.emplace_back(hit.GetY());
+    posZ.emplace_back(hit.GetZ());
+    posU.emplace_back(hit.GetU());
+    posV.emplace_back(hit.GetV());
+    posW.emplace_back(hit.GetW());
     const std::vector<float> features = hit.GetFeatures();
-    charge.push_back(features.at(0));
-    dedx.push_back(features.at(1));
-    angle.push_back(features.at(2));
-    dotProduct.push_back(features.at(3));
-    neighboursR1.push_back(features.at(4));
-    neighboursR2.push_back(features.at(5));
-    neighboursR3.push_back(features.at(6));
-    chargeR1.push_back(features.at(7));
-    chargeR2.push_back(features.at(8));
-    chargeR3.push_back(features.at(9));
-    pdg.push_back(hit.GetParticlePDG());
-    trackid.push_back(hit.GetParticleTrackID());
-    process.push_back(hit.GetParticleProcess());
+    charge.emplace_back(features.at(0));
+    dedx.emplace_back(features.at(1));
+    angle.emplace_back(features.at(2));
+    dotProduct.emplace_back(features.at(3));
+    neighboursR1.emplace_back(features.at(4));
+    neighboursR2.emplace_back(features.at(5));
+    neighboursR3.emplace_back(features.at(6));
+    chargeR1.emplace_back(features.at(7));
+    chargeR2.emplace_back(features.at(8));
+    chargeR3.emplace_back(features.at(9));
+    pdg.emplace_back(hit.GetParticlePDG());
+    trackid.emplace_back(hit.GetParticleTrackID());
+    process.emplace_back(hit.GetParticleProcess());
   }
 
   std::cout << "Creating ROOT TTree with " << posX.size() << " hits" << std::endl; 

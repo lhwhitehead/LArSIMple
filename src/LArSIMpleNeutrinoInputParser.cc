@@ -100,7 +100,7 @@ void LArSIMpleNeutrinoInputParser::ReadFromNuanceTrackerFile(const std::string &
     // We should now have read the "end" line, but let's make sure
     if(token[0] == "end")
     {
-      fNeutrinoEvents.push_back(newEvent);
+      fNeutrinoEvents.emplace_back(newEvent);
     }
     else
     {
@@ -208,7 +208,7 @@ void LArSIMpleNeutrinoInputParser::ReadFromGENIETreeFile(const std::string &file
     for(unsigned int h = 0; h < static_cast<unsigned int>(nFinalStates); ++h)
       newEvent.AddFinalStateParticle(vtx,G4ThreeVector(finalPx[h],finalPy[h],finalPz[h]).unit(),finalEnergy[h]*1000.,finalPdg[h]);
 
-    fNeutrinoEvents.push_back(newEvent);
+    fNeutrinoEvents.emplace_back(newEvent);
   }
 
   input->ResetBranchAddresses(); 
