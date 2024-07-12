@@ -1,3 +1,11 @@
+/**
+ *  @file LArSIMple/src/LArSIMple3DEnergyDeposit.cc
+ * 
+ *  @brief Implementation of the 3D energy deposit class
+ * 
+ *  $Log: $
+ */
+
 #include "LArSIMple3DEnergyDeposit.hh"
 
 #include "G4ThreeVector.hh"
@@ -15,6 +23,8 @@ LArSIMple3DEnergyDeposit::LArSIMple3DEnergyDeposit() :
 {
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 LArSIMple3DEnergyDeposit::LArSIMple3DEnergyDeposit(const LArSIMple3DEnergyDeposit &rhs)
 {
     this->SetPositionAndTime(rhs.GetPosition(), rhs.GetTime());
@@ -23,9 +33,13 @@ LArSIMple3DEnergyDeposit::LArSIMple3DEnergyDeposit(const LArSIMple3DEnergyDeposi
     this->SetParticleInfo(rhs.GetParticlePDG(), rhs.GetParticleTrackID(), rhs.GetParticleProcess());
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 LArSIMple3DEnergyDeposit::~LArSIMple3DEnergyDeposit()
 {
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void LArSIMple3DEnergyDeposit::CalculateUVW(const double wireAngleU, const double wireAngleV, const double wireAngleW)
 {
@@ -36,6 +50,8 @@ void LArSIMple3DEnergyDeposit::CalculateUVW(const double wireAngleU, const doubl
     fPosV = posZ * std::cos(wireAngleV * degreesToRadians) - posY * std::sin(wireAngleV * degreesToRadians);
     fPosW = posZ * std::cos(wireAngleW * degreesToRadians) - posY * std::sin(wireAngleW * degreesToRadians);
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void LArSIMple3DEnergyDeposit::PrintSummary() const
 {

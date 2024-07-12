@@ -1,7 +1,7 @@
 /**
- *  @file   PandoraSDK/include/Objects/CartesianVector.h
+ *  @file   LArSIMple/include/LArSIMple3DEnergyDeposit.hh
  * 
- *  @brief  Header file for the cartesian vector class.
+ *  @brief  Header file for the 3D energy deposit class.
  * 
  *  $Log: $
  */
