@@ -356,9 +356,9 @@ inline std::vector<float> LArSIMple3DEnergyDeposit::GetFlatRepresentation() cons
 {
     std::vector<float> flatOutput;
     // Three position coordinates
-    flatOutput.emplace_back(fPosX);
-    flatOutput.emplace_back(fPosY);
-    flatOutput.emplace_back(fPosZ);
+    flatOutput.emplace_back(fPosition.getX());
+    flatOutput.emplace_back(fPosition.getY());
+    flatOutput.emplace_back(fPosition.getZ());
     // Now for the projections
     flatOutput.emplace_back(fPosU);
     flatOutput.emplace_back(fPosV);
