@@ -31,13 +31,13 @@ G4Material *LArSIMpleNestedParameterisation::ComputeMaterial(G4VPhysicalVolume *
 void LArSIMpleNestedParameterisation::ComputeTransformation(const G4int repNo, G4VPhysicalVolume *currentPV) const
 {
     // Get the z coordinate for this replica, starting as -ve values
-    const float zPos = (-fNRepZ / 2 + repNo + 0.5) * fSizeZ;
+    const float zPos = (-fNRepZ / 2 + repNo + 0.5) * 2.0 * fSizeZ;
     currentPV->SetTranslation(G4ThreeVector(0., 0., zPos));
 }
 
 void LArSIMpleNestedParameterisation::ComputeDimensions(G4Box &box, const G4int, const G4VPhysicalVolume *) const
 {
-    box.SetXHalfLength(0.5 * fSizeX);
-    box.SetYHalfLength(0.5 * fSizeY);
-    box.SetZHalfLength(0.5 * fSizeZ);
+    box.SetXHalfLength(fSizeX);
+    box.SetYHalfLength(fSizeY);
+    box.SetZHalfLength(fSizeZ);
 }
