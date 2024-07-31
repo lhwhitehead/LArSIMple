@@ -1,11 +1,20 @@
+/**
+ *  @file   LArSIMple/include/LArSIMpleProcessTable.hh
+ * 
+ *  @brief  Header file for the process table class
+ * 
+ *  $Log: $
+ */
+
 #ifndef LARSIMPLEPROCESSTABLE_HH
 #define LARSIMPLEPROCESSTABLE_HH
 
 #include <map>
 #include <string>
 
-// This class stores the map of process code and process string. It is a
-// singleton to prevent this map being created multiple times
+/**
+ *  @brief Singleton class that maps an enumerated process code to the GEANT4 process string
+ */
 class LArSIMpleProcessTable
 {
 public:
@@ -64,6 +73,11 @@ public:
         MC_PROC_PRIMARY_BACKGROUND
     };
 
+    /**
+     *  @brief  Get the static instance to the class
+     *
+     *  @return The instance of the process table
+     */
     static LArSIMpleProcessTable &Get()
     {
         static LArSIMpleProcessTable table;
@@ -72,13 +86,27 @@ public:
     LArSIMpleProcessTable(LArSIMpleProcessTable const &) = delete;
     LArSIMpleProcessTable &operator=(LArSIMpleProcessTable const &) = delete;
 
+    /**
+     *  @brief  Get the process code from the GEANT4 process string
+     *
+     *  @param  process the GEANT4 process name
+     *
+     *  @return The associated process code
+     */
     ProcessCode GetProcessCodeFromString(const std::string &process);
 
 private:
+    /**
+     *  @brief  Default constructor
+     */
     LArSIMpleProcessTable();
 
+    /**
+     *  @brief  Fill the map of process string to process code
+     */
     void FillProcessMap();
-    std::map<std::string, ProcessCode> fProcessStringToCodeMap;
+
+    std::map<std::string, ProcessCode> fProcessStringToCodeMap;    ///< Map between process string and process code
 };
 
 #endif

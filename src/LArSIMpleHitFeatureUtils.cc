@@ -1,3 +1,11 @@
+/**
+ *  @file   LArSIMple/src/LArSIMpleHitFeatureUtils.cc
+ * 
+ *  @brief  Implementation for the hit feature utility class.
+ * 
+ *  $Log: $
+ */
+
 #include "LArSIMpleHitFeatureUtils.hh"
 #include "LArSIMple3DEnergyDeposit.hh"
 
@@ -12,9 +20,13 @@ LArSIMpleHitFeatureUtils::LArSIMpleHitFeatureUtils(const std::vector<LArSIMple3D
     this->FillNeighbourMap();
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 LArSIMpleHitFeatureUtils::~LArSIMpleHitFeatureUtils()
 {
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void LArSIMpleHitFeatureUtils::FillNeighbourMap()
 {
@@ -47,6 +59,8 @@ void LArSIMpleHitFeatureUtils::FillNeighbourMap()
     }
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 double LArSIMpleHitFeatureUtils::GetAngleToNeighbours(const unsigned int idx) const
 {
     const G4ThreeVector vec1 = fHits.at(fNearestNeighbourMap.at(idx)).GetPosition() - fHits.at(idx).GetPosition();
@@ -54,12 +68,16 @@ double LArSIMpleHitFeatureUtils::GetAngleToNeighbours(const unsigned int idx) co
     return vec1.angle(vec2);
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 double LArSIMpleHitFeatureUtils::GetDotProductToNeighbours(const unsigned int idx) const
 {
     const G4ThreeVector vec1 = fHits.at(fNearestNeighbourMap.at(idx)).GetPosition() - fHits.at(idx).GetPosition();
     const G4ThreeVector vec2 = fHits.at(fSecondNeighbourMap.at(idx)).GetPosition() - fHits.at(idx).GetPosition();
     return vec1.dot(vec2);
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 std::map<unsigned int, std::vector<unsigned int>> LArSIMpleHitFeatureUtils::GetNumberOfNeighboursWithinRadii(const std::vector<double> &rangeCuts) const
 {
@@ -84,6 +102,8 @@ std::map<unsigned int, std::vector<unsigned int>> LArSIMpleHitFeatureUtils::GetN
 
     return result;
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 std::map<unsigned int, std::vector<double>> LArSIMpleHitFeatureUtils::GetChargeWithinRadii(const std::vector<double> &rangeCuts) const
 {

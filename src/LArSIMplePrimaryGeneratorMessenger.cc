@@ -1,3 +1,11 @@
+/**
+ *  @file LArSIMple/src/LArSIMplePrimaryGeneratorMessenger.cc
+ * 
+ *  @brief Implementation of the primary generator action messenger class.
+ * 
+ *  $Log: $
+ */
+
 #include "LArSIMplePrimaryGeneratorMessenger.hh"
 #include "LArSIMpleNeutrinoInputParser.hh"
 #include "LArSIMplePrimaryGeneratorAction.hh"
@@ -42,6 +50,8 @@ LArSIMplePrimaryGeneratorMessenger::LArSIMplePrimaryGeneratorMessenger(LArSIMple
     fNeutrinoVertex->SetDefaultValue(G4ThreeVector());
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 LArSIMplePrimaryGeneratorMessenger::~LArSIMplePrimaryGeneratorMessenger()
 {
     delete fLArSIMpleDir;
@@ -51,6 +61,8 @@ LArSIMplePrimaryGeneratorMessenger::~LArSIMplePrimaryGeneratorMessenger()
     delete fUseRandomNeutrinoVertex;
     delete fNeutrinoVertex;
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void LArSIMplePrimaryGeneratorMessenger::SetNewValue(G4UIcommand *command, G4String newValue)
 {

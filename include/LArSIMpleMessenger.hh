@@ -1,3 +1,11 @@
+/**
+ *  @file   LArSIMple/include/LArSIMpleMessenger.hh
+ * 
+ *  @brief  Header file for the messenger class.
+ * 
+ *  $Log: $
+ */
+
 #ifndef LArSIMpleMessenger_h
 #define LArSIMpleMessenger_h
 
@@ -10,32 +18,50 @@ class G4UIcmdWithADoubleAndUnit;
 class G4UIcmdWithADouble;
 class G4UIcmdWithABool;
 
+/**
+ *  @brief Messenger class for high level configurations
+ */
+
 class LArSIMpleMessenger : public G4UImessenger
 {
 public:
+    /**
+     *  @brief  Constructor
+     *
+     *  @param  pEventAction pointer to a LArSIMpleEventAction object
+     */
     LArSIMpleMessenger(LArSIMpleEventAction *pEventAction);
+
+    /**
+     *  @brief  Destructor
+     */
     ~LArSIMpleMessenger();
 
-public:
+    /**
+     *  @brief  Set a value in the DetectorConstruction class
+     *
+     *  @param  command the variable name
+     *  @param  newValues the new value(s) for the variable
+     */
     void SetNewValue(G4UIcommand *command, G4String newValues);
 
 private:
-    LArSIMpleEventAction *fEventAction;
+    LArSIMpleEventAction *fEventAction;         ///< Pointer to the event action
 
-    G4UIdirectory *fLArSIMpleDir;
+    G4UIdirectory *fLArSIMpleDir;               ///< Pointer to the G4 config directory class
 
-    G4UIcmdWithAString *fOutputFileDir;
-    G4UIcmdWithAString *fOutputFilePrefix;
-    G4UIcmdWithABool *fWriteZipAndInfoFiles;
-    G4UIcmdWithABool *fWriteRootFile;
+    G4UIcmdWithAString *fOutputFileDir;         ///< Command to set the output directory path
+    G4UIcmdWithAString *fOutputFilePrefix;      ///< Command to set the output file prefix
+    G4UIcmdWithABool *fWriteZipAndInfoFiles;    ///< Command for whether to write zlib files
+    G4UIcmdWithABool *fWriteRootFile;           ///< Command for whether to write ROOT files
 
-    G4UIcmdWithABool *fFoldBackTruthInfo;
+    G4UIcmdWithABool *fFoldBackTruthInfo;       ///< Command for whether to fold truth information to the primaries
 
-    G4UIcmdWithADoubleAndUnit *fHitThreshold;
+    G4UIcmdWithADoubleAndUnit *fHitThreshold;   ///< Command for setting the energy threshold for hit creation
 
-    G4UIcmdWithADouble *fWireAngleU;
-    G4UIcmdWithADouble *fWireAngleV;
-    G4UIcmdWithADouble *fWireAngleW;
+    G4UIcmdWithADouble *fWireAngleU;            ///< Command to set the U plane wire angle
+    G4UIcmdWithADouble *fWireAngleV;            ///< Command to set the V plane wire angle
+    G4UIcmdWithADouble *fWireAngleW;            ///< Command to set the W plane wire angle
 };
 
 #endif

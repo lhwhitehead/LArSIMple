@@ -1,3 +1,11 @@
+/**
+ *  @file LArSIMple/src/LArSIMpleTrueNeutrinoEvent.cc
+ * 
+ *  @brief Implementation of the true neutrino event class.
+ * 
+ *  $Log: $
+ */
+
 #include "LArSIMpleTrueNeutrinoEvent.hh"
 #include "LArSIMpleTrueParticle.hh"
 
@@ -5,9 +13,13 @@ LArSIMpleTrueNeutrinoEvent::LArSIMpleTrueNeutrinoEvent()
 {
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 LArSIMpleTrueNeutrinoEvent::~LArSIMpleTrueNeutrinoEvent()
 {
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void LArSIMpleTrueNeutrinoEvent::AddNeutrino(LArSIMpleTrueParticle neutrino)
 {
@@ -15,20 +27,21 @@ void LArSIMpleTrueNeutrinoEvent::AddNeutrino(LArSIMpleTrueParticle neutrino)
     this->SetFlavour();
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 void LArSIMpleTrueNeutrinoEvent::AddNeutrino(G4ThreeVector pos, G4ThreeVector dir, double energy, int pdg)
 {
     this->AddNeutrino(LArSIMpleTrueParticle(pos, dir, energy, pdg));
 }
 
-void LArSIMpleTrueNeutrinoEvent::AddTarget(G4ThreeVector pos, G4ThreeVector dir, double energy, int pdg)
-{
-    this->AddTarget(LArSIMpleTrueParticle(pos, dir, energy, pdg));
-}
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void LArSIMpleTrueNeutrinoEvent::AddFinalStateParticle(G4ThreeVector pos, G4ThreeVector dir, double energy, int pdg)
 {
     this->AddFinalStateParticle(LArSIMpleTrueParticle(pos, dir, energy, pdg));
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void LArSIMpleTrueNeutrinoEvent::SetFlavour()
 {
@@ -56,6 +69,8 @@ void LArSIMpleTrueNeutrinoEvent::SetFlavour()
     }
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 unsigned int LArSIMpleTrueNeutrinoEvent::GetNParticles(const int pdg) const
 {
     unsigned int nMatches(0);
@@ -68,6 +83,8 @@ unsigned int LArSIMpleTrueNeutrinoEvent::GetNParticles(const int pdg) const
 
     return nMatches;
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void LArSIMpleTrueNeutrinoEvent::Print() const
 {

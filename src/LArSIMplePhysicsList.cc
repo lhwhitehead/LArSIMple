@@ -1,21 +1,25 @@
-#include "LArSIMplePhysicsList.hh"
+#/**
+ *  @file LArSIMple/src/LArSIMplePhysicsList.cc
+ * 
+ *  @brief Implementation of the physics list class.
+ * 
+ *  $Log: $
+ */
 
-#include "globals.hh"
+#include "LArSIMplePhysicsList.hh"
 
 LArSIMplePhysicsList::LArSIMplePhysicsList() :
     QGSP_BIC_HP()
 {
-
-    this->defaultCutValue = 0.05 * CLHEP::mm; //standard = 0.5 mm
-    fCutForGamma = defaultCutValue;
-    fCutForElectron = defaultCutValue;
-    fCutForPositron = defaultCutValue;
-    fCutForProton = defaultCutValue;
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 LArSIMplePhysicsList::~LArSIMplePhysicsList()
 {
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void LArSIMplePhysicsList::SetCuts()
 {

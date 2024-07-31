@@ -1,3 +1,11 @@
+/**
+ *  @file LArSIMple/src/LArSIMpleTrackData.cc
+ * 
+ *  @brief Implementation of the track data class.
+ * 
+ *  $Log: $
+ */
+
 #include <string>
 
 #include "LArSIMpleTrackData.hh"
@@ -15,6 +23,8 @@ LArSIMpleTrackData::LArSIMpleTrackData() :
 {
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 LArSIMpleTrackData::LArSIMpleTrackData(const G4Track *track)
 {
     fTrackID = track->GetTrackID();
@@ -28,6 +38,8 @@ LArSIMpleTrackData::LArSIMpleTrackData(const G4Track *track)
     fProcessCode = LArSIMpleProcessTable::Get().GetProcessCodeFromString(fProcess);
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 LArSIMpleTrackData::LArSIMpleTrackData(const LArSIMpleTrackData &rhs)
 {
     fTrackID = rhs.GetTrackID();
@@ -38,26 +50,29 @@ LArSIMpleTrackData::LArSIMpleTrackData(const LArSIMpleTrackData &rhs)
     fIsFoldable = rhs.IsFoldable();
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 LArSIMpleTrackData LArSIMpleTrackData::operator=(const LArSIMpleTrackData &rhs)
 {
     return LArSIMpleTrackData(rhs);
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 LArSIMpleTrackData::~LArSIMpleTrackData()
 {
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 bool LArSIMpleTrackData::CanTrackBeFolded(const G4Track *track) const
 {
     // Primary particle first
     if (fParentID == 0)
-    {
-        std::cout << "Primary particle with pdg = " << track->GetParticleDefinition()->GetPDGEncoding() << std::endl;
         return false;
-    }
-    // Check if secondaries have processes we don't want to consider as particles
     else
     {
+        // Check if secondaries have processes we don't want to consider as particles
         if (fProcess.find("conv") != std::string::npos || fProcess.find("LowEnConversion") != std::string::npos ||
             fProcess.find("Pair") != std::string::npos || fProcess.find("compt") != std::string::npos ||
             fProcess.find("Compt") != std::string::npos || fProcess.find("Brem") != std::string::npos || fProcess.find("phot") != std::string::npos ||
@@ -69,9 +84,6 @@ bool LArSIMpleTrackData::CanTrackBeFolded(const G4Track *track) const
         }
         // Otherwise these are particles that we want to keep
         else
-        {
-            //      std::cout << "Unfoldable process = " << fProcess << std::endl;
             return false;
-        }
     }
 }

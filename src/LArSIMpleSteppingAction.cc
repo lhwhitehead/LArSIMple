@@ -1,3 +1,11 @@
+/**
+ *  @file LArSIMple/src/LArSIMpleSteppingAction.cc
+ * 
+ *  @brief Implementation of the stepping action class.
+ * 
+ *  $Log: $
+ */
+
 #include "LArSIMpleSteppingAction.hh"
 #include "G4SteppingManager.hh"
 #include "LArSIMple3DEnergyDeposit.hh"
@@ -8,19 +16,25 @@
 #include "G4StepPoint.hh"
 #include "G4Track.hh"
 
-LArSIMpleSteppingAction::LArSIMpleSteppingAction(LArSIMpleEventAction *evt) :
-    fEventAction(evt)
+LArSIMpleSteppingAction::LArSIMpleSteppingAction(LArSIMpleEventAction *pEventAction) :
+    fEventAction(pEventAction)
 {
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 LArSIMpleSteppingAction::~LArSIMpleSteppingAction()
 {
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 G4VProcess *LArSIMpleSteppingAction::GetCurrentProcess()
 {
     return fpSteppingManager->GetfCurrentProcess();
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void LArSIMpleSteppingAction::UserSteppingAction(const G4Step *aStep)
 {
@@ -49,6 +63,8 @@ void LArSIMpleSteppingAction::UserSteppingAction(const G4Step *aStep)
         fEventAction->Add3DEnergyDeposit(energyDeposit);
     }
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void LArSIMpleSteppingAction::GetFoldedTrackInfo(const G4Track *track, int &foldedTrackID, int &foldedTrackPDG, int &foldedTrackProcess)
 {

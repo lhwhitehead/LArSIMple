@@ -1,3 +1,11 @@
+/**
+ *  @file LArSIMple/src/LArSIMpleDetectorMessenger.cc
+ * 
+ *  @brief Implementation of the detector messenger class.
+ * 
+ *  $Log: $
+ */
+
 #include "LArSIMpleDetectorMessenger.hh"
 #include "LArSIMpleDetectorConstruction.hh"
 
@@ -61,6 +69,8 @@ LArSIMpleDetectorMessenger::LArSIMpleDetectorMessenger(LArSIMpleDetectorConstruc
     fCheckOverlaps->SetDefaultValue(true);
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 LArSIMpleDetectorMessenger::~LArSIMpleDetectorMessenger()
 {
     delete fWorldWidth;
@@ -73,6 +83,8 @@ LArSIMpleDetectorMessenger::~LArSIMpleDetectorMessenger()
     delete fCheckOverlaps;
     delete fLArSIMpleDir;
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void LArSIMpleDetectorMessenger::SetNewValue(G4UIcommand *command, G4String newValue)
 {

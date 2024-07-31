@@ -1,3 +1,12 @@
+/**
+ *  @file LArSIMple/src/LArSIMpleNeutrinoInputParser.cc
+ * 
+ *  @brief Implementation of the neutrino event reading class.
+ * 
+ *  $Log: $
+ */
+
+
 #include <fstream>
 
 #include "LArSIMpleNeutrinoInputParser.hh"
@@ -9,9 +18,13 @@ LArSIMpleNeutrinoInputParser::LArSIMpleNeutrinoInputParser()
 {
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 LArSIMpleNeutrinoInputParser::~LArSIMpleNeutrinoInputParser()
 {
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void LArSIMpleNeutrinoInputParser::ReadFile(const std::string &filename, const LArSIMpleNeutrinoInputType inputType)
 {
@@ -28,6 +41,8 @@ void LArSIMpleNeutrinoInputParser::ReadFile(const std::string &filename, const L
     }
     std::cout << "Read " << fNeutrinoEvents.size() << " from file " << filename << std::endl;
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void LArSIMpleNeutrinoInputParser::ReadFromNuanceTrackerFile(const std::string &filename)
 {
@@ -112,6 +127,8 @@ void LArSIMpleNeutrinoInputParser::ReadFromNuanceTrackerFile(const std::string &
     if (inputFile.is_open())
         inputFile.close();
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void LArSIMpleNeutrinoInputParser::ReadFromGENIETreeFile(const std::string &filename)
 {
@@ -216,6 +233,8 @@ void LArSIMpleNeutrinoInputParser::ReadFromGENIETreeFile(const std::string &file
     input = nullptr;
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 void LArSIMpleNeutrinoInputParser::ReadFromGiBUUTextFile(const std::string &filename)
 {
     TDatabasePDG *database = new TDatabasePDG();
@@ -272,13 +291,10 @@ void LArSIMpleNeutrinoInputParser::ReadFromGiBUUTextFile(const std::string &file
                 }
                 else
                 {
-                    //          std::cout << "Finished reading event " << currentEvent << " with " << lineNumber-1 << " particles" << std::endl;
                     fNeutrinoEvents.emplace_back(newEvent);
                     break;
                 }
             }
-
-            //      std::cout << token.at(1) << ", " << token.at(2) << ", " << token.at(8) << std::endl;
 
             // If the event changes then we need to store the event and move on
             if (std::atoi(token.at(1).c_str()) != currentEvent)
@@ -309,10 +325,6 @@ void LArSIMpleNeutrinoInputParser::ReadFromGiBUUTextFile(const std::string &file
                 // Now for the leading lepton
                 const G4ThreeVector leptonMom(std::atof(token.at(9).c_str()), std::atof(token.at(10).c_str()), std::atof(token.at(11).c_str()));
                 newEvent.AddFinalStateParticle(vtx, leptonMom.unit(), std::atof(token.at(8).c_str()) * 1000., leptonPdg);
-
-                //        std::cout << "Interaction type = " << static_cast<int>(newEvent.GetInteractionType()) << std::endl;
-                //        std::cout << "Neutrino momentum = " << nuMom << std::endl;
-                //        std::cout << "Lepton momentum =  " << leptonMom << std::endl;
             }
             // Second line is the target nucleon
             else if (lineNumber == 2)

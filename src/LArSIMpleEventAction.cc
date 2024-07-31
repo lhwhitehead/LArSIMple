@@ -1,3 +1,11 @@
+/**
+ *  @file LArSIMple/src/LArSIMpleEventAction.cc
+ * 
+ *  @brief Implementation of the event action class.
+ * 
+ *  $Log: $
+ */
+
 #include "LArSIMpleEventAction.hh"
 #include "LArSIMpleHitFeatureUtils.hh"
 #include "LArSIMpleMessenger.hh"
@@ -10,23 +18,27 @@
 #include "G4Track.hh"
 
 LArSIMpleEventAction::LArSIMpleEventAction(LArSIMplePrimaryGeneratorAction *genAction) :
-    fGenAction(genAction)
+    fGenAction(genAction),
+    fOutputFileDirectory(""),
+    fOutputFilePrefix("hits_3d"),
+    fHitThreshold(0.0),
+    fWireAngleU(35.9),
+    fWireAngleV(-35.9),
+    fWireAngleW(0.0),
+    fWriteZipAndInfoFiles(true),
+    fWriteRootFile(false),
+    fFoldBackTruthInfo(true)
 {
-    fOutputFileDirectory = "";
-    fOutputFilePrefix = "hits_3d";
-    fHitThreshold = 0.;
-    fWireAngleU = 35.9;
-    fWireAngleV = -35.9;
-    fWireAngleW = 0.0;
     fMessenger = new LArSIMpleMessenger(this);
-    fWriteZipAndInfoFiles = true;
-    fWriteRootFile = false;
-    fFoldBackTruthInfo = true;
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 LArSIMpleEventAction::~LArSIMpleEventAction()
 {
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void LArSIMpleEventAction::BeginOfEventAction(const G4Event *evt)
 {
@@ -34,6 +46,8 @@ void LArSIMpleEventAction::BeginOfEventAction(const G4Event *evt)
     if (fEventID % 1000 == 0 || (fEventID % 100 == 0 && fEventID < 1000))
         std::cout << "\n---> Beginning of event: " << fEventID << std::endl;
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void LArSIMpleEventAction::EndOfEventAction(const G4Event *)
 {
@@ -83,6 +97,8 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event *)
     this->CleanUp();
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 LArSIMpleTrackData LArSIMpleEventAction::GetTrackDataFromTrackID(const int trackID) const
 {
     if (fTrackIDToTrackData.count(trackID) != 0)
@@ -96,11 +112,15 @@ LArSIMpleTrackData LArSIMpleEventAction::GetTrackDataFromTrackID(const int track
     }
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 void LArSIMpleEventAction::AddTrack(const G4Track *track)
 {
     if (fTrackIDToTrackData.count(track->GetTrackID()) == 0)
         fTrackIDToTrackData.insert(std::make_pair(track->GetTrackID(), LArSIMpleTrackData(track)));
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void LArSIMpleEventAction::CleanUp()
 {

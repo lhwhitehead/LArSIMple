@@ -1,3 +1,11 @@
+/**
+ *  @file LArSIMple/src/LArSIMpleTrueParticle.cc
+ * 
+ *  @brief Implementation of the true particle class.
+ * 
+ *  $Log: $
+ */
+
 #include "LArSIMpleTrueParticle.hh"
 
 #include "G4ThreeVector.hh"
@@ -10,6 +18,8 @@ LArSIMpleTrueParticle::LArSIMpleTrueParticle() :
 {
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 LArSIMpleTrueParticle::LArSIMpleTrueParticle(const G4ThreeVector &pos, const G4ThreeVector &dir, const double energy, const int pdg) :
     fPosition(pos),
     fDirection(dir),
@@ -17,6 +27,8 @@ LArSIMpleTrueParticle::LArSIMpleTrueParticle(const G4ThreeVector &pos, const G4T
     fPDGCode(pdg)
 {
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 LArSIMpleTrueParticle::~LArSIMpleTrueParticle()
 {

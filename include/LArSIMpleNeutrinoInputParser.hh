@@ -1,3 +1,11 @@
+/**
+ *  @file   LArSIMple/include/LArSIMpleNeutrinoInputParser.hh
+ * 
+ *  @brief  Header file for the neutrino event reading class.
+ * 
+ *  $Log: $
+ */
+
 #ifndef LArSIMpleNeutrinoInputParser_h
 #define LArSIMpleNeutrinoInputParser_h
 
@@ -6,6 +14,9 @@
 #include <string>
 #include <vector>
 
+/**
+ *  @brief Enumeration for the different input types
+ */
 enum class LArSIMpleNeutrinoInputType
 {
     kNuanceTracker,
@@ -14,37 +25,196 @@ enum class LArSIMpleNeutrinoInputType
     kNotSet = 999
 };
 
+/**
+ *  @brief Class to read various types of input neutrino event generator files
+ */
 class LArSIMpleNeutrinoInputParser
 {
-
 public:
+    /**
+     *  @brief  Default constructor
+     */
     LArSIMpleNeutrinoInputParser();
+
+    /**
+     *  @brief  Destructor
+     */
     ~LArSIMpleNeutrinoInputParser();
 
+    /**
+     *  @brief  Read the input file
+     *
+     *  @param  filename the input file name (including the full path)
+     *  @param  type the type of input file
+     */
     void ReadFile(const std::string &filename, const LArSIMpleNeutrinoInputType type);
 
+    /**
+     *  @brief  Get the number of events read in from the input file
+     *
+     *  @return The number of events read from the input file
+     */
     unsigned int GetNEvents() const;
 
-    LArSIMpleTrueNeutrinoEvent GetEvent(unsigned int e);
+    /**
+     *  @brief  Get the neutrino interaction by index
+     *
+     *  @param  eventNo the event number
+     *
+     *  @return The true neutrino event object
+     */
+    LArSIMpleTrueNeutrinoEvent GetEvent(unsigned int eventNo);
 
 private:
+    /**
+     *  @brief  Read the nuance tracker format input file
+     *
+     *  @param  filename the input file name (including the full path)
+     */
     void ReadFromNuanceTrackerFile(const std::string &filename);
+
+    /**
+     *  @brief  Read the GENIE tree format input file
+     *
+     *  @param  filename the input file name (including the full path)
+     */
     void ReadFromGENIETreeFile(const std::string &filename);
+
+    /**
+     *  @brief  Read the GiBUU text format input file
+     *
+     *  @param  filename the input file name (including the full path)
+     */
     void ReadFromGiBUUTextFile(const std::string &filename);
-    LArSIMpleNeutrinoInteractionType ConvertNuanceCode(int code);
-    LArSIMpleNeutrinoInteractionType ConvertGiBUUCode(int code, bool iscc);
+
+    /**
+     *  @brief  Read a line from a Nuance tracker file
+     *
+     *  @param  inFile the input file stream
+     *  @param  lineSize the maximum length of a line
+     *  @param  inBuf the buffer with size lineSize
+     *
+     *  @return The vector of tokens corresponding to the particle properties
+     */
     std::vector<std::string> ReadNuanceTrackerLine(std::ifstream &inFile, int lineSize, char *inBuf);
+
+    /**
+     *  @brief  Read a line from a GiBUU text file
+     *
+     *  @param  inFile the input file stream
+     *  @param  lineSize the maximum length of a line
+     *  @param  inBuf the buffer with size lineSize
+     *
+     *  @return The vector of tokens corresponding to the particle properties
+     */
     std::vector<std::string> ReadGiBUUTextLine(std::ifstream &inFile, int lineSize, char *inBuf);
+
+    /**
+     *  @brief  Tokenise an input string based on separators
+     *
+     *  @param  separators the list of separators that divide the tokens
+     *  @param  input the string to be tokenised
+     */
     std::vector<std::string> TokeniseString(std::string separators, std::string input);
+
+    /**
+     *  @brief  Convert a Nuance code into our internal interaction type numbering
+     *
+     *  @param  code the Nuance code
+     *
+     *  @return The interaction type
+     */
+    LArSIMpleNeutrinoInteractionType ConvertNuanceCode(int code);
+
+    /**
+     *  @brief  Convert a GiBUU code into our internal interaction type numbering
+     *
+     *  @param  code the GiBUU code
+     *
+     *  @return The interaction type
+     */
+    LArSIMpleNeutrinoInteractionType ConvertGiBUUCode(int code, bool iscc);
+
+    /**
+     *  @brief  Convert a GiBUU particle id and charge into a PDG code
+     *
+     *  @param  pid the particle id code from GiBUU
+     *  @param  charge the electromagnetic charge of the particle
+     *
+     *  @return The PDG code of the particle
+     */
     int GetPDGCodeFromGiBUU(const int pid, const int charge);
 
-    std::vector<LArSIMpleTrueNeutrinoEvent> fNeutrinoEvents;
+    std::vector<LArSIMpleTrueNeutrinoEvent> fNeutrinoEvents;   ///< The vector of true neutrino events read from the input file
 };
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 inline unsigned int LArSIMpleNeutrinoInputParser::GetNEvents() const
 {
     return fNeutrinoEvents.size();
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+inline LArSIMpleTrueNeutrinoEvent LArSIMpleNeutrinoInputParser::GetEvent(unsigned int event)
+{
+    if (event < fNeutrinoEvents.size())
+        return fNeutrinoEvents.at(event);
+    else
+    {
+        std::cerr << "Requested event number beyond the number of neutrino events. Returning empty event." << std::endl;
+        return LArSIMpleTrueNeutrinoEvent();
+    }
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+inline std::vector<std::string> LArSIMpleNeutrinoInputParser::ReadNuanceTrackerLine(std::ifstream &inFile, int lineSize, char *inBuf)
+{
+    // Read in line break it up into tokens
+    inFile.getline(inBuf, lineSize);
+    return TokeniseString(" $", inBuf);
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+inline std::vector<std::string> LArSIMpleNeutrinoInputParser::ReadGiBUUTextLine(std::ifstream &inFile, int lineSize, char *inBuf)
+{
+    // Read in line break it up into tokens
+    inFile.getline(inBuf, lineSize);
+    return TokeniseString(" ", inBuf);
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+inline std::vector<std::string> LArSIMpleNeutrinoInputParser::TokeniseString(std::string separators, std::string input)
+{
+    std::size_t startToken = 0, endToken;
+    std::vector<std::string> tokens;
+
+    if (separators.size() > 0 && input.size() > 0)
+    {
+        while (startToken < input.size())
+        {
+            startToken = input.find_first_not_of(separators, startToken);
+
+            if (startToken != input.npos)
+            {
+                endToken = input.find_first_of(separators, startToken);
+                if (endToken == input.npos)
+                    endToken = input.size();
+
+                tokens.emplace_back(input.substr(startToken, endToken - startToken));
+
+                startToken = endToken;
+            }
+        }
+    }
+    return tokens;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 inline LArSIMpleNeutrinoInteractionType LArSIMpleNeutrinoInputParser::ConvertNuanceCode(int code)
 {
@@ -71,6 +241,8 @@ inline LArSIMpleNeutrinoInteractionType LArSIMpleNeutrinoInputParser::ConvertNua
     // There are a few other things, but we can ignore them for now
     return LArSIMpleNeutrinoInteractionType::kDummy;
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 inline LArSIMpleNeutrinoInteractionType LArSIMpleNeutrinoInputParser::ConvertGiBUUCode(int code, bool iscc)
 {
@@ -111,61 +283,10 @@ inline LArSIMpleNeutrinoInteractionType LArSIMpleNeutrinoInputParser::ConvertGiB
     return LArSIMpleNeutrinoInteractionType::kDummy;
 }
 
-inline std::vector<std::string> LArSIMpleNeutrinoInputParser::ReadNuanceTrackerLine(std::ifstream &inFile, int lineSize, char *inBuf)
-{
-    // Read in line break it up into tokens
-    inFile.getline(inBuf, lineSize);
-    return TokeniseString(" $", inBuf);
-}
-
-inline std::vector<std::string> LArSIMpleNeutrinoInputParser::ReadGiBUUTextLine(std::ifstream &inFile, int lineSize, char *inBuf)
-{
-    // Read in line break it up into tokens
-    inFile.getline(inBuf, lineSize);
-    return TokeniseString(" ", inBuf);
-}
-
-// Returns a vector with the tokens
-inline std::vector<std::string> LArSIMpleNeutrinoInputParser::TokeniseString(std::string separators, std::string input)
-{
-    std::size_t startToken = 0, endToken;
-    std::vector<std::string> tokens;
-
-    if (separators.size() > 0 && input.size() > 0)
-    {
-        while (startToken < input.size())
-        {
-            startToken = input.find_first_not_of(separators, startToken);
-
-            if (startToken != input.npos)
-            {
-                endToken = input.find_first_of(separators, startToken);
-                if (endToken == input.npos)
-                    endToken = input.size();
-
-                tokens.emplace_back(input.substr(startToken, endToken - startToken));
-
-                startToken = endToken;
-            }
-        }
-    }
-    return tokens;
-}
-
-inline LArSIMpleTrueNeutrinoEvent LArSIMpleNeutrinoInputParser::GetEvent(unsigned int e)
-{
-    if (e < fNeutrinoEvents.size())
-        return fNeutrinoEvents.at(e);
-    else
-    {
-        std::cerr << "Requested event number beyond the number of neutrino events. Returning empty event." << std::endl;
-        return LArSIMpleTrueNeutrinoEvent();
-    }
-}
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 inline int LArSIMpleNeutrinoInputParser::GetPDGCodeFromGiBUU(const int pid, const int charge)
 {
-
     // Nucleons
     if (pid == 1 && charge == 1)
         return 2212; // proton

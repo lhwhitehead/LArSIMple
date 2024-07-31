@@ -13,7 +13,7 @@
 #include <vector>
 
 /**
- *  @brief  CartesianVector class
+ *  @brief Class representing a true 3D energy deposit
  */
 class LArSIMple3DEnergyDeposit
 {

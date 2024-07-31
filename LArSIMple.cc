@@ -1,3 +1,11 @@
+/**
+ *  @file LArSIMple/LArSIMple.cc
+ * 
+ *  @brief Implementation of the LArSIMple executable
+ * 
+ *  $Log: $
+ */
+
 #include "G4RunManager.hh"
 #include "G4UImanager.hh"
 #include "G4UItcsh.hh"
@@ -29,14 +37,11 @@ int main(int argc, char **argv)
     // choose the Random engine
     CLHEP::HepRandom::setTheEngine(new CLHEP::RanecuEngine);
 
-    // Construct the default run manager
     G4RunManager *runManager = new G4RunManager;
 
-    // Need the detector geometry before everything else
     LArSIMpleDetectorConstruction *detector = new LArSIMpleDetectorConstruction();
     runManager->SetUserInitialization(detector);
 
-    // Physics List
     runManager->SetUserInitialization(new LArSIMplePhysicsList);
 
     LArSIMpleRunAction *run_action = new LArSIMpleRunAction;

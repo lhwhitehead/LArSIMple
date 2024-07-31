@@ -1,3 +1,11 @@
+/**
+ *  @file LArSIMple/src/LArSIMplePrimaryGeneratorAction.cc
+ * 
+ *  @brief Implementation of the primary generator action class.
+ * 
+ *  $Log: $
+ */
+
 #include "LArSIMplePrimaryGeneratorAction.hh"
 #include "LArSIMpleDetectorConstruction.hh"
 #include "LArSIMpleNeutrinoInputParser.hh"
@@ -22,18 +30,22 @@ LArSIMplePrimaryGeneratorAction::LArSIMplePrimaryGeneratorAction(const LArSIMple
     fNeutrinoEvent = nullptr;
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 LArSIMplePrimaryGeneratorAction::~LArSIMplePrimaryGeneratorAction()
 {
     delete fParticleGun;
     delete fMessenger;
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 void LArSIMplePrimaryGeneratorAction::GeneratePrimaries(G4Event *anEvent)
 {
     const unsigned int eventNumber{static_cast<unsigned int>(anEvent->GetEventID())};
 
     // Check if we are processing neutrinos
-    if (this->UseNeutrinos())
+    if (fUseNeutrinos)
     {
         if (fNeutrinoInputParser.GetNEvents() == 0)
         {
@@ -53,7 +65,7 @@ void LArSIMplePrimaryGeneratorAction::GeneratePrimaries(G4Event *anEvent)
 
         G4ThreeVector neutrinoVertex = fNeutrinoVertex;
         if (fUseRandomNeutrinoVertex)
-            this->RandomiseVertex(neutrinoVertex);
+            this->GenerateRandomVertex(neutrinoVertex);
         const double vertexTime{0.}; // Hard code for now
 
         // Store the vertex positon
@@ -93,7 +105,9 @@ void LArSIMplePrimaryGeneratorAction::GeneratePrimaries(G4Event *anEvent)
     }
 }
 
-void LArSIMplePrimaryGeneratorAction::RandomiseVertex(G4ThreeVector &vtx) const
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void LArSIMplePrimaryGeneratorAction::GenerateRandomVertex(G4ThreeVector &vtx) const
 {
     // Choose a random position within the LAr volume (at least 1m from the edges)
     const float buffer{1000.f};

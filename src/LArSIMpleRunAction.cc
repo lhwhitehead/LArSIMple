@@ -1,3 +1,11 @@
+/**
+ *  @file LArSIMple/src/LArSIMpleRunAction.cc
+ * 
+ *  @brief Implementation of the run action class.
+ * 
+ *  $Log: $
+ */
+
 #include "LArSIMpleRunAction.hh"
 
 #include "G4Run.hh"
@@ -8,15 +16,22 @@ LArSIMpleRunAction::LArSIMpleRunAction()
 {
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 LArSIMpleRunAction::~LArSIMpleRunAction()
 {
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 void LArSIMpleRunAction::BeginOfRunAction(const G4Run *aRun)
 {
-    std::cout << "### Run " << aRun->GetRunID() << " start." << std::endl;
+    std::cout << "=== Starting Run " << aRun->GetRunID() << std::endl;
 }
 
-void LArSIMpleRunAction::EndOfRunAction(const G4Run *)
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void LArSIMpleRunAction::EndOfRunAction(const G4Run *aRun)
 {
+    std::cout << "=== Ending Run " << aRun->GetRunID() << std::endl;
 }

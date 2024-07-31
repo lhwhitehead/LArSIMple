@@ -1,7 +1,7 @@
 /**
  *  @file LArSIMple/src/LArSIMple3DEnergyDeposit.cc
  * 
- *  @brief Implementation of the 3D energy deposit class
+ *  @brief Implementation of the 3D energy deposit class.
  * 
  *  $Log: $
  */

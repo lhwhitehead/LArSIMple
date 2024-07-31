@@ -1,3 +1,12 @@
+/**
+ *  @file LArSIMple/src/LArSIMpleProcessTable.cc
+ * 
+ *  @brief Implementation of the process table class.
+ * 
+ *  $Log: $
+ */
+
+
 #include "LArSIMpleProcessTable.hh"
 
 LArSIMpleProcessTable::ProcessCode LArSIMpleProcessTable::GetProcessCodeFromString(const std::string &process)
@@ -8,10 +17,14 @@ LArSIMpleProcessTable::ProcessCode LArSIMpleProcessTable::GetProcessCodeFromStri
         return MC_PROC_UNKNOWN;
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 LArSIMpleProcessTable::LArSIMpleProcessTable()
 {
     this->FillProcessMap();
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void LArSIMpleProcessTable::FillProcessMap()
 {

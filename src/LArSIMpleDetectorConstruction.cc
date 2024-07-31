@@ -1,3 +1,11 @@
+/**
+ *  @file   LArSIMple/src/LArSIMpleDetectorConstruction.cc
+ * 
+ *  @brief  Implementation for the detector construction class.
+ * 
+ *  $Log: $
+ */
+
 #include "LArSIMpleDetectorConstruction.hh"
 #include "LArSIMpleDetectorMessenger.hh"
 #include "LArSIMpleNestedParameterisation.hh"
@@ -25,9 +33,13 @@ LArSIMpleDetectorConstruction::LArSIMpleDetectorConstruction() :
     fDetectorMessenger = new LArSIMpleDetectorMessenger(this);
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 LArSIMpleDetectorConstruction::~LArSIMpleDetectorConstruction()
 {
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 G4VPhysicalVolume *LArSIMpleDetectorConstruction::Construct()
 {
@@ -38,15 +50,17 @@ G4VPhysicalVolume *LArSIMpleDetectorConstruction::Construct()
     return fPhysiWorld;
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 void LArSIMpleDetectorConstruction::DefineMaterials()
 {
     // Try using the NIST database for our materials
     G4NistManager *manager = G4NistManager::Instance();
-
     fMaterialAir = manager->FindOrBuildMaterial("G4_AIR");
     fMaterialLAr = manager->FindOrBuildMaterial("G4_lAr");
-    manager->PrintG4Material("G4_lAr");
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void LArSIMpleDetectorConstruction::ConstructWorld()
 {
@@ -55,6 +69,8 @@ void LArSIMpleDetectorConstruction::ConstructWorld()
     fLogicWorld = new G4LogicalVolume(fSolidWorld, fMaterialAir, "World");
     fPhysiWorld = new G4PVPlacement(0, G4ThreeVector(), fLogicWorld, "World", 0, false, 0, fCheckOverlaps);
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void LArSIMpleDetectorConstruction::ConstructLArBox()
 {
@@ -68,6 +84,8 @@ void LArSIMpleDetectorConstruction::ConstructLArBox()
 
     fLogicLArBox->SetUserLimits(new G4UserLimits(1.0 / CLHEP::mm));
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void LArSIMpleDetectorConstruction::ConstructLArVoxels()
 {
@@ -110,6 +128,8 @@ void LArSIMpleDetectorConstruction::ConstructLArVoxels()
         paramVoxels);                       // Parameterisation.
     std::cout << "Constructed voxels" << std::endl;
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void LArSIMpleDetectorConstruction::PrintDetectorSummary() const
 {

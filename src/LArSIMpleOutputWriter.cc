@@ -1,3 +1,11 @@
+/**
+ *  @file LArSIMple/src/LArSIMpleOutputWriter.cc
+ * 
+ *  @brief Implementation of the output writer class.
+ * 
+ *  $Log: $
+ */
+
 #include <fstream>
 #include <sstream>
 #include <vector>
@@ -16,13 +24,16 @@ LArSIMpleOutputWriter::LArSIMpleOutputWriter(unsigned int eventNumber) :
 {
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 LArSIMpleOutputWriter::~LArSIMpleOutputWriter()
 {
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 void LArSIMpleOutputWriter::WriteOutputZipAndInfoFiles(const std::string &base, const std::vector<LArSIMple3DEnergyDeposit> &hits) const
 {
-
     std::vector<float> flatVec;
     // Flatten the hits
     for (const LArSIMple3DEnergyDeposit &hit : hits)
@@ -47,8 +58,6 @@ void LArSIMpleOutputWriter::WriteOutputZipAndInfoFiles(const std::string &base, 
     // Compression ok
     else
     {
-        std::cout << "Hooray... writing files" << std::endl;
-
         // Create output files
         std::stringstream image_file_name;
         image_file_name << base << "_test_event_" << fEventNumber << ".gz";
@@ -81,12 +90,12 @@ void LArSIMpleOutputWriter::WriteOutputZipAndInfoFiles(const std::string &base, 
     }
 }
 
-// This is very specific and hardcoded
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::vector<LArSIMple3DEnergyDeposit> &hits,
     const LArSIMpleTrueNeutrinoEvent *evt, const std::vector<double> &wireAngles) const
 {
-    std::stringstream rootFileName;
-    rootFileName << base << "_event_" << fEventNumber << ".root";
+    // This is very specific and hardcoded
     TTree *outputTree = new TTree("hits", "");
     outputTree->SetDirectory(0);
 
@@ -196,6 +205,8 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
     std::cout << "Creating ROOT TTree with " << posX.size() << " hits" << std::endl;
     outputTree->Fill();
 
+    std::stringstream rootFileName;
+    rootFileName << base << "_event_" << fEventNumber << ".root";
     TFile *outputFile = new TFile(rootFileName.str().c_str(), "recreate");
     outputFile->cd();
     outputTree->Write();

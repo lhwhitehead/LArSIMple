@@ -1,3 +1,11 @@
+/**
+ *  @file LArSIMple/src/LArSIMpleMessenger.cc
+ * 
+ *  @brief Implementation of the messenger class. 
+ * 
+ *  $Log: $
+ */
+
 #include "LArSIMpleMessenger.hh"
 #include "LArSIMpleEventAction.hh"
 
@@ -61,6 +69,8 @@ LArSIMpleMessenger::LArSIMpleMessenger(LArSIMpleEventAction *pEventAction) :
     fWireAngleW->SetDefaultValue(0.0);
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 LArSIMpleMessenger::~LArSIMpleMessenger()
 {
     delete fLArSIMpleDir;
@@ -74,6 +84,8 @@ LArSIMpleMessenger::~LArSIMpleMessenger()
     delete fWireAngleV;
     delete fWireAngleW;
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 void LArSIMpleMessenger::SetNewValue(G4UIcommand *command, G4String newValue)
 {
