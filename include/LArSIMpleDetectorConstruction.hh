@@ -198,7 +198,7 @@ public:
      *
      *  @param  check whether to check if voxelised
      */
-    void SetCheckOverlaps(bool check)
+    void SetCheckOverlaps(bool check);
 
     /**
      *  @brief  

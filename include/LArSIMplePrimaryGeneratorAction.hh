@@ -116,42 +116,42 @@ private:
 
 inline void LArSIMplePrimaryGeneratorAction::SetNeutrinoFileName(std::string inputFilePath)
 {
-    fNeutrinoFileName = val;
-};
+    fNeutrinoFileName = inputFilePath;
+}
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 inline void LArSIMplePrimaryGeneratorAction::SetNeutrinoFileType(LArSIMpleNeutrinoInputType inputFileType)
 {
-    fNeutrinoFileType = val;
-};
+    fNeutrinoFileType = inputFileType;
+}
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 inline void LArSIMplePrimaryGeneratorAction::SetUseNeutrinos(bool val)
 {
     fUseNeutrinos = val;
-};
+}
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 inline void LArSIMplePrimaryGeneratorAction::SetUseRandomNeutrinoVertex(bool val)
 {
     fUseRandomNeutrinoVertex = val;
-};
+}
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 inline void LArSIMplePrimaryGeneratorAction::SetNeutrinoVertex(G4ThreeVector vec)
 {
     fNeutrinoVertex = vec;
-};
+}
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-inline const LArSIMplePrimaryGeneratorAction::LArSIMpleTrueNeutrinoEvent *GetTrueNeutrinoEventPointer() const
+inline const LArSIMpleTrueNeutrinoEvent *LArSIMplePrimaryGeneratorAction::GetTrueNeutrinoEventPointer() const
 {
     return fNeutrinoEvent;
-};
+}
 
 #endif

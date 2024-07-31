@@ -22,7 +22,7 @@ LArSIMpleNestedParameterisation::LArSIMpleNestedParameterisation(
     fHalfSizeY(halfSizeY),
     fHalfSizeZ(halfSizeZ),
     fNRepZ(nRepZ),
-    fMaterials(material)
+    fMaterials(materials)
 {
 }
 
