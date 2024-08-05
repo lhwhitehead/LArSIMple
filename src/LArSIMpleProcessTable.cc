@@ -6,6 +6,7 @@
  *  $Log: $
  */
 
+#include <iostream>
 
 #include "LArSIMpleProcessTable.hh"
 
@@ -14,7 +15,10 @@ LArSIMpleProcessTable::ProcessCode LArSIMpleProcessTable::GetProcessCodeFromStri
     if (fProcessStringToCodeMap.count(process) != 0)
         return fProcessStringToCodeMap.at(process);
     else
+    {
+        std::cerr << "No process code found for process " << process << std::endl;
         return MC_PROC_UNKNOWN;
+    }
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -78,4 +82,6 @@ void LArSIMpleProcessTable::FillProcessMap()
     fProcessStringToCodeMap.insert(std::make_pair("muonNuclear", MC_PROC_MU_NUCLEAR));
     fProcessStringToCodeMap.insert(std::make_pair("tInelastic", MC_PROC_TRITON_INELASTIC));
     fProcessStringToCodeMap.insert(std::make_pair("primaryBackground", MC_PROC_PRIMARY_BACKGROUND));
+    fProcessStringToCodeMap.insert(std::make_pair("RadioactiveDecay", MC_PROC_RADIOACTIVE_DECAY));
+    fProcessStringToCodeMap.insert(std::make_pair("kaon0LInelastic", MC_PROC_KAON0L_INELASTIC));
 }
