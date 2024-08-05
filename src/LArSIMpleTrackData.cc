@@ -34,7 +34,7 @@ LArSIMpleTrackData::LArSIMpleTrackData(const G4Track *track)
         fProcess = "primary";
     else
         fProcess = track->GetCreatorProcess()->GetProcessName();
-    fIsFoldable = this->CanTrackBeFolded(track);
+    fIsFoldable = this->CanTrackBeFolded();
     fProcessCode = LArSIMpleProcessTable::Get().GetProcessCodeFromString(fProcess);
 }
 
@@ -65,7 +65,7 @@ LArSIMpleTrackData::~LArSIMpleTrackData()
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-bool LArSIMpleTrackData::CanTrackBeFolded(const G4Track *track) const
+bool LArSIMpleTrackData::CanTrackBeFolded() const
 {
     // Primary particle first
     if (fParentID == 0)

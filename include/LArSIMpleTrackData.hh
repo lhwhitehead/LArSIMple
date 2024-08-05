@@ -102,7 +102,7 @@ private:
      *
      *  @return Whether the track truth be folded back
      */
-    bool CanTrackBeFolded(const G4Track *track) const;
+    bool CanTrackBeFolded() const;
 
     int fTrackID;                                       ///< The track id of the associated G4Track object
     int fParentID;                                      ///< The track id of the parent particle
