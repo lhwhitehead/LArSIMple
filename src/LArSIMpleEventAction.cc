@@ -63,25 +63,30 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event *)
         return;
     }
 
-    LArSIMpleHitFeatureUtils hitUtils(fEnergyDeposits);
-
-    // Get neighbours and charge for different radii
-    std::vector<double> radii = {3, 10, 30}; // Measured in cm
-    std::map<unsigned int, std::vector<unsigned int>> neighbours = hitUtils.GetNumberOfNeighboursWithinRadii(radii);
-    std::map<unsigned int, std::vector<double>> charges = hitUtils.GetChargeWithinRadii(radii);
-
     for (unsigned int hitIdx = 0; hitIdx < fEnergyDeposits.size(); ++hitIdx)
     {
         LArSIMple3DEnergyDeposit &eDep = fEnergyDeposits.at(hitIdx);
         const G4ThreeVector &pos = eDep.GetPosition();
-        // Get the UVW projections
         eDep.CalculateUVW(fWireAngleU, fWireAngleV, fWireAngleW);
-        eDep.AddFeature(hitUtils.GetAngleToNeighbours(hitIdx));
-        eDep.AddFeature(hitUtils.GetDotProductToNeighbours(hitIdx));
-        for (unsigned int radius = 0; radius < radii.size(); ++radius)
-            eDep.AddFeature(neighbours.at(hitIdx).at(radius));
-        for (unsigned int radius = 0; radius < radii.size(); ++radius)
-            eDep.AddFeature(charges.at(hitIdx).at(radius));
+    }
+
+    if (fUseHitFeatures)
+    {
+        LArSIMpleHitFeatureUtils hitUtils(fEnergyDeposits);
+        // Get neighbours and charge for different radii
+        std::vector<double> radii = {3, 10, 30}; // Measured in cm
+        std::map<unsigned int, std::vector<unsigned int>> neighbours = hitUtils.GetNumberOfNeighboursWithinRadii(radii);
+        std::map<unsigned int, std::vector<double>> charges = hitUtils.GetChargeWithinRadii(radii);
+        for (unsigned int hitIdx = 0; hitIdx < fEnergyDeposits.size(); ++hitIdx)
+        {
+            LArSIMple3DEnergyDeposit &eDep = fEnergyDeposits.at(hitIdx);
+            eDep.AddFeature(hitUtils.GetAngleToNeighbours(hitIdx));
+            eDep.AddFeature(hitUtils.GetDotProductToNeighbours(hitIdx));
+            for (unsigned int radius = 0; radius < radii.size(); ++radius)
+                eDep.AddFeature(neighbours.at(hitIdx).at(radius));
+            for (unsigned int radius = 0; radius < radii.size(); ++radius)
+                eDep.AddFeature(charges.at(hitIdx).at(radius));
+        }
     }
 
     LArSIMpleOutputWriter writer(fEventID);

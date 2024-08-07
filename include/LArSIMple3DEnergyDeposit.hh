@@ -287,8 +287,6 @@ inline void LArSIMple3DEnergyDeposit::SetPositionAndTime(const G4ThreeVector &po
 inline void LArSIMple3DEnergyDeposit::SetEnergy(const double energy)
 {
     fEnergy = energy;
-    // Add the energy as the first feature... we should also allow for calibration later
-    fFeatures.emplace_back(fEnergy);
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -296,7 +294,6 @@ inline void LArSIMple3DEnergyDeposit::SetEnergy(const double energy)
 inline void LArSIMple3DEnergyDeposit::SetDeDx(const double dedx)
 {
     fDeDx = dedx;
-    fFeatures.emplace_back(fDeDx);
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------

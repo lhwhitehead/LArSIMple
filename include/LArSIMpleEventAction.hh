@@ -103,6 +103,13 @@ public:
     void SetHitThreshold(const double threshold);
 
     /**
+     *  @brief  Whether to calculate and use neighbourhood features for each 3DEnergyDeposit
+     *
+     *  @param  val whether or not to use the features
+     */
+    void SetUseHitFeatures(const bool val);
+
+    /**
      *  @brief  Set the path to a directory for the output file(s)
      *
      *  @param  val the path to the directory
@@ -162,6 +169,8 @@ private:
 
     unsigned int fEventID;                        ///< Event ID for the current event
     double fHitThreshold;                         ///< Energy threshold for 3DEnergyDeposit creation
+    bool fUseHitFeatures;                         ///< Whether to use and calculate hit features from local neighbourhood
+
     std::string fOutputFileDirectory;             ///< Path to the output directory
     std::string fOutputFilePrefix;                ///< Prefix for output file names
 
@@ -226,6 +235,13 @@ inline double LArSIMpleEventAction::GetHitThreshold() const
 inline void LArSIMpleEventAction::SetHitThreshold(const double threshold)
 {
     fHitThreshold = threshold;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+inline void LArSIMpleEventAction::SetUseHitFeatures(const bool val)
+{
+    fUseHitFeatures = val;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------

@@ -53,6 +53,11 @@ LArSIMpleMessenger::LArSIMpleMessenger(LArSIMpleEventAction *pEventAction) :
     fHitThreshold->SetParameterName("HitThreshold", true);
     fHitThreshold->SetDefaultValue(0.01);
 
+    fUseHitFeatures = new G4UIcmdWithABool("/LArSIMple/UseHitFeatures", this);
+    fUseHitFeatures->SetGuidance("Calculate and use features for each hit based on the local neighbourhood");
+    fUseHitFeatures->SetParameterName("UseHitFeatures", false);
+    fUseHitFeatures->SetDefaultValue(false);
+
     fWireAngleU = new G4UIcmdWithADouble("/LArSIMple/WireAngleU", this);
     fWireAngleU->SetGuidance("Angle of the U wires to the verticle");
     fWireAngleU->SetParameterName("WireAngleU", true);
@@ -80,6 +85,7 @@ LArSIMpleMessenger::~LArSIMpleMessenger()
     delete fWriteRootFile;
     delete fFoldBackTruthInfo;
     delete fHitThreshold;
+    delete fUseHitFeatures;
     delete fWireAngleU;
     delete fWireAngleV;
     delete fWireAngleW;
@@ -102,6 +108,8 @@ void LArSIMpleMessenger::SetNewValue(G4UIcommand *command, G4String newValue)
         fEventAction->SetFoldBackTruthInfo(fFoldBackTruthInfo->GetNewBoolValue(newValue));
     if (command == fHitThreshold)
         fEventAction->SetHitThreshold(fHitThreshold->GetNewDoubleValue(newValue));
+    if (command == fUseHitFeatures)
+        fEventAction->SetUseHitFeatures(fUseHitFeatures->GetNewBoolValue(newValue));
     if (command == fWireAngleU)
         fEventAction->SetWireAngleU(fWireAngleU->GetNewDoubleValue(newValue));
     if (command == fWireAngleV)

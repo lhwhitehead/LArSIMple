@@ -58,6 +58,7 @@ private:
     G4UIcmdWithABool *fFoldBackTruthInfo;       ///< Command for whether to fold truth information to the primaries
 
     G4UIcmdWithADoubleAndUnit *fHitThreshold;   ///< Command for setting the energy threshold for hit creation
+    G4UIcmdWithABool *fUseHitFeatures;          ///< Command for whether to fold truth information to the primaries
 
     G4UIcmdWithADouble *fWireAngleU;            ///< Command to set the U plane wire angle
     G4UIcmdWithADouble *fWireAngleV;            ///< Command to set the V plane wire angle

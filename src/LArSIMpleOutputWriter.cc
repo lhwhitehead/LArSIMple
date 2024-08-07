@@ -99,7 +99,7 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
     TTree *outputTree = new TTree("hits", "");
     outputTree->SetDirectory(0);
 
-    // Each event consists the basic event information and a number of vectors
+    const bool useHitFeatures{!(hits.at(0).GetFeatures().empty())};
 
     // Event level information
     int eventNumber;
@@ -160,14 +160,19 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
     outputTree->Branch("w", &posW);
     outputTree->Branch("charge", &charge);
     outputTree->Branch("dedx", &dedx);
-    outputTree->Branch("angle", &angle);
-    outputTree->Branch("dotProduct", &dotProduct);
-    outputTree->Branch("neighboursR1", &neighboursR1);
-    outputTree->Branch("neighboursR2", &neighboursR2);
-    outputTree->Branch("neighboursR3", &neighboursR3);
-    outputTree->Branch("chargeR1", &chargeR1);
-    outputTree->Branch("chargeR2", &chargeR2);
-    outputTree->Branch("chargeR3", &chargeR3);
+
+    if (useHitFeatures)
+    {
+        outputTree->Branch("angle", &angle);
+        outputTree->Branch("dotProduct", &dotProduct);
+        outputTree->Branch("neighboursR1", &neighboursR1);
+        outputTree->Branch("neighboursR2", &neighboursR2);
+        outputTree->Branch("neighboursR3", &neighboursR3);
+        outputTree->Branch("chargeR1", &chargeR1);
+        outputTree->Branch("chargeR2", &chargeR2);
+        outputTree->Branch("chargeR3", &chargeR3);
+    }
+
     outputTree->Branch("pdg", &pdg);
     outputTree->Branch("trackid", &trackid);
     outputTree->Branch("process", &process);
@@ -186,17 +191,22 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
         posV.emplace_back(uvwPos.getY());
         posW.emplace_back(uvwPos.getZ());
 
-        const std::vector<float> features = hit.GetFeatures();
-        charge.emplace_back(features.at(0));
-        dedx.emplace_back(features.at(1));
-        angle.emplace_back(features.at(2));
-        dotProduct.emplace_back(features.at(3));
-        neighboursR1.emplace_back(features.at(4));
-        neighboursR2.emplace_back(features.at(5));
-        neighboursR3.emplace_back(features.at(6));
-        chargeR1.emplace_back(features.at(7));
-        chargeR2.emplace_back(features.at(8));
-        chargeR3.emplace_back(features.at(9));
+        charge.emplace_back(hit.GetEnergy());
+        dedx.emplace_back(hit.GetDeDx());
+
+        if (useHitFeatures)
+        {
+            const std::vector<float> features = hit.GetFeatures();
+            angle.emplace_back(features.at(0));
+            dotProduct.emplace_back(features.at(1));
+            neighboursR1.emplace_back(features.at(2));
+            neighboursR2.emplace_back(features.at(3));
+            neighboursR3.emplace_back(features.at(4));
+            chargeR1.emplace_back(features.at(5));
+            chargeR2.emplace_back(features.at(6));
+            chargeR3.emplace_back(features.at(7));
+        }
+
         pdg.emplace_back(hit.GetParticlePDG());
         trackid.emplace_back(hit.GetParticleTrackID());
         process.emplace_back(hit.GetParticleProcess());
