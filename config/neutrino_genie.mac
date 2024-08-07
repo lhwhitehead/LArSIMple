@@ -1,13 +1,13 @@
 /LArSIMple/UseNeutrinoEvents true
-/LArSIMple/NeutrinoInputFile /exp/dune/data/users/lwhite86/genie/mcSample/nc/nc_1000_events_seed_50.dat
-/LArSIMple/NeutrinoFileType 0
-/LArSIMple/UseRandomNeutrinoVertex false 
-/LArSIMple/SetNeutrinoVertex 0.0 0.0 -200. cm 
+/LArSIMple/Neutrino/NeutrinoInputFile /exp/dune/data/users/lwhite86/genie/mcSample/cc_numu/cc_numu_1000_events_seed_50.dat
+/LArSIMple/Neutrino/NeutrinoFileType 0
+/LArSIMple/Neutrino/UseRandomNeutrinoVertex false 
+/LArSIMple/Neutrino/SetNeutrinoVertex 0.0 0.0 -200. cm 
 
-/LArSIMple/OutputFileDir /exp/dune/data/users/lwhite86/LArSIMple/nc/0/
-#/LArSIMple/OutputFileDir /exp/dune/app/users/lwhite86/toyG4/LArSIMple/
+#/LArSIMple/OutputFileDir /exp/dune/data/users/lwhite86/LArSIMple/nc/0/
+/LArSIMple/OutputFileDir /exp/dune/app/users/lwhite86/toyG4/LArSIMple/
 /LArSIMple/OutputFilePrefix LArSIMple_neutrino
 
 /random/setSeeds 1234 5678
 
-/run/beamOn 1000
+/run/beamOn 10

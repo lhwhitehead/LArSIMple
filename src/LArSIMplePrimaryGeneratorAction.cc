@@ -6,6 +6,8 @@
  *  $Log: $
  */
 
+#include <cmath>
+
 #include "LArSIMplePrimaryGeneratorAction.hh"
 #include "LArSIMpleDetectorConstruction.hh"
 #include "LArSIMpleNeutrinoInputParser.hh"
@@ -66,42 +68,82 @@ void LArSIMplePrimaryGeneratorAction::GeneratePrimaries(G4Event *anEvent)
         G4ThreeVector neutrinoVertex = fNeutrinoVertex;
         if (fUseRandomNeutrinoVertex)
             this->GenerateRandomVertex(neutrinoVertex);
-        const double vertexTime{0.}; // Hard code for now
 
         // Store the vertex positon
         fNeutrinoEvent->SetInteractionVertex(neutrinoVertex);
 
         // Use a particle gun for the neutrinos as it is more convenient
         G4ParticleGun *particleGun = new G4ParticleGun();
-        G4ParticleTable *particleTable = G4ParticleTable::GetParticleTable();
-
-        // We need to fire all of the final-state particles
-        const std::vector<LArSIMpleTrueParticle> finalStateParticles = fNeutrinoEvent->GetFinalStateParticles();
-        for (const LArSIMpleTrueParticle &part : finalStateParticles)
-        {
-            // Get the particle mass and hence kinetic energy
-            // First, check if this particle exists in G4. If now, ignore for now
-            G4ParticleDefinition *particleDef = particleTable->FindParticle(part.GetPDGCode());
-            if (particleDef == nullptr)
-            {
-                std::cerr << "LArSimplePrimaryGeneratorAction :: unknown particle found: " << part.GetPDGCode() << std::endl;
-                continue;
-            }
-            particleGun->SetParticleDefinition(particleDef);
-            const G4double mass{particleGun->GetParticleDefinition()->GetPDGMass()};
-            const G4double ekin{part.GetEnergy() - mass};
-
-            particleGun->SetParticleEnergy(ekin);
-            particleGun->SetParticlePosition(neutrinoVertex);
-            particleGun->SetParticleTime(vertexTime);
-            particleGun->SetParticleMomentumDirection(part.GetDirection());
-            particleGun->GeneratePrimaryVertex(anEvent);
-        }
+        this->GenerateNeutrinoPrimaries(anEvent, particleGun);
+    }
+    else if (fUseParticleBombs)
+    {
+        G4ParticleGun *particleGun = new G4ParticleGun();
+        this->GenerateParticleBombPrimaries(anEvent, particleGun);
     }
     else
     {
         // Use the particle gun that was configured in the .mac file
         fParticleGun->GeneratePrimaryVertex(anEvent);
+    }
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void LArSIMplePrimaryGeneratorAction::GenerateNeutrinoPrimaries(G4Event *anEvent, G4ParticleGun *particleGun)
+{
+    G4ParticleTable *particleTable = G4ParticleTable::GetParticleTable();
+    
+    // We need to fire all of the final-state particles
+    const std::vector<LArSIMpleTrueParticle> finalStateParticles = fNeutrinoEvent->GetFinalStateParticles();
+    for (const LArSIMpleTrueParticle &part : finalStateParticles)
+    {
+        // Get the particle mass and hence kinetic energy
+        // First, check if this particle exists in G4. If now, ignore for now
+        G4ParticleDefinition *particleDef = particleTable->FindParticle(part.GetPDGCode());
+        if (particleDef == nullptr)
+        {
+            std::cerr << "LArSimplePrimaryGeneratorAction :: unknown particle found: " << part.GetPDGCode() << std::endl;
+            continue;
+        }
+        particleGun->SetParticleDefinition(particleDef);
+        const G4double mass{particleGun->GetParticleDefinition()->GetPDGMass()};
+        const G4double ekin{part.GetEnergy() - mass};
+    
+        particleGun->SetParticleEnergy(ekin);
+        particleGun->SetParticlePosition(fNeutrinoVertex);
+        particleGun->SetParticleTime(0.0); // Hard-code for now
+        particleGun->SetParticleMomentumDirection(part.GetDirection());
+        particleGun->GeneratePrimaryVertex(anEvent);
+    }
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void LArSIMplePrimaryGeneratorAction::GenerateParticleBombPrimaries(G4Event *anEvent, G4ParticleGun *particleGun)
+{
+    G4ParticleTable *particleTable = G4ParticleTable::GetParticleTable();
+
+    for (const std::pair<int, unsigned int> &particlePair : fParticleBombParticles)
+    {
+        for (unsigned int p = 0; p < particlePair.second; ++p)
+        {
+            G4ParticleDefinition *particleDef = particleTable->FindParticle(particlePair.first);
+            if (particleDef == nullptr)
+            {
+                std::cerr << "LArSimplePrimaryGeneratorAction :: unknown particle found: " << particlePair.first << std::endl;
+                continue;
+            }
+            particleGun->SetParticleDefinition(particleDef);
+            const G4double mass{particleGun->GetParticleDefinition()->GetPDGMass()};
+            const G4double ekin{1500. - mass};
+
+            particleGun->SetParticleEnergy(ekin);
+            particleGun->SetParticlePosition(G4ThreeVector(0., 0., 0.));
+            particleGun->SetParticleTime(0.0); 
+            particleGun->SetParticleMomentumDirection(this->GenerateIsotropicDirection());
+            particleGun->GeneratePrimaryVertex(anEvent);
+        }
     }
 }
 
@@ -122,3 +164,20 @@ void LArSIMplePrimaryGeneratorAction::GenerateRandomVertex(G4ThreeVector &vtx) c
     vtx.setY(minY + G4UniformRand() * (maxY - minY));
     vtx.setZ(minZ + G4UniformRand() * (maxZ - minZ));
 }
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+G4ThreeVector LArSIMplePrimaryGeneratorAction::GenerateIsotropicDirection() const
+{
+    // This is the same as picking a random point on a unit sphere
+    const double a{2.0 * G4UniformRand() - 1};
+    const double b{2.0 * std::acos(-1.0) * G4UniformRand()};
+
+    const double x = std::sqrt(1 - a * a) * std::cos(b);
+    const double y = std::sqrt(1 - a * a) * std::sin(b);
+    const double z = a;
+
+    G4ThreeVector dir(x, y, z);
+    return dir;
+}
+

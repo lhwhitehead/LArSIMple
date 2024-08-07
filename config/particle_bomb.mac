@@ -1,0 +1,16 @@
+/LArSIMple/UseNeutrinoEvents false
+/LArSIMple/UseParticleBombs true
+
+/LArSIMple/ParticleBomb/LeptonPdg 13
+/LArSIMple/ParticleBomb/NProton 1
+/LArSIMple/ParticleBomb/NPiZero 1
+/LArSIMple/ParticleBomb/NPiPlus 1
+
+
+#/LArSIMple/OutputFileDir /exp/dune/data/users/lwhite86/LArSIMple/nc/0/
+/LArSIMple/OutputFileDir /exp/dune/app/users/lwhite86/toyG4/LArSIMple/
+/LArSIMple/OutputFilePrefix LArSIMple_particle_bomb
+
+/random/setSeeds 1234 5678
+
+/run/beamOn 10
