@@ -135,8 +135,7 @@ void LArSIMplePrimaryGeneratorAction::GenerateParticleBombPrimaries(G4Event *anE
                 continue;
             }
             particleGun->SetParticleDefinition(particleDef);
-            const G4double mass{particleGun->GetParticleDefinition()->GetPDGMass()};
-            const G4double ekin{1500. - mass};
+            const G4double ekin{fParticleBombMinKE + G4UniformRand() * (fParticleBombMaxKE - fParticleBombMinKE)};
 
             particleGun->SetParticleEnergy(ekin);
             particleGun->SetParticlePosition(G4ThreeVector(0., 0., 0.));

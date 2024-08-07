@@ -17,6 +17,7 @@ class G4UIcmdWithAString;
 class G4UIcmdWithAnInteger;
 class G4UIcmdWithABool;
 class G4UIcmdWith3VectorAndUnit;
+class G4UIcmdWithADouble;
 
 /**
  *  @brief Class to setup the primary generator action class from the configuration files
@@ -67,6 +68,8 @@ private:
     G4UIcmdWithAnInteger *fNKZero;                               ///< The number of K0 in the particle bomb
     G4UIcmdWithAnInteger *fNKPlus;                               ///< The number of K+ in the particle bomb
     G4UIcmdWithAnInteger *fNKMinus;                              ///< The number of K- in the particle bomb
+    G4UIcmdWithADouble *fMinimumKE;                              ///< The minimum kinetic energy of particles in the particle bomb
+    G4UIcmdWithADouble *fMaximumKE;                              ///< The maximum kinetic energy of particles in the particle bomb
 };
 
 #endif

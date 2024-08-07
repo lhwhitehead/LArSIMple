@@ -14,6 +14,7 @@
 #include "G4UIcmdWithABool.hh"
 #include "G4UIcmdWithAString.hh"
 #include "G4UIcmdWithAnInteger.hh"
+#include "G4UIcmdWithADouble.hh"
 #include "G4UIcommand.hh"
 #include "G4UIdirectory.hh"
 #include "G4UIparameter.hh"
@@ -105,6 +106,16 @@ LArSIMplePrimaryGeneratorMessenger::LArSIMplePrimaryGeneratorMessenger(LArSIMple
     fNKMinus->SetGuidance("Number of K- in the particle bomb");
     fNKMinus->SetParameterName("NPiMinus", false);
     fNKMinus->SetDefaultValue(0);
+
+    fMinimumKE = new G4UIcmdWithADouble("/LArSIMple/ParticleBomb/MinimumKineticEnergy", this);
+    fMinimumKE->SetGuidance("Minimum kinetic energy for particle bomb particles");
+    fMinimumKE->SetParameterName("MinimumKineticEnergy", false);
+    fMinimumKE->SetDefaultValue(100.);
+
+    fMaximumKE = new G4UIcmdWithADouble("/LArSIMple/ParticleBomb/MaximumKineticEnergy", this);
+    fMaximumKE->SetGuidance("Maximum kinetic energy for particle bomb particles");
+    fMaximumKE->SetParameterName("MaximumKineticEnergy", false);
+    fMaximumKE->SetDefaultValue(500.);
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -131,6 +142,8 @@ LArSIMplePrimaryGeneratorMessenger::~LArSIMplePrimaryGeneratorMessenger()
     delete fNKZero;
     delete fNKPlus;
     delete fNKMinus;
+    delete fMinimumKE;
+    delete fMaximumKE;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -179,4 +192,8 @@ void LArSIMplePrimaryGeneratorMessenger::SetNewValue(G4UIcommand *command, G4Str
         fPrimaryGeneratorAction->SetParticleBombNKPlus(fNKPlus->GetNewIntValue(newValue));
     if (command == fNKMinus)
         fPrimaryGeneratorAction->SetParticleBombNProton(fNKMinus->GetNewIntValue(newValue));
+    if (command == fMinimumKE)
+        fPrimaryGeneratorAction->SetParticleBombMinKE(fMinimumKE->GetNewDoubleValue(newValue));
+    if (command == fMaximumKE)
+        fPrimaryGeneratorAction->SetParticleBombMaxKE(fMaximumKE->GetNewDoubleValue(newValue));
 }

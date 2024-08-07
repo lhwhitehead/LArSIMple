@@ -6,6 +6,8 @@
 /LArSIMple/ParticleBomb/NPiZero 1
 /LArSIMple/ParticleBomb/NPiPlus 1
 
+/LArSIMple/ParticleBomb/MinimumKineticEnergy 100.
+/LArSIMple/ParticleBomb/MaximumKineticEnergy 500.
 
 #/LArSIMple/OutputFileDir /exp/dune/data/users/lwhite86/LArSIMple/nc/0/
 /LArSIMple/OutputFileDir /exp/dune/app/users/lwhite86/toyG4/LArSIMple/
@@ -13,4 +15,4 @@
 
 /random/setSeeds 1234 5678
 
-/run/beamOn 10
+/run/beamOn 5

@@ -173,6 +173,21 @@ public:
      *  @param  n the number of K-
      */
     void SetParticleBombNKMinus(unsigned int n);
+
+    /**
+     *  @brief  Set the minimum kinetic energy for particle bomb particles
+     *
+     *  @param  minKE the minimum kinetic energy
+     */
+    void SetParticleBombMinKE(double minKE);
+
+    /**
+     *  @brief  Set the maximum kinetic energy for particle bomb particles
+     *
+     *  @param  maxKE the maximum kinetic energy
+     */
+    void SetParticleBombMaxKE(double maxKE);
+
 private:
     /**
      *  @brief  Generate a random vertex position
@@ -207,8 +222,10 @@ private:
     bool fUseRandomNeutrinoVertex;                        ///< Whether to randomise the neutrino vertex position
     G4ThreeVector fNeutrinoVertex;                        ///< The neutrino vertex position
 
-    bool fUseParticleBombs;                                ///< Whether to use particle bombs
-    std::map<int, unsigned int> fParticleBombParticles;    ///< Map of pdg code to number of particles for particle bomb events     
+    bool fUseParticleBombs;                               ///< Whether to use particle bombs
+    std::map<int, unsigned int> fParticleBombParticles;   ///< Map of pdg code to number of particles for particle bomb events     
+    double fParticleBombMinKE;                            ///< Minimum kinetic energy for particle bomb particles
+    double fParticleBombMaxKE;                            ///< Maximum kinetic energy for particle bomb particles
 
     const LArSIMpleDetectorConstruction *fDetectorConstruction;   ///< Pointer to the detector construction (geometry) object
 };
@@ -325,6 +342,20 @@ inline void LArSIMplePrimaryGeneratorAction::SetParticleBombNKPlus(unsigned int 
 inline void LArSIMplePrimaryGeneratorAction::SetParticleBombNKMinus(unsigned int n)
 {
     this->AddToParticleBombMap(-321, n);
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+inline void LArSIMplePrimaryGeneratorAction::SetParticleBombMinKE(double minKE)
+{
+    fParticleBombMinKE = minKE;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+inline void LArSIMplePrimaryGeneratorAction::SetParticleBombMaxKE(double maxKE)
+{
+    fParticleBombMaxKE = maxKE;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
