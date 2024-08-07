@@ -2,9 +2,14 @@
 /LArSIMple/UseParticleBombs true
 
 /LArSIMple/ParticleBomb/LeptonPdg 13
-/LArSIMple/ParticleBomb/NProton 1
+/LArSIMple/ParticleBomb/NProton 5
+/LArSIMple/ParticleBomb/NNeutron 2
 /LArSIMple/ParticleBomb/NPiZero 1
 /LArSIMple/ParticleBomb/NPiPlus 1
+/LArSIMple/ParticleBomb/NPiMinus 0
+/LArSIMple/ParticleBomb/NKZero 0
+/LArSIMple/ParticleBomb/NKPlus 0
+/LArSIMple/ParticleBomb/NKMinus 0
 
 /LArSIMple/ParticleBomb/MinimumKineticEnergy 100.
 /LArSIMple/ParticleBomb/MaximumKineticEnergy 500.
@@ -15,4 +20,4 @@
 
 /random/setSeeds 1234 5678
 
-/run/beamOn 5
+/run/beamOn 1
