@@ -245,9 +245,6 @@ void LArSIMpleNeutrinoInputParser::ReadFromGiBUUTextFile(const std::string &file
     const int lineSize = 250;
     char inBuf[lineSize];
     std::vector<std::string> token = this->ReadGiBUUTextLine(inputFile, lineSize, inBuf);
-    std::cout << "Got " << token.size() << " tokens:" << std::endl;
-    for (const std::string &t : token)
-        std::cout << " - " << t << std::endl;
 
     // Check we haven't reached the end of the input file
     if (token.size() == 0)
