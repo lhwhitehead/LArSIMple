@@ -59,7 +59,8 @@ private:
 
     G4UIdirectory *fParticleBombDir;                             ///< Directory under which all particle bomb commands are defined
     G4UIcmdWithABool *fUseParticleBombs;                         ///< Whether to use particle bombs
-    G4UIcmdWithAnInteger *fLeptonPdg;                            ///< The PDG code of the lepton to use (-999 for no lepton)
+    G4UIcmdWithAnInteger *fNMuon;                                ///< The number of muons in the particle bomb
+    G4UIcmdWithAnInteger *fNElectron;                            ///< The number of electrons in the particle bomb
     G4UIcmdWithAnInteger *fNProton;                              ///< The number of protons in the particle bomb
     G4UIcmdWithAnInteger *fNNeutron;                             ///< The number of neutrons in the particle bomb
     G4UIcmdWithAnInteger *fNPiZero;                              ///< The number of pi0 in the particle bomb

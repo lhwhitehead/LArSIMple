@@ -112,11 +112,18 @@ public:
     void SetUseParticleBombs(bool val);
 
     /**
-     *  @brief  Set the lepton pdg code for particle bomb events
+     *  @brief  Set the number of muons for particle bomb events
      *
-     *  @param  pdg the pdg code of the lepton
+     *  @param  n the number of muons
      */
-    void SetParticleBombLeptonPdg(int pdg);
+    void SetParticleBombNMuon(unsigned int n);
+
+    /**
+     *  @brief  Set the number of electrons for particle bomb events
+     *
+     *  @param  n the number of electrons
+     */
+    void SetParticleBombNElectron(unsigned int n);
 
     /**
      *  @brief  Set the number of protons for particle bomb events
@@ -281,11 +288,16 @@ inline void LArSIMplePrimaryGeneratorAction::SetUseParticleBombs(bool val)
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-inline void LArSIMplePrimaryGeneratorAction::SetParticleBombLeptonPdg(int pdg)
+inline void LArSIMplePrimaryGeneratorAction::SetParticleBombNMuon(unsigned int n)
 {
-    const unsigned int absPdg = std::abs(pdg);
-    if (absPdg == 11 || absPdg == 13 || absPdg == 15)
-        this->AddToParticleBombMap(pdg, 1);
+    this->AddToParticleBombMap(13, n);
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+inline void LArSIMplePrimaryGeneratorAction::SetParticleBombNElectron(unsigned int n)
+{
+    this->AddToParticleBombMap(11, n);
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------

@@ -62,10 +62,15 @@ LArSIMplePrimaryGeneratorMessenger::LArSIMplePrimaryGeneratorMessenger(LArSIMple
     fParticleBombDir = new G4UIdirectory("/LArSIMple/ParticleBomb/");
     fParticleBombDir->SetGuidance("Commands to select I/O options for particle bombs");
 
-    fLeptonPdg = new G4UIcmdWithAnInteger("/LArSIMple/ParticleBomb/LeptonPdg", this);
-    fLeptonPdg->SetGuidance("Lepton Pdg code (-999 for no lepton)");
-    fLeptonPdg->SetParameterName("LeptonPdg", false);
-    fLeptonPdg->SetDefaultValue(-999);
+    fNMuon = new G4UIcmdWithAnInteger("/LArSIMple/ParticleBomb/NMuon", this);
+    fNMuon->SetGuidance("Number of muons in the particle bomb");
+    fNMuon->SetParameterName("NMuon", false);
+    fNMuon->SetDefaultValue(0);
+
+    fNElectron = new G4UIcmdWithAnInteger("/LArSIMple/ParticleBomb/NElectron", this);
+    fNElectron->SetGuidance("Number of electrons in the particle bomb");
+    fNElectron->SetParameterName("NElectron", false);
+    fNElectron->SetDefaultValue(0);
 
     fNProton = new G4UIcmdWithAnInteger("/LArSIMple/ParticleBomb/NProton", this);
     fNProton->SetGuidance("Number of protons in the particle bomb");
@@ -133,7 +138,8 @@ LArSIMplePrimaryGeneratorMessenger::~LArSIMplePrimaryGeneratorMessenger()
 
     delete fUseParticleBombs;
     delete fParticleBombDir;
-    delete fLeptonPdg;
+    delete fNMuon;
+    delete fNElectron;
     delete fNProton;
     delete fNNeutron;
     delete fNPiZero;
@@ -174,8 +180,10 @@ void LArSIMplePrimaryGeneratorMessenger::SetNewValue(G4UIcommand *command, G4Str
     // Particle bomb commands
     if (command == fUseParticleBombs)
         fPrimaryGeneratorAction->SetUseParticleBombs(fUseParticleBombs->GetNewBoolValue(newValue));
-    if (command == fLeptonPdg)
-        fPrimaryGeneratorAction->SetParticleBombLeptonPdg(fLeptonPdg->GetNewIntValue(newValue));
+    if (command == fNMuon)
+        fPrimaryGeneratorAction->SetParticleBombNMuon(fNMuon->GetNewIntValue(newValue));
+    if (command == fNElectron)
+        fPrimaryGeneratorAction->SetParticleBombNElectron(fNElectron->GetNewIntValue(newValue));
     if (command == fNProton)
         fPrimaryGeneratorAction->SetParticleBombNProton(fNProton->GetNewIntValue(newValue));
     if (command == fNNeutron)
