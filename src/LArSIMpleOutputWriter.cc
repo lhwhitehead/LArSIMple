@@ -9,6 +9,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <set>
 
 #include "LArSIMple3DEnergyDeposit.hh"
 #include "LArSIMpleOutputWriter.hh"
@@ -93,7 +94,7 @@ void LArSIMpleOutputWriter::WriteOutputZipAndInfoFiles(const std::string &base, 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::vector<LArSIMple3DEnergyDeposit> &hits,
-    const LArSIMpleTrueNeutrinoEvent *evt, const std::vector<double> &wireAngles) const
+    const LArSIMpleTrueNeutrinoEvent *evt, std::map<int, LArSIMpleTrackData> &trueTracks, const std::vector<double> &wireAngles) const
 {
     // This is very specific and hardcoded
     TTree *outputTree = new TTree("hits", "");
@@ -177,6 +178,7 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
     outputTree->Branch("trackid", &trackid);
     outputTree->Branch("process", &process);
 
+    std::set<int> hitTrackIDs;
     for (unsigned int h = 0; h < hits.size(); ++h)
     {
         const LArSIMple3DEnergyDeposit &hit = hits.at(h);
@@ -210,6 +212,103 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
         pdg.emplace_back(hit.GetParticlePDG());
         trackid.emplace_back(hit.GetParticleTrackID());
         process.emplace_back(hit.GetParticleProcess());
+
+        if(!hitTrackIDs.count(hit.GetParticleTrackID()))
+            hitTrackIDs.insert(hit.GetParticleTrackID());
+    }
+
+    // True track information
+    std::vector<float> trackVtxPosX, trackVtxPosY, trackVtxPosZ, trackVtxPosU, trackVtxPosV, trackVtxPosW;
+    std::vector<float> trackVtxDirX, trackVtxDirY, trackVtxDirZ, trackVtxDirU, trackVtxDirV, trackVtxDirW;
+    std::vector<float> trackVtxKE, trackVtxMomentum;
+
+    std::vector<float> trackEndPosX, trackEndPosY, trackEndPosZ, trackEndPosU, trackEndPosV, trackEndPosW;
+    std::vector<float> trackEndDirX, trackEndDirY, trackEndDirZ, trackEndDirU, trackEndDirV, trackEndDirW;
+    std::vector<float> trackEndKE, trackEndMomentum;
+
+    std::vector<int> trackPDG;
+    std::vector<int> trackID;
+    std::vector<float> trackMass;
+
+    outputTree->Branch("trueTrackVtxPosX", &trackVtxPosX);
+    outputTree->Branch("trueTrackVtxPosY", &trackVtxPosY);
+    outputTree->Branch("trueTrackVtxPosZ", &trackVtxPosZ);
+    outputTree->Branch("trueTrackVtxPosU", &trackVtxPosU);
+    outputTree->Branch("trueTrackVtxPosV", &trackVtxPosV);
+    outputTree->Branch("trueTrackVtxPosW", &trackVtxPosW);
+    outputTree->Branch("trueTrackVtxDirX", &trackVtxDirX);
+    outputTree->Branch("trueTrackVtxDirY", &trackVtxDirY);
+    outputTree->Branch("trueTrackVtxDirZ", &trackVtxDirZ);
+    outputTree->Branch("trueTrackVtxDirU", &trackVtxDirU);
+    outputTree->Branch("trueTrackVtxDirV", &trackVtxDirV);
+    outputTree->Branch("trueTrackVtxDirW", &trackVtxDirW);
+    outputTree->Branch("trueTrackVtxKE", &trackVtxKE);
+    outputTree->Branch("trueTrackVtxMomentum", &trackVtxMomentum);
+
+    outputTree->Branch("trueTrackEndPosX", &trackEndPosX);
+    outputTree->Branch("trueTrackEndPosY", &trackEndPosY);
+    outputTree->Branch("trueTrackEndPosZ", &trackEndPosZ);
+    outputTree->Branch("trueTrackEndPosU", &trackEndPosU);
+    outputTree->Branch("trueTrackEndPosV", &trackEndPosV);
+    outputTree->Branch("trueTrackEndPosW", &trackEndPosW);
+    outputTree->Branch("trueTrackEndDirX", &trackEndDirX);
+    outputTree->Branch("trueTrackEndDirY", &trackEndDirY);
+    outputTree->Branch("trueTrackEndDirZ", &trackEndDirZ);
+    outputTree->Branch("trueTrackEndDirU", &trackEndDirU);
+    outputTree->Branch("trueTrackEndDirV", &trackEndDirV);
+    outputTree->Branch("trueTrackEndDirW", &trackEndDirW);
+    outputTree->Branch("trueTrackEndKE", &trackEndKE);
+    outputTree->Branch("trueTrackEndMomentum", &trackEndMomentum);
+
+    outputTree->Branch("trueTrackPDG", &trackPDG);
+    outputTree->Branch("trueTrackID", &trackID);
+    outputTree->Branch("trueTrackMass", &trackMass);
+
+    for (const auto &trackPair : trueTracks)
+    {
+        if (!hitTrackIDs.count(trackPair.first))
+            continue;
+
+        G4ThreeVector tempVec{trackPair.second.GetVertexPosition()};
+        trackVtxPosX.emplace_back(tempVec.getX());
+        trackVtxPosY.emplace_back(tempVec.getY());
+        trackVtxPosZ.emplace_back(tempVec.getZ());
+        trackVtxPosU.emplace_back(this->ConvertYZToWireCoordinate(tempVec.getY(), tempVec.getZ(), wireAngleU));
+        trackVtxPosV.emplace_back(this->ConvertYZToWireCoordinate(tempVec.getY(), tempVec.getZ(), wireAngleV));
+        trackVtxPosW.emplace_back(this->ConvertYZToWireCoordinate(tempVec.getY(), tempVec.getZ(), wireAngleW));
+
+        tempVec = trackPair.second.GetVertexDirection();
+        trackVtxDirX.emplace_back(tempVec.getX());
+        trackVtxDirY.emplace_back(tempVec.getY());
+        trackVtxDirZ.emplace_back(tempVec.getZ());
+        trackVtxDirU.emplace_back(this->ConvertYZToWireCoordinate(tempVec.getY(), tempVec.getZ(), wireAngleU));
+        trackVtxDirV.emplace_back(this->ConvertYZToWireCoordinate(tempVec.getY(), tempVec.getZ(), wireAngleV));
+        trackVtxDirW.emplace_back(this->ConvertYZToWireCoordinate(tempVec.getY(), tempVec.getZ(), wireAngleW));
+
+        tempVec = trackPair.second.GetEndPosition();
+        trackEndPosX.emplace_back(tempVec.getX());
+        trackEndPosY.emplace_back(tempVec.getY());
+        trackEndPosZ.emplace_back(tempVec.getZ());
+        trackEndPosU.emplace_back(this->ConvertYZToWireCoordinate(tempVec.getY(), tempVec.getZ(), wireAngleU));
+        trackEndPosV.emplace_back(this->ConvertYZToWireCoordinate(tempVec.getY(), tempVec.getZ(), wireAngleV));
+        trackEndPosW.emplace_back(this->ConvertYZToWireCoordinate(tempVec.getY(), tempVec.getZ(), wireAngleW));
+
+        tempVec = trackPair.second.GetEndDirection();
+        trackEndDirX.emplace_back(tempVec.getX());
+        trackEndDirY.emplace_back(tempVec.getY());
+        trackEndDirZ.emplace_back(tempVec.getZ());
+        trackEndDirU.emplace_back(this->ConvertYZToWireCoordinate(tempVec.getY(), tempVec.getZ(), wireAngleU));
+        trackEndDirV.emplace_back(this->ConvertYZToWireCoordinate(tempVec.getY(), tempVec.getZ(), wireAngleV));
+        trackEndDirW.emplace_back(this->ConvertYZToWireCoordinate(tempVec.getY(), tempVec.getZ(), wireAngleW));
+
+        trackVtxKE.emplace_back(trackPair.second.GetVertexKineticEnergy());
+        trackVtxMomentum.emplace_back(trackPair.second.GetVertexMomentum());
+        trackEndKE.emplace_back(trackPair.second.GetEndKineticEnergy());
+        trackEndMomentum.emplace_back(trackPair.second.GetEndMomentum());
+
+        trackPDG.emplace_back(trackPair.second.GetPDG());
+        trackID.emplace_back(trackPair.first);
+        trackMass.emplace_back(trackPair.second.GetMass());
     }
 
     std::cout << "Creating ROOT TTree with " << posX.size() << " hits" << std::endl;

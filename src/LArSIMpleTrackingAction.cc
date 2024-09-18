@@ -32,6 +32,7 @@ void LArSIMpleTrackingAction::PreUserTrackingAction(const G4Track *aTrack)
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void LArSIMpleTrackingAction::PostUserTrackingAction(const G4Track *)
+void LArSIMpleTrackingAction::PostUserTrackingAction(const G4Track *aTrack)
 {
+    fEventAction->UpdateTrackEndInfo(aTrack);
 }

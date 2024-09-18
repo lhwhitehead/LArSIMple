@@ -10,6 +10,7 @@
 
 #include "LArSIMpleTrackData.hh"
 
+#include "G4ParticleTable.hh"
 #include "G4Track.hh"
 #include "G4VProcess.hh"
 
@@ -35,7 +36,23 @@ LArSIMpleTrackData::LArSIMpleTrackData(const G4Track *track)
     else
         fProcess = track->GetCreatorProcess()->GetProcessName();
     fProcessCode = LArSIMpleProcessTable::Get().GetProcessCodeFromString(fProcess);
-    fIsFoldable = this->CanTrackBeFolded();
+
+    G4ParticleDefinition *particle{G4ParticleTable::GetParticleTable()->FindParticle(fPDG)};
+    if (particle != nullptr)
+        fMass = particle->GetPDGMass();
+    else
+    {
+        std::cout << "Warning in LArSIMpleTrackData: no particle definition found for particle with PDG code " << fPDG << ", setting mass to zero" << std::endl;
+        fMass = 0.;
+    }
+
+    fVertexPosition = track->GetVertexPosition();
+    fVertexDirection = track->GetVertexMomentumDirection();
+    fVertexKineticEnergy = track->GetVertexKineticEnergy();
+    fVertexMomentum = std::sqrt((fMass + fVertexKineticEnergy)*(fMass + fVertexKineticEnergy) - fMass*fMass);
+
+    // Can we fold this back to the parent?
+    fIsFoldable = this->CanTrackBeFolded(); 
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -47,7 +64,26 @@ LArSIMpleTrackData::LArSIMpleTrackData(const LArSIMpleTrackData &rhs)
     fPDG = rhs.GetPDG();
     fProcess = rhs.GetProcess();
     fProcessCode = rhs.GetProcessCode();
+    fMass = rhs.GetMass();
+    fVertexPosition = rhs.GetVertexPosition();
+    fVertexDirection = rhs.GetVertexDirection();
+    fVertexKineticEnergy = rhs.GetVertexKineticEnergy();
+    fVertexMomentum = rhs.GetVertexMomentum();
+    fEndPosition = rhs.GetEndPosition();
+    fEndDirection = rhs.GetEndDirection();
+    fEndKineticEnergy = rhs.GetEndKineticEnergy();
+    fEndMomentum = rhs.GetEndMomentum();
     fIsFoldable = rhs.IsFoldable();
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void LArSIMpleTrackData::SetEndPointInfo(const G4Track *track)
+{
+    fEndPosition = track->GetPosition();
+    fEndDirection = track->GetMomentumDirection();
+    fEndKineticEnergy = track->GetKineticEnergy();
+    fEndMomentum = track->GetMomentum().mag();
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------

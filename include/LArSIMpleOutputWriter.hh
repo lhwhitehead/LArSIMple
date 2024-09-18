@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "LArSIMple3DEnergyDeposit.hh"
+#include "LArSIMpleTrackData.hh"
 
 class LArSIMpleTrueNeutrinoEvent;
 
@@ -50,10 +51,27 @@ public:
      *  @param  wireAngles the angles of the three wire readout planes
      */
     void WriteRootFile(const std::string &base, const std::vector<LArSIMple3DEnergyDeposit> &hits, const LArSIMpleTrueNeutrinoEvent *trueEvt,
-        const std::vector<double> &wireAngles) const;
+        std::map<int, LArSIMpleTrackData> &trueTracks, const std::vector<double> &wireAngles) const;
 
 private:
+    /**
+     *  @brief  Convert YZ coordinates into those from wire planes
+     *
+     *  @param  y the y-coordinate
+     *  @param  z the z-coordinate
+     *  @param  wireAngle the angle of the wire plane to the z axis
+     *
+     *  @return The coordinate in the wire plane
+     */
+    double ConvertYZToWireCoordinate(const double y, const double z, const double wireAngle) const;
+
     unsigned int fEventNumber;    ///< The event number
 };
+
+inline double LArSIMpleOutputWriter::ConvertYZToWireCoordinate(const double y, const double z, const double wireAngle) const
+{
+    const double degreesToRadians{3.14159265358979323846 / 180.};
+    return z * std::cos(wireAngle * degreesToRadians) - y * std::sin(wireAngle * degreesToRadians);
+}
 
 #endif

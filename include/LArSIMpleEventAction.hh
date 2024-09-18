@@ -51,11 +51,18 @@ public:
     LArSIMpleTrackData GetTrackDataFromTrackID(const int trackID) const;
 
     /**
-     *  @brief  Add a Geant4 track
+     *  @brief  Use a Geant4 track to populate a new LArSIMpleTrackData object
      *
      *  @param  track the Geant4 track to add
      */
     void AddTrack(const G4Track *track);
+
+    /**
+     *  @brief  Fill the end point information for an existing track
+     *
+     *  @param  track the Geant4 track required for updating the existin track
+    */
+    void UpdateTrackEndInfo(const G4Track *track);
 
     /**
      *  @brief  Check if we are folding back truth info to group together particles in showers

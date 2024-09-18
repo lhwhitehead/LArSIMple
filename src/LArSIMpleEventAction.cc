@@ -97,7 +97,7 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event *)
     if (fWriteRootFile)
     {
         const std::vector<double> wireAngles{fWireAngleU, fWireAngleV, fWireAngleW};
-        writer.WriteRootFile(fOutputFileDirectory + fOutputFilePrefix, fEnergyDeposits, fGenAction->GetTrueNeutrinoEventPointer(), wireAngles);
+        writer.WriteRootFile(fOutputFileDirectory + fOutputFilePrefix, fEnergyDeposits, fGenAction->GetTrueNeutrinoEventPointer(), fTrackIDToTrackData, wireAngles);
     }
     this->CleanUp();
 }
@@ -123,6 +123,20 @@ void LArSIMpleEventAction::AddTrack(const G4Track *track)
 {
     if (fTrackIDToTrackData.count(track->GetTrackID()) == 0)
         fTrackIDToTrackData.insert(std::make_pair(track->GetTrackID(), LArSIMpleTrackData(track)));
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void LArSIMpleEventAction::UpdateTrackEndInfo(const G4Track *track)
+{
+    if (fTrackIDToTrackData.count(track->GetTrackID()))
+    {
+        fTrackIDToTrackData[track->GetTrackID()].SetEndPointInfo(track);
+    }
+    else
+    {
+        std::cout << "LArSIMpleEventAction::UpdateTrackEndInfo: track does not exist" << std::endl;
+    }
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
