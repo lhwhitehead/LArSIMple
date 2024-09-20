@@ -1,24 +1,28 @@
 /LArSIMple/UseNeutrinoEvents false
 /LArSIMple/UseParticleBombs true
 
+/LArSIMple/TruthFolding/FoldDeltaRays false
+
 /LArSIMple/ParticleBomb/NMuon 1
 /LArSIMple/ParticleBomb/NElectron 1
-/LArSIMple/ParticleBomb/NProton 5
-/LArSIMple/ParticleBomb/NNeutron 2
-/LArSIMple/ParticleBomb/NPiZero 1
-/LArSIMple/ParticleBomb/NPiPlus 1
+/LArSIMple/ParticleBomb/NProton 0
+/LArSIMple/ParticleBomb/NNeutron 0
+/LArSIMple/ParticleBomb/NPiZero 0
+/LArSIMple/ParticleBomb/NPiPlus 0
 /LArSIMple/ParticleBomb/NPiMinus 0
 /LArSIMple/ParticleBomb/NKZero 0
 /LArSIMple/ParticleBomb/NKPlus 0
 /LArSIMple/ParticleBomb/NKMinus 0
 
-/LArSIMple/ParticleBomb/MinimumKineticEnergy 100.
-/LArSIMple/ParticleBomb/MaximumKineticEnergy 500.
+/LArSIMple/ParticleBomb/MinimumKineticEnergy 1000.
+/LArSIMple/ParticleBomb/MaximumKineticEnergy 5000.
 
 #/LArSIMple/OutputFileDir /exp/dune/data/users/lwhite86/LArSIMple/nc/0/
-/LArSIMple/OutputFileDir /exp/dune/app/users/lwhite86/toyG4/LArSIMple/
+#/LArSIMple/OutputFileDir /exp/dune/app/users/lwhite86/toyG4/LArSIMple/
+/LArSIMple/OutputFileDir ~/LArSIMple/LArSIMple/
 /LArSIMple/OutputFilePrefix LArSIMple_particle_bomb
 
 /random/setSeeds 1234 5678
 
 /run/beamOn 10
+
