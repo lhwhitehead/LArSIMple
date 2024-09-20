@@ -48,6 +48,14 @@ LArSIMpleMessenger::LArSIMpleMessenger(LArSIMpleEventAction *pEventAction) :
     fFoldBackTruthInfo->SetParameterName("FoldBackTruthInfo", true);
     fFoldBackTruthInfo->SetDefaultValue(true);
 
+    fFoldingOptions = new G4UIdirectory("/LArSIMple/TruthFolding/");
+    fFoldingOptions->SetGuidance("Commands to select truth folding options");
+
+    fFoldDeltaRays = new G4UIcmdWithABool("/LArSIMple/TruthFolding/FoldDeltaRays", this);
+    fFoldDeltaRays->SetGuidance("Fold back delta rays to the parent muon");
+    fFoldDeltaRays->SetParameterName("FoldDeltaRays", true);
+    fFoldDeltaRays->SetDefaultValue(true);
+
     fHitThreshold = new G4UIcmdWithADoubleAndUnit("/LArSIMple/HitThreshold", this);
     fHitThreshold->SetGuidance("Energy threshold for saving hits");
     fHitThreshold->SetParameterName("HitThreshold", true);
@@ -84,6 +92,8 @@ LArSIMpleMessenger::~LArSIMpleMessenger()
     delete fWriteZipAndInfoFiles;
     delete fWriteRootFile;
     delete fFoldBackTruthInfo;
+    delete fFoldingOptions;
+    delete fFoldDeltaRays;
     delete fHitThreshold;
     delete fUseHitFeatures;
     delete fWireAngleU;
@@ -95,7 +105,6 @@ LArSIMpleMessenger::~LArSIMpleMessenger()
 
 void LArSIMpleMessenger::SetNewValue(G4UIcommand *command, G4String newValue)
 {
-
     if (command == fOutputFileDir)
         fEventAction->SetOutputFileDirectory(newValue);
     if (command == fOutputFilePrefix)
@@ -106,6 +115,8 @@ void LArSIMpleMessenger::SetNewValue(G4UIcommand *command, G4String newValue)
         fEventAction->SetWriteRootFile(newValue);
     if (command == fFoldBackTruthInfo)
         fEventAction->SetFoldBackTruthInfo(fFoldBackTruthInfo->GetNewBoolValue(newValue));
+    if (command == fFoldDeltaRays)
+        fEventAction->SetFoldBackDeltaRays(fFoldDeltaRays->GetNewBoolValue(newValue));
     if (command == fHitThreshold)
         fEventAction->SetHitThreshold(fHitThreshold->GetNewDoubleValue(newValue));
     if (command == fUseHitFeatures)

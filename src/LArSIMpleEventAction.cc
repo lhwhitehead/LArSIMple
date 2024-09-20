@@ -145,5 +145,5 @@ void LArSIMpleEventAction::CleanUp()
 {
     fEnergyDeposits.clear();
     fTrackIDToTrackData.clear();
-    fTrackIDToFoldedTrackID.clear();
+    fTruthFolder.Reset();
 }

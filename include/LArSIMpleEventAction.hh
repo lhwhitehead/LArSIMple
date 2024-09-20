@@ -13,6 +13,7 @@
 
 #include "LArSIMple3DEnergyDeposit.hh"
 #include "LArSIMpleTrackData.hh"
+#include "LArSIMpleTruthFolder.hh"
 
 #include "G4UserEventAction.hh"
 #include "G4ios.hh"
@@ -51,6 +52,13 @@ public:
     LArSIMpleTrackData GetTrackDataFromTrackID(const int trackID) const;
 
     /**
+     *  @brief  Get the map of G4 track id to LArSIMpleTrackData objects
+     *
+     *  @return A reference to the map of the G4 track id to LArSIMpleTrackData objects
+     */
+    const std::map<int, LArSIMpleTrackData>& GetTrackIDToTrackDataMap() const;
+
+    /**
      *  @brief  Use a Geant4 track to populate a new LArSIMpleTrackData object
      *
      *  @param  track the Geant4 track to add
@@ -74,9 +82,23 @@ public:
     /**
      *  @brief  Set whether or not to fold back truth info to group together particles in showers
      *
-     *  @return val whether or not to do the truth folding
+     *  @param val whether or not to do the truth folding
      */
     void SetFoldBackTruthInfo(const bool val);
+
+    /**
+     *  @brief  Set whether or not to fold back delta rays
+     *
+     *  @param val whether or not to do the truth folding for delta rays
+     */
+    void SetFoldBackDeltaRays(const bool val);
+
+    /**
+     *  @brief  Get a reference to the truth folding object
+     *
+     *  @return A reference to the truth folding object
+     */
+    LArSIMpleTruthFolder& GetTruthFolder();
 
     /**
      *  @brief  Associate the Geant4 track id with that of its folded ancestor
@@ -93,7 +115,7 @@ public:
      *
      *  @return The Geant4 track id of its folded ancestor
      */
-    int GetFoldedTrackAssoc(const int trackID) const;
+    int GetFoldedTrackID(const int trackID) const;
 
     /**
      *  @brief  Get the energy threshold for creating a 3DEnergyDeposit
@@ -184,6 +206,7 @@ private:
     bool fWriteZipAndInfoFiles;                   ///< Whether to write zlib files
     bool fWriteRootFile;                          ///< Whether to write ROOT files
     bool fFoldBackTruthInfo;                      ///< Whether to fold back truth information
+    LArSIMpleTruthFolder fTruthFolder;            ///< Truth folding object
 
     double fWireAngleU;                           ///< Wire angle for the U plane
     double fWireAngleV;                           ///< Wire angle for the V plane
@@ -203,6 +226,13 @@ inline void LArSIMpleEventAction::Add3DEnergyDeposit(LArSIMple3DEnergyDeposit ed
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
+inline const std::map<int, LArSIMpleTrackData>& LArSIMpleEventAction::GetTrackIDToTrackDataMap() const
+{
+    return fTrackIDToTrackData;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 inline bool LArSIMpleEventAction::FoldBackTruthInfo() const
 {
     return fFoldBackTruthInfo;
@@ -217,17 +247,30 @@ inline void LArSIMpleEventAction::SetFoldBackTruthInfo(const bool val)
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-inline void LArSIMpleEventAction::AddFoldedTrackAssoc(const int trackID, const int foldedTrackID)
+inline void LArSIMpleEventAction::SetFoldBackDeltaRays(const bool val)
 {
-    if (fTrackIDToFoldedTrackID.count(trackID) == 0)
-        fTrackIDToFoldedTrackID.insert(std::make_pair(trackID, foldedTrackID));
+    fTruthFolder.SetFoldDeltaRays(val);
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-inline int LArSIMpleEventAction::GetFoldedTrackAssoc(const int trackID) const
+inline LArSIMpleTruthFolder& LArSIMpleEventAction::GetTruthFolder()
 {
-    return (fTrackIDToFoldedTrackID.count(trackID) != 0) ? fTrackIDToFoldedTrackID.at(trackID) : -1;
+    return fTruthFolder;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+inline void LArSIMpleEventAction::AddFoldedTrackAssoc(const int trackID, const int foldedTrackID)
+{
+    fTruthFolder.AddFoldedTrackAssoc(trackID, foldedTrackID);
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+inline int LArSIMpleEventAction::GetFoldedTrackID(const int trackID) const
+{
+    return fTruthFolder.GetFoldedTrackID(trackID);
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------

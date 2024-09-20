@@ -56,9 +56,11 @@ private:
     G4UIcmdWithABool *fWriteRootFile;           ///< Command for whether to write ROOT files
 
     G4UIcmdWithABool *fFoldBackTruthInfo;       ///< Command for whether to fold truth information to the primaries
+    G4UIdirectory *fFoldingOptions;             ///< Pointer for the truth folding configuration options
+    G4UIcmdWithABool *fFoldDeltaRays;           ///< Command for set whether to fold back delta-rays to the parent muon
 
     G4UIcmdWithADoubleAndUnit *fHitThreshold;   ///< Command for setting the energy threshold for hit creation
-    G4UIcmdWithABool *fUseHitFeatures;          ///< Command for whether to fold truth information to the primaries
+    G4UIcmdWithABool *fUseHitFeatures;          ///< Command for whether to calculate neighbouring hit features
 
     G4UIcmdWithADouble *fWireAngleU;            ///< Command to set the U plane wire angle
     G4UIcmdWithADouble *fWireAngleV;            ///< Command to set the V plane wire angle
