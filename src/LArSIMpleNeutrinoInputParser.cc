@@ -50,6 +50,12 @@ void LArSIMpleNeutrinoInputParser::ReadFromNuanceTrackerFile(const std::string &
     std::cout << "Reading neutrino events from " << filename << std::endl;
     std::ifstream inputFile(filename.c_str());
 
+    if (!inputFile.is_open())
+    {
+        std::cerr << "Could not open neutrino input file " << filename << ", returning no neutrino events" << std::endl;
+        return;
+    }
+
     // Keep going until we reach the stop command or we have the number of events that we want
     // Each iteration of this loops reads one entire event
     while (true)
@@ -241,6 +247,12 @@ void LArSIMpleNeutrinoInputParser::ReadFromGiBUUTextFile(const std::string &file
 
     std::cout << "Reading GiBUU neutrino events from " << filename << std::endl;
     std::ifstream inputFile(filename.c_str());
+
+    if (!inputFile.is_open())
+    {
+        std::cerr << "Could not open neutrino input file " << filename << ", returning no neutrino events" << std::endl;
+        return;
+    }
 
     const int lineSize = 250;
     char inBuf[lineSize];
