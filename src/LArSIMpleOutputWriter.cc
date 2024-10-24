@@ -229,6 +229,7 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
     std::vector<int> trackPDG;
     std::vector<int> trackID;
     std::vector<float> trackMass;
+    std::vector<int> trackIsPrimary;
 
     outputTree->Branch("trueTrackVtxPosX", &trackVtxPosX);
     outputTree->Branch("trueTrackVtxPosY", &trackVtxPosY);
@@ -263,6 +264,7 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
     outputTree->Branch("trueTrackPDG", &trackPDG);
     outputTree->Branch("trueTrackID", &trackID);
     outputTree->Branch("trueTrackMass", &trackMass);
+    outputTree->Branch("trueTrackIsPrimary", &trackIsPrimary);
 
     for (const auto &trackPair : trueTracks)
     {
@@ -309,6 +311,7 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
         trackPDG.emplace_back(trackPair.second.GetPDG());
         trackID.emplace_back(trackPair.first);
         trackMass.emplace_back(trackPair.second.GetMass());
+        trackIsPrimary.emplace_back(trackPair.second.IsPrimary());
     }
 
     std::cout << "Creating ROOT TTree with " << posX.size() << " hits" << std::endl;

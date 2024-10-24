@@ -18,6 +18,7 @@ LArSIMpleTrackData::LArSIMpleTrackData() :
     fTrackID(0),
     fParentID(0),
     fPDG(0),
+    fIsPrimary(false),
     fProcess(""),
     fProcessCode(LArSIMpleProcessTable::MC_PROC_UNKNOWN),
     fIsFoldable(false)
@@ -31,8 +32,12 @@ LArSIMpleTrackData::LArSIMpleTrackData(const G4Track *track)
     fTrackID = track->GetTrackID();
     fParentID = track->GetParentID();
     fPDG = track->GetParticleDefinition()->GetPDGEncoding();
+    fIsPrimary = false;
     if (fParentID == 0)
+    {
         fProcess = "primary";
+        fIsPrimary = true;
+    }
     else
         fProcess = track->GetCreatorProcess()->GetProcessName();
     fProcessCode = LArSIMpleProcessTable::Get().GetProcessCodeFromString(fProcess);
@@ -62,6 +67,7 @@ LArSIMpleTrackData::LArSIMpleTrackData(const LArSIMpleTrackData &rhs)
     fTrackID = rhs.GetTrackID();
     fParentID = rhs.GetParentID();
     fPDG = rhs.GetPDG();
+    fIsPrimary = rhs.IsPrimary();
     fProcess = rhs.GetProcess();
     fProcessCode = rhs.GetProcessCode();
     fMass = rhs.GetMass();

@@ -83,6 +83,13 @@ public:
     int GetPDG() const;
 
     /**
+     *  @brief  Query if the true track is a primary particle or not
+     *
+     *  @return whether the track is primary or not
+     */
+    bool IsPrimary() const;
+
+    /**
      *  @brief  Get the creation process of the track
      *
      *  @return The creation process string
@@ -179,6 +186,7 @@ private:
     int fTrackID;                                       ///< The track id of the associated G4Track object
     int fParentID;                                      ///< The track id of the parent particle
     int fPDG;                                           ///< The PDG code of this track
+    bool fIsPrimary;                                    ///< Is this a primary particle?
     std::string fProcess;                               ///< The process that created this track as a string
     LArSIMpleProcessTable::ProcessCode fProcessCode;    ///< The process that created this track as a process code
     double fMass;
@@ -213,6 +221,13 @@ inline int LArSIMpleTrackData::GetParentID() const
 inline int LArSIMpleTrackData::GetPDG() const
 {
     return fPDG;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+inline bool LArSIMpleTrackData::IsPrimary() const
+{
+    return fIsPrimary;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
