@@ -178,7 +178,7 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
     outputTree->Branch("trackid", &trackid);
     outputTree->Branch("process", &process);
 
-    std::set<int> hitTrackIDs;
+    std::map<int, int> trackIDToHitMap;
     for (unsigned int h = 0; h < hits.size(); ++h)
     {
         const LArSIMple3DEnergyDeposit &hit = hits.at(h);
@@ -213,8 +213,10 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
         trackid.emplace_back(hit.GetParticleTrackID());
         process.emplace_back(hit.GetParticleProcess());
 
-        if(!hitTrackIDs.count(hit.GetParticleTrackID()))
-            hitTrackIDs.insert(hit.GetParticleTrackID());
+        if(!trackIDToHitMap.count(hit.GetParticleTrackID()))
+            trackIDToHitMap[hit.GetParticleTrackID()] = 1;
+        else
+            ++trackIDToHitMap[hit.GetParticleTrackID()];
     }
 
     // True track information
@@ -230,6 +232,7 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
     std::vector<int> trackID;
     std::vector<float> trackMass;
     std::vector<int> trackIsPrimary;
+    std::vector<int> trackNHits;
 
     outputTree->Branch("trueTrackVtxPosX", &trackVtxPosX);
     outputTree->Branch("trueTrackVtxPosY", &trackVtxPosY);
@@ -265,10 +268,11 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
     outputTree->Branch("trueTrackID", &trackID);
     outputTree->Branch("trueTrackMass", &trackMass);
     outputTree->Branch("trueTrackIsPrimary", &trackIsPrimary);
+    outputTree->Branch("trueTrackNHits", &trackNHits);
 
     for (const auto &trackPair : trueTracks)
     {
-        if (!hitTrackIDs.count(trackPair.first))
+        if (!trackIDToHitMap.count(trackPair.first))
             continue;
 
         G4ThreeVector tempVec{trackPair.second.GetVertexPosition()};
@@ -312,6 +316,7 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
         trackID.emplace_back(trackPair.first);
         trackMass.emplace_back(trackPair.second.GetMass());
         trackIsPrimary.emplace_back(trackPair.second.IsPrimary());
+        trackNHits.emplace_back(trackIDToHitMap.at(trackPair.first));
     }
 
     std::cout << "Creating ROOT TTree with " << posX.size() << " hits" << std::endl;
