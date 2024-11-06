@@ -115,16 +115,22 @@ bool LArSIMpleTrackData::CanTrackBeFolded() const
     else
     {
         // Check if secondaries have processes we don't want to consider as particles
-        if (fProcessCode == LArSIMpleProcessTable::MC_PROC_CONV /*|| fProcess == find("LowEnConversion") != std::string::npos ||
-            fProcess.find("Pair") != std::string::npos*/ || fProcessCode == LArSIMpleProcessTable::MC_PROC_COMPT ||
-            fProcessCode == LArSIMpleProcessTable::MC_PROC_E_BREM || fProcessCode == LArSIMpleProcessTable::MC_PROC_MU_BREM ||
-            fProcessCode == LArSIMpleProcessTable::MC_PROC_HAD_BREM || fProcessCode == LArSIMpleProcessTable::MC_PROC_PHOT ||
-            fProcessCode == LArSIMpleProcessTable::MC_PROC_PHOTON_INELASTIC || fProcessCode == LArSIMpleProcessTable::MC_PROC_PHOTON_NUCLEAR ||
-            fProcessCode == LArSIMpleProcessTable::MC_PROC_E_IONI || fProcessCode == LArSIMpleProcessTable::MC_PROC_MU_IONI ||
-            fProcessCode == LArSIMpleProcessTable::MC_PROC_HAD_IONI || fProcessCode == LArSIMpleProcessTable::MC_PROC_ION_IONI ||
-            fProcessCode == LArSIMpleProcessTable::MC_PROC_ANNIHIL || fProcessCode == LArSIMpleProcessTable::MC_PROC_MU_MINUS_CAPTURE_AT_REST ||
+        if (fProcessCode == LArSIMpleProcessTable::MC_PROC_CONV ||
+            fProcessCode == LArSIMpleProcessTable::MC_PROC_COMPT ||
+            fProcessCode == LArSIMpleProcessTable::MC_PROC_E_BREM ||
+            fProcessCode == LArSIMpleProcessTable::MC_PROC_E_PAIR_PROD ||
+            fProcessCode == LArSIMpleProcessTable::MC_PROC_MU_BREM ||
+            fProcessCode == LArSIMpleProcessTable::MC_PROC_HAD_BREM ||
+            fProcessCode == LArSIMpleProcessTable::MC_PROC_PHOT ||
+            fProcessCode == LArSIMpleProcessTable::MC_PROC_PHOTON_INELASTIC ||
+            fProcessCode == LArSIMpleProcessTable::MC_PROC_PHOTON_NUCLEAR ||
+            fProcessCode == LArSIMpleProcessTable::MC_PROC_E_IONI ||
+            fProcessCode == LArSIMpleProcessTable::MC_PROC_MU_IONI ||
+            fProcessCode == LArSIMpleProcessTable::MC_PROC_HAD_IONI ||
+            fProcessCode == LArSIMpleProcessTable::MC_PROC_ION_IONI ||
+            fProcessCode == LArSIMpleProcessTable::MC_PROC_ANNIHIL ||
+            fProcessCode == LArSIMpleProcessTable::MC_PROC_MU_MINUS_CAPTURE_AT_REST ||
             fProcessCode == LArSIMpleProcessTable::MC_PROC_RADIOACTIVE_DECAY)
-            /*fProcess.find("Radioactive") != std::string::npos*/
         {
             return true;
         }

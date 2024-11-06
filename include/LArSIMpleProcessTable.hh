@@ -29,6 +29,7 @@ public:
         MC_PROC_ANNIHIL,
         MC_PROC_E_IONI,
         MC_PROC_E_BREM,
+        MC_PROC_E_PAIR_PROD,
         MC_PROC_CONV,
         MC_PROC_MU_IONI,
         MC_PROC_MU_MINUS_CAPTURE_AT_REST,

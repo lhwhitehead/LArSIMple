@@ -40,6 +40,7 @@ void LArSIMpleProcessTable::FillProcessMap()
     fProcessStringToCodeMap.insert(std::make_pair("annihil", MC_PROC_ANNIHIL));
     fProcessStringToCodeMap.insert(std::make_pair("eIoni", MC_PROC_E_IONI));
     fProcessStringToCodeMap.insert(std::make_pair("eBrem", MC_PROC_E_BREM));
+    fProcessStringToCodeMap.insert(std::make_pair("ePairProd", MC_PROC_E_PAIR_PROD));
     fProcessStringToCodeMap.insert(std::make_pair("conv", MC_PROC_CONV));
     fProcessStringToCodeMap.insert(std::make_pair("muIoni", MC_PROC_MU_IONI));
     fProcessStringToCodeMap.insert(std::make_pair("muMinusCaptureAtRest", MC_PROC_MU_MINUS_CAPTURE_AT_REST));
