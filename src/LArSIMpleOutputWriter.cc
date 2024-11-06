@@ -230,6 +230,7 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
 
     std::vector<int> trackPDG;
     std::vector<int> trackID;
+    std::vector<int> trackParentID;
     std::vector<float> trackMass;
     std::vector<int> trackIsPrimary;
     std::vector<int> trackNHits;
@@ -266,6 +267,7 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
 
     outputTree->Branch("trueTrackPDG", &trackPDG);
     outputTree->Branch("trueTrackID", &trackID);
+    outputTree->Branch("trueTrackParentID", &trackParentID);
     outputTree->Branch("trueTrackMass", &trackMass);
     outputTree->Branch("trueTrackIsPrimary", &trackIsPrimary);
     outputTree->Branch("trueTrackNHits", &trackNHits);
@@ -314,6 +316,7 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
 
         trackPDG.emplace_back(trackPair.second.GetPDG());
         trackID.emplace_back(trackPair.first);
+        trackParentID.emplace_back(trackPair.second.GetParentID());
         trackMass.emplace_back(trackPair.second.GetMass());
         trackIsPrimary.emplace_back(trackPair.second.IsPrimary());
         trackNHits.emplace_back(trackIDToHitMap.at(trackPair.first));
