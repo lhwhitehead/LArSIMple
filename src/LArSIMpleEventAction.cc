@@ -89,6 +89,8 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event *)
         }
     }
 
+    this->UpdatePiZeroDecayPhotonTruth();
+
     LArSIMpleOutputWriter writer(fEventID);
 
     if (fWriteZipAndInfoFiles)
@@ -136,6 +138,32 @@ void LArSIMpleEventAction::UpdateTrackEndInfo(const G4Track *track)
     else
     {
         std::cout << "LArSIMpleEventAction::UpdateTrackEndInfo: track does not exist" << std::endl;
+    }
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+void LArSIMpleEventAction::UpdatePiZeroDecayPhotonTruth()
+{
+    std::vector<int> primaryPiZeroTrackIDs;
+
+    for (const auto &pair : fTrackIDToTrackData)
+    {
+        if (pair.second.GetPDG() == 111 && pair.second.IsPrimary())
+            primaryPiZeroTrackIDs.emplace_back(pair.second.GetTrackID());
+    }
+
+    if (primaryPiZeroTrackIDs.empty())
+        return;
+
+    // If we have pi zeros then look for their decay photons
+    for (auto &pair : fTrackIDToTrackData)
+    {
+        if (pair.second.GetPDG() == 22)
+        {
+            if (std::find(primaryPiZeroTrackIDs.begin(), primaryPiZeroTrackIDs.end(), pair.second.GetParentID()) != primaryPiZeroTrackIDs.end())
+                pair.second.SetPrimary();           
+        }
     }
 }
 

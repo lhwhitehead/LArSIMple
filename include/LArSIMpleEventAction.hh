@@ -189,6 +189,11 @@ public:
 
 private:
     /**
+     *  @brief  We want the decay photons of primary pi0 mesons to be primaries
+     */
+    void UpdatePiZeroDecayPhotonTruth();
+
+    /**
      *  @brief  Clean up vectors and maps for the next event
      */
     void CleanUp();

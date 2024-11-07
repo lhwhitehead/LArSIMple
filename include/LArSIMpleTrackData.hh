@@ -83,6 +83,11 @@ public:
     int GetPDG() const;
 
     /**
+     *  @brief  Set the particle as a primary particle. This is needed for decay photons of primary pi0s
+     */
+    void SetPrimary();
+
+    /**
      *  @brief  Query if the true track is a primary particle or not
      *
      *  @return whether the track is primary or not
@@ -221,6 +226,14 @@ inline int LArSIMpleTrackData::GetParentID() const
 inline int LArSIMpleTrackData::GetPDG() const
 {
     return fPDG;
+}
+
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+inline void LArSIMpleTrackData::SetPrimary()
+{
+    fIsPrimary = true;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
