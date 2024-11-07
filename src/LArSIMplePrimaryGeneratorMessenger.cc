@@ -121,6 +121,16 @@ LArSIMplePrimaryGeneratorMessenger::LArSIMplePrimaryGeneratorMessenger(LArSIMple
     fMaximumKE->SetGuidance("Maximum kinetic energy for particle bomb particles");
     fMaximumKE->SetParameterName("MaximumKineticEnergy", false);
     fMaximumKE->SetDefaultValue(500.);
+
+    fUseCone = new G4UIcmdWithABool("/LArSIMple/ParticleBomb/UseCone", this);
+    fUseCone->SetGuidance("Fire particles in a cone around the first");
+    fUseCone->SetParameterName("Use", false);
+    fUseCone->SetDefaultValue(false);
+
+    fConeAngle = new G4UIcmdWithADouble("/LArSIMple/ParticleBomb/ConeAngle", this);
+    fConeAngle->SetGuidance("Maximum angle of the cone in degrees around the first particle");
+    fConeAngle->SetParameterName("ConeAngle", false);
+    fConeAngle->SetDefaultValue(45.);
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -150,6 +160,8 @@ LArSIMplePrimaryGeneratorMessenger::~LArSIMplePrimaryGeneratorMessenger()
     delete fNKMinus;
     delete fMinimumKE;
     delete fMaximumKE;
+    delete fUseCone;
+    delete fConeAngle;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -204,4 +216,8 @@ void LArSIMplePrimaryGeneratorMessenger::SetNewValue(G4UIcommand *command, G4Str
         fPrimaryGeneratorAction->SetParticleBombMinKE(fMinimumKE->GetNewDoubleValue(newValue));
     if (command == fMaximumKE)
         fPrimaryGeneratorAction->SetParticleBombMaxKE(fMaximumKE->GetNewDoubleValue(newValue));
+    if (command == fUseCone)
+        fPrimaryGeneratorAction->SetParticleBombUseCone(fUseCone->GetNewBoolValue(newValue));
+    if (command == fConeAngle)
+        fPrimaryGeneratorAction->SetParticleBombConeAngle(fConeAngle->GetNewDoubleValue(newValue));
 }

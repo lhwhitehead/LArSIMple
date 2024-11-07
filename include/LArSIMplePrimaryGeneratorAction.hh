@@ -195,6 +195,20 @@ public:
      */
     void SetParticleBombMaxKE(double maxKE);
 
+    /**
+     *  @brief  Set whether to force particle bomb particles into a cone around the first particle
+     *
+     *  @param  val whether to force the particles into a cone
+     */
+    void SetParticleBombUseCone(bool val);
+
+    /**
+     *  @brief  Set the opening angle of the cone around the first particle
+     *
+     *  @param  angle the cone angle
+     */
+    void SetParticleBombConeAngle(double angle);
+
 private:
     /**
      *  @brief  Generate a random vertex position
@@ -209,6 +223,13 @@ private:
      *  @return A direction from an isotropic distribution
      */
     G4ThreeVector GenerateIsotropicDirection() const;
+
+    /**
+     *  @brief  Generate a direction in a cone around another vector
+     *
+     *  @return A direction in the cone
+     */
+    G4ThreeVector GenerateDirectionWithinCone(const G4ThreeVector &baseDir) const;
 
     /**
      *  @brief  Generate a random vertex position
@@ -233,6 +254,8 @@ private:
     std::map<int, unsigned int> fParticleBombParticles;   ///< Map of pdg code to number of particles for particle bomb events     
     double fParticleBombMinKE;                            ///< Minimum kinetic energy for particle bomb particles
     double fParticleBombMaxKE;                            ///< Maximum kinetic energy for particle bomb particles
+    bool fParticleBombUseCone;                            ///< Force all particle bomb particles to be within a cone around the first particle
+    double fParticleBombConeAngle;                        ///< Opening angle of the particle bomb cone
 
     const LArSIMpleDetectorConstruction *fDetectorConstruction;   ///< Pointer to the detector construction (geometry) object
 };
@@ -368,6 +391,20 @@ inline void LArSIMplePrimaryGeneratorAction::SetParticleBombMinKE(double minKE)
 inline void LArSIMplePrimaryGeneratorAction::SetParticleBombMaxKE(double maxKE)
 {
     fParticleBombMaxKE = maxKE;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+inline void LArSIMplePrimaryGeneratorAction::SetParticleBombUseCone(bool val)
+{
+    fParticleBombUseCone = val;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+inline void LArSIMplePrimaryGeneratorAction::SetParticleBombConeAngle(double angle)
+{
+    fParticleBombConeAngle = angle;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------

@@ -17,6 +17,9 @@
 /LArSIMple/ParticleBomb/MinimumKineticEnergy 1000.
 /LArSIMple/ParticleBomb/MaximumKineticEnergy 5000.
 
+/LArSIMple/ParticleBomb/UseCone true
+/LArSIMple/ParticleBomb/ConeAngle 45
+
 #/LArSIMple/OutputFileDir /exp/dune/data/users/lwhite86/LArSIMple/nc/0/
 #/LArSIMple/OutputFileDir /exp/dune/app/users/lwhite86/toyG4/LArSIMple/
 /LArSIMple/OutputFileDir ~/LArSIMple/LArSIMple/
@@ -24,5 +27,5 @@
 
 /random/setSeeds 1234 5678
 
-/run/beamOn 10
+/run/beamOn 100
 

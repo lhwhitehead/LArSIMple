@@ -71,6 +71,8 @@ private:
     G4UIcmdWithAnInteger *fNKMinus;                              ///< The number of K- in the particle bomb
     G4UIcmdWithADouble *fMinimumKE;                              ///< The minimum kinetic energy of particles in the particle bomb
     G4UIcmdWithADouble *fMaximumKE;                              ///< The maximum kinetic energy of particles in the particle bomb
+    G4UIcmdWithABool *fUseCone;                                  ///< Request all particle bomb particles are with a cone around the first
+    G4UIcmdWithADouble *fConeAngle;                              ///< The maximum angle of particles in the particle bomb cone
 };
 
 #endif

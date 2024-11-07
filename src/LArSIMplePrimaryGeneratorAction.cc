@@ -123,11 +123,24 @@ void LArSIMplePrimaryGeneratorAction::GenerateNeutrinoPrimaries(G4Event *anEvent
 void LArSIMplePrimaryGeneratorAction::GenerateParticleBombPrimaries(G4Event *anEvent, G4ParticleGun *particleGun)
 {
     G4ParticleTable *particleTable = G4ParticleTable::GetParticleTable();
+    
+    unsigned int nParticles{0};
+    G4ThreeVector firstParticleDir;
 
     for (const std::pair<int, unsigned int> &particlePair : fParticleBombParticles)
-    {
+    {        
         for (unsigned int p = 0; p < particlePair.second; ++p)
         {
+            G4ThreeVector direction(this->GenerateIsotropicDirection());
+            // Special treatment if we want other particles generated in a cone around the first
+            if (fParticleBombUseCone)
+            {
+                if (nParticles == 0)
+                    firstParticleDir = direction;
+                else
+                    direction = this->GenerateDirectionWithinCone(firstParticleDir);
+            }
+
             G4ParticleDefinition *particleDef = particleTable->FindParticle(particlePair.first);
             if (particleDef == nullptr)
             {
@@ -140,8 +153,10 @@ void LArSIMplePrimaryGeneratorAction::GenerateParticleBombPrimaries(G4Event *anE
             particleGun->SetParticleEnergy(ekin);
             particleGun->SetParticlePosition(G4ThreeVector(0., 0., 0.));
             particleGun->SetParticleTime(0.0); 
-            particleGun->SetParticleMomentumDirection(this->GenerateIsotropicDirection());
+            particleGun->SetParticleMomentumDirection(direction);
             particleGun->GeneratePrimaryVertex(anEvent);
+
+            ++nParticles;
         }
     }
 }
@@ -178,5 +193,30 @@ G4ThreeVector LArSIMplePrimaryGeneratorAction::GenerateIsotropicDirection() cons
 
     G4ThreeVector dir(x, y, z);
     return dir;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+G4ThreeVector LArSIMplePrimaryGeneratorAction::GenerateDirectionWithinCone(const G4ThreeVector &baseDir) const
+{
+    // Step 1: Generate a random angle between 0 and theta_max
+    const double theta{fParticleBombConeAngle * CLHEP::deg * G4UniformRand()};
+
+    // Step 2: Find a random perpendicular vector to A
+    // We can do this by taking the cross product with an arbitrary vector
+    G4ThreeVector randomVector(1.0, 0.0, 0.0);  // Arbitrary vector not collinear with A
+    if (baseDir.isParallel(randomVector, 0.01)) {  // Ensure it's not collinear with A
+        randomVector.set(0.0, 1.0, 0.0);
+    }
+
+    // Cross product to find a perpendicular vector
+    G4ThreeVector perpVec = baseDir.cross(randomVector);
+    perpVec = perpVec.unit();  // Normalize to get a unit vector
+
+    // Step 3: Calculate the new vector B
+    // B = cos(theta) * A + sin(theta) * R
+    G4ThreeVector dirInCone = baseDir.unit() * std::cos(theta) + perpVec * std::sin(theta);
+
+    return dirInCone.unit();
 }
 
