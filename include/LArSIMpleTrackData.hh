@@ -171,23 +171,7 @@ public:
      */
     double GetEndMomentum() const;
 
-    /**
-     *  @brief  Get whether the track truth be folded back to associate all particles in a shower to the particle that initiated the shower
-     *
-     *  @return Whether the track truth be folded back
-     */
-    bool IsFoldable() const;
-
 private:
-    /**
-     *  @brief  Can the track truth be folded back to associate all particles in a shower to the particle that initiated the shower
-     *
-     *  @param  track the GEANT4 track to attempt to fold back
-     *
-     *  @return Whether the track truth be folded back
-     */
-    bool CanTrackBeFolded() const;
-
     int fTrackID;                                    ///< The track id of the associated G4Track object
     int fParentID;                                   ///< The track id of the parent particle
     int fPDG;                                        ///< The PDG code of this track
@@ -203,8 +187,6 @@ private:
     G4ThreeVector fEndDirection;
     double fEndKineticEnergy;
     double fEndMomentum;
-
-    bool fIsFoldable; ///< Whether the truth information can be folded back
 };
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -317,13 +299,6 @@ inline double LArSIMpleTrackData::GetEndKineticEnergy() const
 inline double LArSIMpleTrackData::GetEndMomentum() const
 {
     return fEndMomentum;
-}
-
-//------------------------------------------------------------------------------------------------------------------------------------------
-
-inline bool LArSIMpleTrackData::IsFoldable() const
-{
-    return fIsFoldable;
 }
 
 #endif
