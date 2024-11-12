@@ -239,25 +239,25 @@ private:
      */
     void AddToParticleBombMap(int pdg, unsigned int n);
 
-    G4GeneralParticleSource *fParticleGun;                ///< Pointer to the particle gun object
-    LArSIMplePrimaryGeneratorMessenger *fMessenger;       ///< Pointer to the configuration object
-    LArSIMpleNeutrinoInputParser fNeutrinoInputParser;    ///< The neutrino input parser object
+    G4GeneralParticleSource *fParticleGun;             ///< Pointer to the particle gun object
+    LArSIMplePrimaryGeneratorMessenger *fMessenger;    ///< Pointer to the configuration object
+    LArSIMpleNeutrinoInputParser fNeutrinoInputParser; ///< The neutrino input parser object
 
-    LArSIMpleTrueNeutrinoEvent *fNeutrinoEvent;           ///< The true neutrino event
-    bool fUseNeutrinos;                                   ///< Whether to use neutrinos or not
-    std::string fNeutrinoFileName;                        ///< File name and path of the input neutrinos
-    LArSIMpleNeutrinoInputType fNeutrinoFileType;         ///< Type of neutrino input file
-    bool fUseRandomNeutrinoVertex;                        ///< Whether to randomise the neutrino vertex position
-    G4ThreeVector fNeutrinoVertex;                        ///< The neutrino vertex position
+    LArSIMpleTrueNeutrinoEvent *fNeutrinoEvent;   ///< The true neutrino event
+    bool fUseNeutrinos;                           ///< Whether to use neutrinos or not
+    std::string fNeutrinoFileName;                ///< File name and path of the input neutrinos
+    LArSIMpleNeutrinoInputType fNeutrinoFileType; ///< Type of neutrino input file
+    bool fUseRandomNeutrinoVertex;                ///< Whether to randomise the neutrino vertex position
+    G4ThreeVector fNeutrinoVertex;                ///< The neutrino vertex position
 
-    bool fUseParticleBombs;                               ///< Whether to use particle bombs
-    std::map<int, unsigned int> fParticleBombParticles;   ///< Map of pdg code to number of particles for particle bomb events     
-    double fParticleBombMinKE;                            ///< Minimum kinetic energy for particle bomb particles
-    double fParticleBombMaxKE;                            ///< Maximum kinetic energy for particle bomb particles
-    bool fParticleBombUseCone;                            ///< Force all particle bomb particles to be within a cone around the first particle
-    double fParticleBombConeAngle;                        ///< Opening angle of the particle bomb cone
+    bool fUseParticleBombs;                             ///< Whether to use particle bombs
+    std::map<int, unsigned int> fParticleBombParticles; ///< Map of pdg code to number of particles for particle bomb events
+    double fParticleBombMinKE;                          ///< Minimum kinetic energy for particle bomb particles
+    double fParticleBombMaxKE;                          ///< Maximum kinetic energy for particle bomb particles
+    bool fParticleBombUseCone;                          ///< Force all particle bomb particles to be within a cone around the first particle
+    double fParticleBombConeAngle;                      ///< Opening angle of the particle bomb cone
 
-    const LArSIMpleDetectorConstruction *fDetectorConstruction;   ///< Pointer to the detector construction (geometry) object
+    const LArSIMpleDetectorConstruction *fDetectorConstruction; ///< Pointer to the detector construction (geometry) object
 };
 
 //------------------------------------------------------------------------------------------------------------------------------------------

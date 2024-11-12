@@ -47,17 +47,18 @@ LArSIMpleTrackData::LArSIMpleTrackData(const G4Track *track)
         fMass = particle->GetPDGMass();
     else
     {
-        std::cout << "Warning in LArSIMpleTrackData: no particle definition found for particle with PDG code " << fPDG << ", setting mass to zero" << std::endl;
+        std::cout << "Warning in LArSIMpleTrackData: no particle definition found for particle with PDG code " << fPDG
+                  << ", setting mass to zero" << std::endl;
         fMass = 0.;
     }
 
     fVertexPosition = track->GetVertexPosition();
     fVertexDirection = track->GetVertexMomentumDirection();
     fVertexKineticEnergy = track->GetVertexKineticEnergy();
-    fVertexMomentum = std::sqrt((fMass + fVertexKineticEnergy)*(fMass + fVertexKineticEnergy) - fMass*fMass);
+    fVertexMomentum = std::sqrt((fMass + fVertexKineticEnergy) * (fMass + fVertexKineticEnergy) - fMass * fMass);
 
     // Can we fold this back to the parent?
-    fIsFoldable = this->CanTrackBeFolded(); 
+    fIsFoldable = this->CanTrackBeFolded();
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -115,22 +116,14 @@ bool LArSIMpleTrackData::CanTrackBeFolded() const
     else
     {
         // Check if secondaries have processes we don't want to consider as particles
-        if (fProcessCode == LArSIMpleProcessTable::MC_PROC_CONV ||
-            fProcessCode == LArSIMpleProcessTable::MC_PROC_COMPT ||
-            fProcessCode == LArSIMpleProcessTable::MC_PROC_E_BREM ||
-            fProcessCode == LArSIMpleProcessTable::MC_PROC_E_PAIR_PROD ||
-            fProcessCode == LArSIMpleProcessTable::MC_PROC_MU_BREM ||
-            fProcessCode == LArSIMpleProcessTable::MC_PROC_HAD_BREM ||
-            fProcessCode == LArSIMpleProcessTable::MC_PROC_PHOT ||
-            fProcessCode == LArSIMpleProcessTable::MC_PROC_PHOTON_INELASTIC ||
-            fProcessCode == LArSIMpleProcessTable::MC_PROC_PHOTON_NUCLEAR ||
-            fProcessCode == LArSIMpleProcessTable::MC_PROC_E_IONI ||
-            fProcessCode == LArSIMpleProcessTable::MC_PROC_MU_IONI ||
-            fProcessCode == LArSIMpleProcessTable::MC_PROC_HAD_IONI ||
-            fProcessCode == LArSIMpleProcessTable::MC_PROC_ION_IONI ||
-            fProcessCode == LArSIMpleProcessTable::MC_PROC_ANNIHIL ||
-            fProcessCode == LArSIMpleProcessTable::MC_PROC_MU_MINUS_CAPTURE_AT_REST ||
-            fProcessCode == LArSIMpleProcessTable::MC_PROC_RADIOACTIVE_DECAY)
+        if (fProcessCode == LArSIMpleProcessTable::MC_PROC_CONV || fProcessCode == LArSIMpleProcessTable::MC_PROC_COMPT ||
+            fProcessCode == LArSIMpleProcessTable::MC_PROC_E_BREM || fProcessCode == LArSIMpleProcessTable::MC_PROC_E_PAIR_PROD ||
+            fProcessCode == LArSIMpleProcessTable::MC_PROC_MU_BREM || fProcessCode == LArSIMpleProcessTable::MC_PROC_HAD_BREM ||
+            fProcessCode == LArSIMpleProcessTable::MC_PROC_PHOT || fProcessCode == LArSIMpleProcessTable::MC_PROC_PHOTON_INELASTIC ||
+            fProcessCode == LArSIMpleProcessTable::MC_PROC_PHOTON_NUCLEAR || fProcessCode == LArSIMpleProcessTable::MC_PROC_E_IONI ||
+            fProcessCode == LArSIMpleProcessTable::MC_PROC_MU_IONI || fProcessCode == LArSIMpleProcessTable::MC_PROC_HAD_IONI ||
+            fProcessCode == LArSIMpleProcessTable::MC_PROC_ION_IONI || fProcessCode == LArSIMpleProcessTable::MC_PROC_ANNIHIL ||
+            fProcessCode == LArSIMpleProcessTable::MC_PROC_MU_MINUS_CAPTURE_AT_REST || fProcessCode == LArSIMpleProcessTable::MC_PROC_RADIOACTIVE_DECAY)
         {
             return true;
         }

@@ -58,7 +58,7 @@ public:
      *  @brief  Set the track end point information
      *
      *  @param  track the G4Track to provide the end point information
-     */   
+     */
     void SetEndPointInfo(const G4Track *track);
 
     /**
@@ -134,14 +134,14 @@ public:
      *
      *  @return The kinetic energy at the vertex point
      */
-    double GetVertexKineticEnergy() const; 
+    double GetVertexKineticEnergy() const;
 
     /**
      *  @brief  Get the momentum at the track vertex
      *
      *  @return The momentum at the vertex point
      */
-    double GetVertexMomentum() const; 
+    double GetVertexMomentum() const;
 
     /**
      *  @brief  Get the end position of the track
@@ -162,15 +162,15 @@ public:
      *
      *  @return The kinetic energy at the track end point
      */
-    double GetEndKineticEnergy() const; 
+    double GetEndKineticEnergy() const;
 
     /**
      *  @brief  Get the momentum at the end position of the track
      *
      *  @return The momentum at the track end point
      */
-    double GetEndMomentum() const; 
-      
+    double GetEndMomentum() const;
+
     /**
      *  @brief  Get whether the track truth be folded back to associate all particles in a shower to the particle that initiated the shower
      *
@@ -188,12 +188,12 @@ private:
      */
     bool CanTrackBeFolded() const;
 
-    int fTrackID;                                       ///< The track id of the associated G4Track object
-    int fParentID;                                      ///< The track id of the parent particle
-    int fPDG;                                           ///< The PDG code of this track
-    bool fIsPrimary;                                    ///< Is this a primary particle?
-    std::string fProcess;                               ///< The process that created this track as a string
-    LArSIMpleProcessTable::ProcessCode fProcessCode;    ///< The process that created this track as a process code
+    int fTrackID;                                    ///< The track id of the associated G4Track object
+    int fParentID;                                   ///< The track id of the parent particle
+    int fPDG;                                        ///< The PDG code of this track
+    bool fIsPrimary;                                 ///< Is this a primary particle?
+    std::string fProcess;                            ///< The process that created this track as a string
+    LArSIMpleProcessTable::ProcessCode fProcessCode; ///< The process that created this track as a process code
     double fMass;
     G4ThreeVector fVertexPosition;
     G4ThreeVector fVertexDirection;
@@ -204,7 +204,7 @@ private:
     double fEndKineticEnergy;
     double fEndMomentum;
 
-    bool fIsFoldable;                                   ///< Whether the truth information can be folded back
+    bool fIsFoldable; ///< Whether the truth information can be folded back
 };
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -227,7 +227,6 @@ inline int LArSIMpleTrackData::GetPDG() const
 {
     return fPDG;
 }
-
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 

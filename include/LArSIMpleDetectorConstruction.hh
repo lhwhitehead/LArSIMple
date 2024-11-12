@@ -228,27 +228,27 @@ private:
      */
     void ConstructLArVoxels();
 
-    float fWorldSizeX;                  ///< Size of the world volume in x
-    float fWorldSizeY;                  ///< Size of the world volume in y
-    float fWorldSizeZ;                  ///< Size of the world volume in z
+    float fWorldSizeX; ///< Size of the world volume in x
+    float fWorldSizeY; ///< Size of the world volume in y
+    float fWorldSizeZ; ///< Size of the world volume in z
 
-    float fLArSizeX;                    ///< Size of the LAr volume in x
-    float fLArSizeY;                    ///< Size of the LAr volume in y
-    float fLArSizeZ;                    ///< Size of the LAr volume in z
+    float fLArSizeX; ///< Size of the LAr volume in x
+    float fLArSizeY; ///< Size of the LAr volume in y
+    float fLArSizeZ; ///< Size of the LAr volume in z
 
-    bool fVoxeliseLAr;                  ///< Whether to voxelise the LAr volume
-    bool fCheckOverlaps;                ///< Whether to check for geometry overlaps
+    bool fVoxeliseLAr;   ///< Whether to voxelise the LAr volume
+    bool fCheckOverlaps; ///< Whether to check for geometry overlaps
 
-    G4Material *fMaterialLAr;           ///< Geant4 material for air
-    G4Material *fMaterialAir;           ///< Geant4 material for liquid argon
+    G4Material *fMaterialLAr; ///< Geant4 material for air
+    G4Material *fMaterialAir; ///< Geant4 material for liquid argon
 
-    G4Box *fSolidWorld;                 ///< World Geant4 solid volume
-    G4LogicalVolume *fLogicWorld;       ///< World Geant4 logical volume
-    G4VPhysicalVolume *fPhysiWorld;     ///< World Geant4 physical volume
+    G4Box *fSolidWorld;             ///< World Geant4 solid volume
+    G4LogicalVolume *fLogicWorld;   ///< World Geant4 logical volume
+    G4VPhysicalVolume *fPhysiWorld; ///< World Geant4 physical volume
 
-    G4Box *fSolidLArBox;                ///< LAr Geant4 solid volume
-    G4LogicalVolume *fLogicLArBox;      ///< LAr Geant4 logical volume
-    G4VPhysicalVolume *fPhysiLArBox;    ///< LAr Geant4 physical volume
+    G4Box *fSolidLArBox;             ///< LAr Geant4 solid volume
+    G4LogicalVolume *fLogicLArBox;   ///< LAr Geant4 logical volume
+    G4VPhysicalVolume *fPhysiLArBox; ///< LAr Geant4 physical volume
 
     LArSIMpleDetectorMessenger *fDetectorMessenger; ///< Pointer to the messenger class
 };

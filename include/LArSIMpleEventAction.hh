@@ -56,7 +56,7 @@ public:
      *
      *  @return A reference to the map of the G4 track id to LArSIMpleTrackData objects
      */
-    const std::map<int, LArSIMpleTrackData>& GetTrackIDToTrackDataMap() const;
+    const std::map<int, LArSIMpleTrackData> &GetTrackIDToTrackDataMap() const;
 
     /**
      *  @brief  Use a Geant4 track to populate a new LArSIMpleTrackData object
@@ -98,7 +98,7 @@ public:
      *
      *  @return A reference to the truth folding object
      */
-    LArSIMpleTruthFolder& GetTruthFolder();
+    LArSIMpleTruthFolder &GetTruthFolder();
 
     /**
      *  @brief  Associate the Geant4 track id with that of its folded ancestor
@@ -144,7 +144,7 @@ public:
      *  @param  val the path to the directory
      */
     void SetOutputFileDirectory(std::string val);
- 
+
     /**
      *  @brief  Set the prefix for the output file names
      *
@@ -198,24 +198,24 @@ private:
      */
     void CleanUp();
 
-    LArSIMplePrimaryGeneratorAction *fGenAction;  ///< Pointer to the primary generator action class
-    LArSIMpleMessenger *fMessenger;               ///< Pointer to the messenger config class
+    LArSIMplePrimaryGeneratorAction *fGenAction; ///< Pointer to the primary generator action class
+    LArSIMpleMessenger *fMessenger;              ///< Pointer to the messenger config class
 
-    unsigned int fEventID;                        ///< Event ID for the current event
-    double fHitThreshold;                         ///< Energy threshold for 3DEnergyDeposit creation
-    bool fUseHitFeatures;                         ///< Whether to use and calculate hit features from local neighbourhood
+    unsigned int fEventID; ///< Event ID for the current event
+    double fHitThreshold;  ///< Energy threshold for 3DEnergyDeposit creation
+    bool fUseHitFeatures;  ///< Whether to use and calculate hit features from local neighbourhood
 
-    std::string fOutputFileDirectory;             ///< Path to the output directory
-    std::string fOutputFilePrefix;                ///< Prefix for output file names
+    std::string fOutputFileDirectory; ///< Path to the output directory
+    std::string fOutputFilePrefix;    ///< Prefix for output file names
 
-    bool fWriteZipAndInfoFiles;                   ///< Whether to write zlib files
-    bool fWriteRootFile;                          ///< Whether to write ROOT files
-    bool fFoldBackTruthInfo;                      ///< Whether to fold back truth information
-    LArSIMpleTruthFolder fTruthFolder;            ///< Truth folding object
+    bool fWriteZipAndInfoFiles;        ///< Whether to write zlib files
+    bool fWriteRootFile;               ///< Whether to write ROOT files
+    bool fFoldBackTruthInfo;           ///< Whether to fold back truth information
+    LArSIMpleTruthFolder fTruthFolder; ///< Truth folding object
 
-    double fWireAngleU;                           ///< Wire angle for the U plane
-    double fWireAngleV;                           ///< Wire angle for the V plane
-    double fWireAngleW;                           ///< Wire angle for the W plane
+    double fWireAngleU; ///< Wire angle for the U plane
+    double fWireAngleV; ///< Wire angle for the V plane
+    double fWireAngleW; ///< Wire angle for the W plane
 
     std::vector<LArSIMple3DEnergyDeposit> fEnergyDeposits; ///< The 3DEnergyDeposits of the current event
     std::map<int, LArSIMpleTrackData> fTrackIDToTrackData; ///< Map of Geant4 track IDs to TrackData objects
@@ -231,7 +231,7 @@ inline void LArSIMpleEventAction::Add3DEnergyDeposit(LArSIMple3DEnergyDeposit ed
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-inline const std::map<int, LArSIMpleTrackData>& LArSIMpleEventAction::GetTrackIDToTrackDataMap() const
+inline const std::map<int, LArSIMpleTrackData> &LArSIMpleEventAction::GetTrackIDToTrackDataMap() const
 {
     return fTrackIDToTrackData;
 }
@@ -259,7 +259,7 @@ inline void LArSIMpleEventAction::SetFoldBackDeltaRays(const bool val)
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-inline LArSIMpleTruthFolder& LArSIMpleEventAction::GetTruthFolder()
+inline LArSIMpleTruthFolder &LArSIMpleEventAction::GetTruthFolder()
 {
     return fTruthFolder;
 }

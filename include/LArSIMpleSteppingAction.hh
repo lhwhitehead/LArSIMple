@@ -49,7 +49,6 @@ public:
     G4VProcess *GetCurrentProcess();
 
 private:
-
     /**
      *  @brief  Get the folded truth information: the information of the folded ancestor
      *
@@ -58,9 +57,9 @@ private:
      *  @param  foldedTrackPDG the address to store the PDG code of the folded ancestor track
      *  @param  foldedTrackProcess the address to store the process code of the folded ancestor track
      */
-//    void GetFoldedTrackInfo(const G4Track *track, int &foldedTrackID, int &foldedTrackPDG, int &foldedTrackProcess);
+    //    void GetFoldedTrackInfo(const G4Track *track, int &foldedTrackID, int &foldedTrackPDG, int &foldedTrackProcess);
 
-    LArSIMpleEventAction *fEventAction;    ///< Pointer to the event action object
+    LArSIMpleEventAction *fEventAction; ///< Pointer to the event action object
 };
 
 #endif

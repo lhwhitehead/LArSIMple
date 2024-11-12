@@ -194,19 +194,19 @@ public:
     void PrintSummary() const;
 
 private:
-    G4ThreeVector fPosition;      ///< 3D position of the energy deposit
-    double fTime;                 ///< Time of the energy deposit
+    G4ThreeVector fPosition; ///< 3D position of the energy deposit
+    double fTime;            ///< Time of the energy deposit
 
-    double fPosU;                 ///< Position in the U wire plane projection 
-    double fPosV;                 ///< Position in the V wire plane projection
-    double fPosW;                 ///< Position in the W wire plane projection 
+    double fPosU; ///< Position in the U wire plane projection
+    double fPosV; ///< Position in the V wire plane projection
+    double fPosW; ///< Position in the W wire plane projection
 
-    double fEnergy;               ///< The energy deposited
-    double fDeDx;                 ///< The dE/dx
+    double fEnergy; ///< The energy deposited
+    double fDeDx;   ///< The dE/dx
 
-    int fParticlePDG;             ///< The true particle type that produced the energy deposit
-    int fParticleTrackID;         ///< The Geant4 track id of the particle that produced the energy deposit
-    int fParticleProcess;         ///< The process by which the energy was deposited
+    int fParticlePDG;     ///< The true particle type that produced the energy deposit
+    int fParticleTrackID; ///< The Geant4 track id of the particle that produced the energy deposit
+    int fParticleProcess; ///< The process by which the energy was deposited
 
     std::vector<float> fFeatures; ///< The vector of the associated features
 };

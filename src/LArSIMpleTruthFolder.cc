@@ -32,27 +32,19 @@ bool LArSIMpleTruthFolder::CanTrackBeFolded(const LArSIMpleTrackData &track)
     // Otherwise, calculate if the track can be folded
     bool canFold;
     if (track.GetParentID() == 0)
-         canFold = false;
+        canFold = false;
     else
     {
         const LArSIMpleProcessTable::ProcessCode processCode{track.GetProcessCode()};
         // Check if secondaries have processes we don't want to consider as particles
-        if (processCode == LArSIMpleProcessTable::MC_PROC_CONV ||
-            processCode == LArSIMpleProcessTable::MC_PROC_COMPT ||
-            processCode == LArSIMpleProcessTable::MC_PROC_E_BREM ||
-            processCode == LArSIMpleProcessTable::MC_PROC_MU_BREM ||
-            processCode == LArSIMpleProcessTable::MC_PROC_HAD_BREM || 
-            processCode == LArSIMpleProcessTable::MC_PROC_PHOT ||
-            processCode == LArSIMpleProcessTable::MC_PROC_PHOTON_INELASTIC ||
-            processCode == LArSIMpleProcessTable::MC_PROC_PHOTON_NUCLEAR ||
-            processCode == LArSIMpleProcessTable::MC_PROC_E_IONI ||
-            (fFoldDeltaRays && processCode == LArSIMpleProcessTable::MC_PROC_MU_IONI) ||
-            (fFoldDeltaRays && processCode == LArSIMpleProcessTable::MC_PROC_MU_PAIR_PROD) ||
-            processCode == LArSIMpleProcessTable::MC_PROC_HAD_IONI ||
-            processCode == LArSIMpleProcessTable::MC_PROC_ION_IONI ||
-            processCode == LArSIMpleProcessTable::MC_PROC_ANNIHIL ||
-            processCode == LArSIMpleProcessTable::MC_PROC_MU_MINUS_CAPTURE_AT_REST ||
-            processCode == LArSIMpleProcessTable::MC_PROC_RADIOACTIVE_DECAY)
+        if (processCode == LArSIMpleProcessTable::MC_PROC_CONV || processCode == LArSIMpleProcessTable::MC_PROC_COMPT ||
+            processCode == LArSIMpleProcessTable::MC_PROC_E_BREM || processCode == LArSIMpleProcessTable::MC_PROC_MU_BREM ||
+            processCode == LArSIMpleProcessTable::MC_PROC_HAD_BREM || processCode == LArSIMpleProcessTable::MC_PROC_PHOT ||
+            processCode == LArSIMpleProcessTable::MC_PROC_PHOTON_INELASTIC || processCode == LArSIMpleProcessTable::MC_PROC_PHOTON_NUCLEAR ||
+            processCode == LArSIMpleProcessTable::MC_PROC_E_IONI || (fFoldDeltaRays && processCode == LArSIMpleProcessTable::MC_PROC_MU_IONI) ||
+            (fFoldDeltaRays && processCode == LArSIMpleProcessTable::MC_PROC_MU_PAIR_PROD) || processCode == LArSIMpleProcessTable::MC_PROC_HAD_IONI ||
+            processCode == LArSIMpleProcessTable::MC_PROC_ION_IONI || processCode == LArSIMpleProcessTable::MC_PROC_ANNIHIL ||
+            processCode == LArSIMpleProcessTable::MC_PROC_MU_MINUS_CAPTURE_AT_REST || processCode == LArSIMpleProcessTable::MC_PROC_RADIOACTIVE_DECAY)
         {
             canFold = true;
         }
@@ -70,7 +62,8 @@ bool LArSIMpleTruthFolder::CanTrackBeFolded(const LArSIMpleTrackData &track)
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void LArSIMpleTruthFolder::PerformTrackFolding(const G4Track *track, const std::map<int,LArSIMpleTrackData> &trackIDToTrackDataMap, int &foldedTrackID, int &foldedTrackPDG, int &foldedTrackProcess)
+void LArSIMpleTruthFolder::PerformTrackFolding(const G4Track *track, const std::map<int, LArSIMpleTrackData> &trackIDToTrackDataMap,
+    int &foldedTrackID, int &foldedTrackPDG, int &foldedTrackProcess)
 {
     // Have we already folded this track before?
     const int initialTrackID{track->GetTrackID()};
@@ -104,4 +97,3 @@ void LArSIMpleTruthFolder::PerformTrackFolding(const G4Track *track, const std::
         }
     }
 }
-

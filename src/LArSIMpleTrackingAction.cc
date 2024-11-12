@@ -6,7 +6,6 @@
  *  $Log: $
  */
 
-
 #include "LArSIMpleTrackingAction.hh"
 #include "LArSIMpleEventAction.hh"
 

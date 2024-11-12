@@ -109,7 +109,7 @@ private:
      */
     void FillProcessMap();
 
-    std::map<std::string, ProcessCode> fProcessStringToCodeMap;    ///< Map between process string and process code
+    std::map<std::string, ProcessCode> fProcessStringToCodeMap; ///< Map between process string and process code
 };
 
 #endif

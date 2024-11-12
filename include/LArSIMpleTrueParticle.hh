@@ -6,7 +6,6 @@
  *  $Log: $
  */
 
-
 #ifndef LArSIMpleTrueParticle_h
 #define LArSIMpleTrueParticle_h
 

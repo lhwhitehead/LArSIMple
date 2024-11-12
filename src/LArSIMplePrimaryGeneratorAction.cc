@@ -8,9 +8,9 @@
 
 #include <cmath>
 
-#include "LArSIMplePrimaryGeneratorAction.hh"
 #include "LArSIMpleDetectorConstruction.hh"
 #include "LArSIMpleNeutrinoInputParser.hh"
+#include "LArSIMplePrimaryGeneratorAction.hh"
 #include "LArSIMplePrimaryGeneratorMessenger.hh"
 #include "LArSIMpleRunAction.hh"
 #include "LArSIMpleTrueNeutrinoEvent.hh"
@@ -93,7 +93,7 @@ void LArSIMplePrimaryGeneratorAction::GeneratePrimaries(G4Event *anEvent)
 void LArSIMplePrimaryGeneratorAction::GenerateNeutrinoPrimaries(G4Event *anEvent, G4ParticleGun *particleGun)
 {
     G4ParticleTable *particleTable = G4ParticleTable::GetParticleTable();
-    
+
     // We need to fire all of the final-state particles
     const std::vector<LArSIMpleTrueParticle> finalStateParticles = fNeutrinoEvent->GetFinalStateParticles();
     for (const LArSIMpleTrueParticle &part : finalStateParticles)
@@ -109,7 +109,7 @@ void LArSIMplePrimaryGeneratorAction::GenerateNeutrinoPrimaries(G4Event *anEvent
         particleGun->SetParticleDefinition(particleDef);
         const G4double mass{particleGun->GetParticleDefinition()->GetPDGMass()};
         const G4double ekin{part.GetEnergy() - mass};
-    
+
         particleGun->SetParticleEnergy(ekin);
         particleGun->SetParticlePosition(fNeutrinoVertex);
         particleGun->SetParticleTime(0.0); // Hard-code for now
@@ -123,12 +123,12 @@ void LArSIMplePrimaryGeneratorAction::GenerateNeutrinoPrimaries(G4Event *anEvent
 void LArSIMplePrimaryGeneratorAction::GenerateParticleBombPrimaries(G4Event *anEvent, G4ParticleGun *particleGun)
 {
     G4ParticleTable *particleTable = G4ParticleTable::GetParticleTable();
-    
+
     unsigned int nParticles{0};
     G4ThreeVector firstParticleDir;
 
     for (const std::pair<int, unsigned int> &particlePair : fParticleBombParticles)
-    {        
+    {
         for (unsigned int p = 0; p < particlePair.second; ++p)
         {
             G4ThreeVector direction(this->GenerateIsotropicDirection());
@@ -152,7 +152,7 @@ void LArSIMplePrimaryGeneratorAction::GenerateParticleBombPrimaries(G4Event *anE
 
             particleGun->SetParticleEnergy(ekin);
             particleGun->SetParticlePosition(G4ThreeVector(0., 0., 0.));
-            particleGun->SetParticleTime(0.0); 
+            particleGun->SetParticleTime(0.0);
             particleGun->SetParticleMomentumDirection(direction);
             particleGun->GeneratePrimaryVertex(anEvent);
 
@@ -204,14 +204,15 @@ G4ThreeVector LArSIMplePrimaryGeneratorAction::GenerateDirectionWithinCone(const
 
     // Step 2: Find a random perpendicular vector to A
     // We can do this by taking the cross product with an arbitrary vector
-    G4ThreeVector randomVector(1.0, 0.0, 0.0);  // Arbitrary vector not collinear with A
-    if (baseDir.isParallel(randomVector, 0.01)) {  // Ensure it's not collinear with A
+    G4ThreeVector randomVector(1.0, 0.0, 0.0); // Arbitrary vector not collinear with A
+    if (baseDir.isParallel(randomVector, 0.01))
+    { // Ensure it's not collinear with A
         randomVector.set(0.0, 1.0, 0.0);
     }
 
     // Cross product to find a perpendicular vector
     G4ThreeVector perpVec = baseDir.cross(randomVector);
-    perpVec = perpVec.unit();  // Normalize to get a unit vector
+    perpVec = perpVec.unit(); // Normalize to get a unit vector
 
     // Step 3: Calculate the new vector B
     // B = cos(theta) * A + sin(theta) * R
@@ -219,4 +220,3 @@ G4ThreeVector LArSIMplePrimaryGeneratorAction::GenerateDirectionWithinCone(const
 
     return dirInCone.unit();
 }
-

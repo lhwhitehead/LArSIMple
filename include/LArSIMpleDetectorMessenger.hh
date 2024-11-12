@@ -44,20 +44,20 @@ public:
     void SetNewValue(G4UIcommand *command, G4String newValues);
 
 private:
-    LArSIMpleDetectorConstruction *fDetectorConstruction;  ///< Pointer to the DetectorConstruction class
+    LArSIMpleDetectorConstruction *fDetectorConstruction; ///< Pointer to the DetectorConstruction class
 
-    G4UIdirectory *fLArSIMpleDir;                          ///< Pointer to the G4 config directory class
+    G4UIdirectory *fLArSIMpleDir; ///< Pointer to the G4 config directory class
 
-    G4UIcmdWithADoubleAndUnit *fWorldWidth;                ///< Command for changing the world volume width
-    G4UIcmdWithADoubleAndUnit *fWorldHeight;               ///< Command for changing the world volume height
-    G4UIcmdWithADoubleAndUnit *fWorldLength;               ///< Command for changing the world volume length
+    G4UIcmdWithADoubleAndUnit *fWorldWidth;  ///< Command for changing the world volume width
+    G4UIcmdWithADoubleAndUnit *fWorldHeight; ///< Command for changing the world volume height
+    G4UIcmdWithADoubleAndUnit *fWorldLength; ///< Command for changing the world volume length
 
-    G4UIcmdWithADoubleAndUnit *fDetectorWidth;             ///< Command for changing the LAr volume width
-    G4UIcmdWithADoubleAndUnit *fDetectorHeight;            ///< Command for changing the LAr volume height
-    G4UIcmdWithADoubleAndUnit *fDetectorLength;            ///< Command for changing the LAr volume length
+    G4UIcmdWithADoubleAndUnit *fDetectorWidth;  ///< Command for changing the LAr volume width
+    G4UIcmdWithADoubleAndUnit *fDetectorHeight; ///< Command for changing the LAr volume height
+    G4UIcmdWithADoubleAndUnit *fDetectorLength; ///< Command for changing the LAr volume length
 
-    G4UIcmdWithABool *fVoxeliseLAr;                        ///< Command for whether to voxelise the LAr volume
-    G4UIcmdWithABool *fCheckOverlaps;                      ///< Command for whether to check geometry overlaps
+    G4UIcmdWithABool *fVoxeliseLAr;   ///< Command for whether to voxelise the LAr volume
+    G4UIcmdWithABool *fCheckOverlaps; ///< Command for whether to check geometry overlaps
 };
 
 #endif

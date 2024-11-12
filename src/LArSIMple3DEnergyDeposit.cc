@@ -55,7 +55,6 @@ void LArSIMple3DEnergyDeposit::CalculateUVW(const double wireAngleU, const doubl
 
 void LArSIMple3DEnergyDeposit::PrintSummary() const
 {
-    std::cout << "3D Energy Deposit: " << fPosition.getX() << " " << fPosition.getY() << " " << fPosition.getZ()
-              << " " << fTime << " " << fEnergy << " " << fParticlePDG
-              << " " << fParticleTrackID << std::endl;
+    std::cout << "3D Energy Deposit: " << fPosition.getX() << " " << fPosition.getY() << " " << fPosition.getZ() << " " << fTime << " "
+              << fEnergy << " " << fParticlePDG << " " << fParticleTrackID << std::endl;
 }

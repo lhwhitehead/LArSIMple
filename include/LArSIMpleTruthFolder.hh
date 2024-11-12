@@ -76,17 +76,19 @@ public:
      *  @param  foldedTrackPDG to take the value of the folded ancestor pdg code
      *  @param  foldedTrackProcess to take the value of the folded ancestor process code
      */
-    void PerformTrackFolding(const G4Track *track, const std::map<int,LArSIMpleTrackData> &trackIDToTrackDataMap, int &foldedTrackID, int &foldedTrackPDG, int &foldedTrackProcess);
+    void PerformTrackFolding(const G4Track *track, const std::map<int, LArSIMpleTrackData> &trackIDToTrackDataMap, int &foldedTrackID,
+        int &foldedTrackPDG, int &foldedTrackProcess);
 
     /**
      *  @brief  Reset the internal members ready for the next event
      */
     void Reset();
-private:
-    std::map<int, int> fTrackIDToFoldedTrackID;   ///< Map of track id to the folded ancestor track id
-    std::map<int, bool> fTrackIDToCanFold;        ///< Map of track id to whether it can be folded
 
-    bool fFoldDeltaRays;                          ///< Whether or not to fold delta rays (including pair produced delta rays)
+private:
+    std::map<int, int> fTrackIDToFoldedTrackID; ///< Map of track id to the folded ancestor track id
+    std::map<int, bool> fTrackIDToCanFold;      ///< Map of track id to whether it can be folded
+
+    bool fFoldDeltaRays; ///< Whether or not to fold delta rays (including pair produced delta rays)
 };
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -112,12 +114,12 @@ inline int LArSIMpleTruthFolder::GetFoldedTrackID(const int trackID) const
         return fTrackIDToFoldedTrackID.at(trackID);
     else
         return -1;
-} 
+}
 
 inline void LArSIMpleTruthFolder::Reset()
 {
     fTrackIDToFoldedTrackID.clear();
     fTrackIDToCanFold.clear();
-} 
+}
 
 #endif

@@ -46,25 +46,25 @@ public:
     void SetNewValue(G4UIcommand *command, G4String newValues);
 
 private:
-    LArSIMpleEventAction *fEventAction;         ///< Pointer to the event action
+    LArSIMpleEventAction *fEventAction; ///< Pointer to the event action
 
-    G4UIdirectory *fLArSIMpleDir;               ///< Pointer to the G4 config directory class
+    G4UIdirectory *fLArSIMpleDir; ///< Pointer to the G4 config directory class
 
-    G4UIcmdWithAString *fOutputFileDir;         ///< Command to set the output directory path
-    G4UIcmdWithAString *fOutputFilePrefix;      ///< Command to set the output file prefix
-    G4UIcmdWithABool *fWriteZipAndInfoFiles;    ///< Command for whether to write zlib files
-    G4UIcmdWithABool *fWriteRootFile;           ///< Command for whether to write ROOT files
+    G4UIcmdWithAString *fOutputFileDir;      ///< Command to set the output directory path
+    G4UIcmdWithAString *fOutputFilePrefix;   ///< Command to set the output file prefix
+    G4UIcmdWithABool *fWriteZipAndInfoFiles; ///< Command for whether to write zlib files
+    G4UIcmdWithABool *fWriteRootFile;        ///< Command for whether to write ROOT files
 
-    G4UIcmdWithABool *fFoldBackTruthInfo;       ///< Command for whether to fold truth information to the primaries
-    G4UIdirectory *fFoldingOptions;             ///< Pointer for the truth folding configuration options
-    G4UIcmdWithABool *fFoldDeltaRays;           ///< Command for set whether to fold back delta-rays to the parent muon
+    G4UIcmdWithABool *fFoldBackTruthInfo; ///< Command for whether to fold truth information to the primaries
+    G4UIdirectory *fFoldingOptions;       ///< Pointer for the truth folding configuration options
+    G4UIcmdWithABool *fFoldDeltaRays;     ///< Command for set whether to fold back delta-rays to the parent muon
 
-    G4UIcmdWithADoubleAndUnit *fHitThreshold;   ///< Command for setting the energy threshold for hit creation
-    G4UIcmdWithABool *fUseHitFeatures;          ///< Command for whether to calculate neighbouring hit features
+    G4UIcmdWithADoubleAndUnit *fHitThreshold; ///< Command for setting the energy threshold for hit creation
+    G4UIcmdWithABool *fUseHitFeatures;        ///< Command for whether to calculate neighbouring hit features
 
-    G4UIcmdWithADouble *fWireAngleU;            ///< Command to set the U plane wire angle
-    G4UIcmdWithADouble *fWireAngleV;            ///< Command to set the V plane wire angle
-    G4UIcmdWithADouble *fWireAngleW;            ///< Command to set the W plane wire angle
+    G4UIcmdWithADouble *fWireAngleU; ///< Command to set the U plane wire angle
+    G4UIcmdWithADouble *fWireAngleV; ///< Command to set the V plane wire angle
+    G4UIcmdWithADouble *fWireAngleW; ///< Command to set the W plane wire angle
 };
 
 #endif

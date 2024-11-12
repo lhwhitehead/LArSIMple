@@ -99,7 +99,8 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event *)
     if (fWriteRootFile)
     {
         const std::vector<double> wireAngles{fWireAngleU, fWireAngleV, fWireAngleW};
-        writer.WriteRootFile(fOutputFileDirectory + fOutputFilePrefix, fEnergyDeposits, fGenAction->GetTrueNeutrinoEventPointer(), fTrackIDToTrackData, wireAngles);
+        writer.WriteRootFile(fOutputFileDirectory + fOutputFilePrefix, fEnergyDeposits, fGenAction->GetTrueNeutrinoEventPointer(),
+            fTrackIDToTrackData, wireAngles);
     }
     this->CleanUp();
 }
@@ -162,7 +163,7 @@ void LArSIMpleEventAction::UpdatePiZeroDecayPhotonTruth()
         if (pair.second.GetPDG() == 22)
         {
             if (std::find(primaryPiZeroTrackIDs.begin(), primaryPiZeroTrackIDs.end(), pair.second.GetParentID()) != primaryPiZeroTrackIDs.end())
-                pair.second.SetPrimary();           
+                pair.second.SetPrimary();
         }
     }
 }

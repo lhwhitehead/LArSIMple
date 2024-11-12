@@ -145,7 +145,7 @@ private:
      */
     int GetPDGCodeFromGiBUU(const int pid, const int charge);
 
-    std::vector<LArSIMpleTrueNeutrinoEvent> fNeutrinoEvents;   ///< The vector of true neutrino events read from the input file
+    std::vector<LArSIMpleTrueNeutrinoEvent> fNeutrinoEvents; ///< The vector of true neutrino events read from the input file
 };
 
 //------------------------------------------------------------------------------------------------------------------------------------------

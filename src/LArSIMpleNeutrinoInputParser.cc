@@ -6,7 +6,6 @@
  *  $Log: $
  */
 
-
 #include <fstream>
 
 #include "LArSIMpleNeutrinoInputParser.hh"

@@ -66,9 +66,9 @@ private:
      */
     void FillNeighbourMap();
 
-    const std::vector<LArSIMple3DEnergyDeposit> &fHits;         ///< Vector of hits
-    std::map<unsigned int, unsigned int> fNearestNeighbourMap;  ///< Map of the nearest neighbour hit index to a given hit index
-    std::map<unsigned int, unsigned int> fSecondNeighbourMap;   ///< Map of the second nearest neighbour hit index to a given hit index
+    const std::vector<LArSIMple3DEnergyDeposit> &fHits;        ///< Vector of hits
+    std::map<unsigned int, unsigned int> fNearestNeighbourMap; ///< Map of the nearest neighbour hit index to a given hit index
+    std::map<unsigned int, unsigned int> fSecondNeighbourMap;  ///< Map of the second nearest neighbour hit index to a given hit index
 };
 
 #endif

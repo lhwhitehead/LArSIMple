@@ -7,9 +7,9 @@
  */
 
 #include <fstream>
+#include <set>
 #include <sstream>
 #include <vector>
-#include <set>
 
 #include "LArSIMple3DEnergyDeposit.hh"
 #include "LArSIMpleOutputWriter.hh"
@@ -213,7 +213,7 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
         trackid.emplace_back(hit.GetParticleTrackID());
         process.emplace_back(hit.GetParticleProcess());
 
-        if(!trackIDToHitMap.count(hit.GetParticleTrackID()))
+        if (!trackIDToHitMap.count(hit.GetParticleTrackID()))
             trackIDToHitMap[hit.GetParticleTrackID()] = 1;
         else
             ++trackIDToHitMap[hit.GetParticleTrackID()];

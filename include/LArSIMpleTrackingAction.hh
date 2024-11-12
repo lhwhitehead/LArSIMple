@@ -47,7 +47,7 @@ public:
     void PostUserTrackingAction(const G4Track *pTrack);
 
 private:
-    LArSIMpleEventAction *fEventAction;   ///< Pointer to the event action object
+    LArSIMpleEventAction *fEventAction; ///< Pointer to the event action object
 };
 
 #endif

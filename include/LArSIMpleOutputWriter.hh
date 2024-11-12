@@ -65,7 +65,7 @@ private:
      */
     double ConvertYZToWireCoordinate(const double y, const double z, const double wireAngle) const;
 
-    unsigned int fEventNumber;    ///< The event number
+    unsigned int fEventNumber; ///< The event number
 };
 
 inline double LArSIMpleOutputWriter::ConvertYZToWireCoordinate(const double y, const double z, const double wireAngle) const
