@@ -70,29 +70,52 @@ public:
     /**
      *  @brief  Returns the wire number of this hit
      *
-     *  @returns the wire number
+     *  @return the wire number
      */
     unsigned int GetWireNumber() const;
 
     /**
      *  @brief  Returns the drift bin of this hit
      *
-     *  @returns the drift bin
+     *  @return the drift bin
      */
     unsigned int GetDriftBin() const;
 
     /**
      *  @brief  Returns the readout view number of this hit
      *
-     *  @returns the readout view
+     *  @return the readout view
      */
     LArSIMpleReadoutView GetView() const;
 
+    /**
+     *  @brief  Returns the G4 track id of the largest contributor to this hit
+     *
+     *  @return the G4 track id
+     */
     int GetLargestContributingTrackId() const;
+
+    /**
+     *  @brief  Returns the PDG code of the largest contributor to this hit
+     *
+     *  @return the PDG code
+     */
     int GetLargestContributingPDG() const;
 
+    /**
+     *  @brief  Returns the charge of this hit
+     *
+     *  @return the charge
+     */
     float GetCharge() const;
 
+    /**
+     *  @brief  Add a particle's energy deposit to this hit
+     *
+     *  @param  trackId the G4 track id of the particle
+     *  @param  pdg the PDG code of the particle
+     *  @param  charge the amount of deposited energy
+     */
     void AddHitContribution(const int &trackId, const int &pdg, const float &charge);
 
 private:
