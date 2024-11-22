@@ -46,9 +46,9 @@ void LArSIMple3DEnergyDeposit::CalculateUVW(const double wireAngleU, const doubl
     const double degreesToRadians{3.14159265358979323846 / 180.};
     const double posY{fPosition.getY()};
     const double posZ{fPosition.getZ()};
-    fPosU = posZ * std::cos(wireAngleU * degreesToRadians) - posY * std::sin(wireAngleU * degreesToRadians);
-    fPosV = posZ * std::cos(wireAngleV * degreesToRadians) - posY * std::sin(wireAngleV * degreesToRadians);
-    fPosW = posZ * std::cos(wireAngleW * degreesToRadians) - posY * std::sin(wireAngleW * degreesToRadians);
+    fPosU = posZ * std::cos(wireAngleU * degreesToRadians) + posY * std::sin(wireAngleU * degreesToRadians);
+    fPosV = posZ * std::cos(wireAngleV * degreesToRadians) + posY * std::sin(wireAngleV * degreesToRadians);
+    fPosW = posZ * std::cos(wireAngleW * degreesToRadians) + posY * std::sin(wireAngleW * degreesToRadians);
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------

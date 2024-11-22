@@ -7,24 +7,28 @@
  */
 
 #include "LArSIMpleEventAction.hh"
+#include "LArSIMpleDetectorConstruction.hh"
 #include "LArSIMpleHitFeatureUtils.hh"
 #include "LArSIMpleMessenger.hh"
 #include "LArSIMpleOutputWriter.hh"
 #include "LArSIMplePrimaryGeneratorAction.hh"
 #include "LArSIMpleTrueNeutrinoEvent.hh"
+#include "LArSIMpleWireConvertor.hh"
+#include "LArSIMpleWireHit.hh"
 
 #include "G4Event.hh"
 #include "G4EventManager.hh"
 #include "G4Track.hh"
 
-LArSIMpleEventAction::LArSIMpleEventAction(LArSIMplePrimaryGeneratorAction *genAction) :
+LArSIMpleEventAction::LArSIMpleEventAction(LArSIMplePrimaryGeneratorAction *genAction, LArSIMpleDetectorConstruction *detector) :
     fGenAction(genAction),
+    fDetector(detector),
     fOutputFileDirectory(""),
     fOutputFilePrefix("hits_3d"),
     fHitThreshold(0.0),
-    fWireAngleU(35.9),
-    fWireAngleV(-35.9),
-    fWireAngleW(0.0),
+    //    fWireAngleU(35.9),
+    //    fWireAngleV(-35.9),
+    //    fWireAngleW(0.0),
     fWriteZipAndInfoFiles(true),
     fWriteRootFile(false),
     fFoldBackTruthInfo(true)
@@ -67,7 +71,7 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event *)
     {
         LArSIMple3DEnergyDeposit &eDep = fEnergyDeposits.at(hitIdx);
         const G4ThreeVector &pos = eDep.GetPosition();
-        eDep.CalculateUVW(fWireAngleU, fWireAngleV, fWireAngleW);
+        eDep.CalculateUVW(fDetector->GetWireAngleU(), fDetector->GetWireAngleV(), fDetector->GetWireAngleW());
     }
 
     if (fUseHitFeatures)
@@ -98,9 +102,14 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event *)
 
     if (fWriteRootFile)
     {
-        const std::vector<double> wireAngles{fWireAngleU, fWireAngleV, fWireAngleW};
-        writer.WriteRootFile(fOutputFileDirectory + fOutputFilePrefix, fEnergyDeposits, fGenAction->GetTrueNeutrinoEventPointer(),
-            fTrackIDToTrackData, wireAngles);
+        LArSIMpleWireConvertor &wireConvertor = LArSIMpleWireConvertor::Get();
+        const std::vector<LArSIMpleWireHit> uHits = wireConvertor.Convert3DEnergyDepositsToWireHits(fEnergyDeposits, LArSIMpleReadoutView::ViewU);
+        const std::vector<LArSIMpleWireHit> vHits = wireConvertor.Convert3DEnergyDepositsToWireHits(fEnergyDeposits, LArSIMpleReadoutView::ViewV);
+        const std::vector<LArSIMpleWireHit> wHits = wireConvertor.Convert3DEnergyDepositsToWireHits(fEnergyDeposits, LArSIMpleReadoutView::ViewW);
+
+        const std::vector<double> wireAngles{fDetector->GetWireAngleU(), fDetector->GetWireAngleV(), fDetector->GetWireAngleW()};
+        writer.WriteRootFile(fOutputFileDirectory + fOutputFilePrefix, fEnergyDeposits, uHits, vHits, wHits,
+            fGenAction->GetTrueNeutrinoEventPointer(), fTrackIDToTrackData, wireAngles);
     }
     this->CleanUp();
 }

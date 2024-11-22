@@ -14,6 +14,7 @@
 #include "LArSIMple3DEnergyDeposit.hh"
 #include "LArSIMpleOutputWriter.hh"
 #include "LArSIMpleTrueNeutrinoEvent.hh"
+#include "LArSIMpleWireHit.hh"
 
 #include "TFile.h"
 #include "TTree.h"
@@ -94,6 +95,7 @@ void LArSIMpleOutputWriter::WriteOutputZipAndInfoFiles(const std::string &base, 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::vector<LArSIMple3DEnergyDeposit> &hits,
+    const std::vector<LArSIMpleWireHit> &uHits, const std::vector<LArSIMpleWireHit> &vHits, const std::vector<LArSIMpleWireHit> &wHits,
     const LArSIMpleTrueNeutrinoEvent *evt, std::map<int, LArSIMpleTrackData> &trueTracks, const std::vector<double> &wireAngles) const
 {
     // This is very specific and hardcoded
@@ -217,6 +219,55 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
             trackIDToHitMap[hit.GetParticleTrackID()] = 1;
         else
             ++trackIDToHitMap[hit.GetParticleTrackID()];
+    }
+
+    // Discretised output to mimic actual wire planes
+    std::vector<unsigned int> uViewDrift, uViewWire;
+    std::vector<unsigned int> vViewDrift, vViewWire;
+    std::vector<unsigned int> wViewDrift, wViewWire;
+    std::vector<float> uViewCharge, vViewCharge, wViewCharge;
+    std::vector<int> uViewTrackID, vViewTrackID, wViewTrackID;
+    std::vector<int> uViewPDG, vViewPDG, wViewPDG;
+
+    outputTree->Branch("uViewDrift", &uViewDrift);
+    outputTree->Branch("uViewWire", &uViewWire);
+    outputTree->Branch("vViewDrift", &vViewDrift);
+    outputTree->Branch("vViewWire", &vViewWire);
+    outputTree->Branch("wViewDrift", &wViewDrift);
+    outputTree->Branch("wViewWire", &wViewWire);
+    outputTree->Branch("uViewCharge", &uViewCharge);
+    outputTree->Branch("vViewCharge", &vViewCharge);
+    outputTree->Branch("wViewCharge", &wViewCharge);
+    outputTree->Branch("uViewTrackID", &uViewTrackID);
+    outputTree->Branch("vViewTrackID", &vViewTrackID);
+    outputTree->Branch("wViewTrackID", &wViewTrackID);
+    outputTree->Branch("uViewPDG", &uViewPDG);
+    outputTree->Branch("vViewPDG", &vViewPDG);
+    outputTree->Branch("wViewPDG", &wViewPDG);
+
+    for (const LArSIMpleWireHit &uHit : uHits)
+    {
+        uViewDrift.emplace_back(uHit.GetDriftBin());
+        uViewWire.emplace_back(uHit.GetWireNumber());
+        uViewCharge.emplace_back(uHit.GetCharge());
+        uViewTrackID.emplace_back(uHit.GetLargestContributingTrackId());
+        uViewPDG.emplace_back(uHit.GetLargestContributingPDG());
+    }
+    for (const LArSIMpleWireHit &vHit : vHits)
+    {
+        vViewDrift.emplace_back(vHit.GetDriftBin());
+        vViewWire.emplace_back(vHit.GetWireNumber());
+        vViewCharge.emplace_back(vHit.GetCharge());
+        vViewTrackID.emplace_back(vHit.GetLargestContributingTrackId());
+        vViewPDG.emplace_back(vHit.GetLargestContributingPDG());
+    }
+    for (const LArSIMpleWireHit &wHit : wHits)
+    {
+        wViewDrift.emplace_back(wHit.GetDriftBin());
+        wViewWire.emplace_back(wHit.GetWireNumber());
+        wViewCharge.emplace_back(wHit.GetCharge());
+        wViewTrackID.emplace_back(wHit.GetLargestContributingTrackId());
+        wViewPDG.emplace_back(wHit.GetLargestContributingPDG());
     }
 
     // True track information

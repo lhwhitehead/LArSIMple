@@ -50,7 +50,7 @@ int main(int argc, char **argv)
     LArSIMplePrimaryGeneratorAction *pga = new LArSIMplePrimaryGeneratorAction(detector);
     runManager->SetUserAction(pga);
 
-    LArSIMpleEventAction *event_action = new LArSIMpleEventAction(pga);
+    LArSIMpleEventAction *event_action = new LArSIMpleEventAction(pga, detector);
     runManager->SetUserAction(event_action);
 
     LArSIMpleTrackingAction *tracking_action = new LArSIMpleTrackingAction(event_action);

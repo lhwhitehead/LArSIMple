@@ -20,6 +20,7 @@
 #include "globals.hh"
 
 class LArSIMplePrimaryGeneratorAction;
+class LArSIMpleDetectorConstruction;
 class LArSIMpleMessenger;
 class G4Track;
 
@@ -30,7 +31,7 @@ class LArSIMpleEventAction : public G4UserEventAction
 {
 
 public:
-    LArSIMpleEventAction(LArSIMplePrimaryGeneratorAction *);
+    LArSIMpleEventAction(LArSIMplePrimaryGeneratorAction *, LArSIMpleDetectorConstruction *);
     virtual ~LArSIMpleEventAction();
     virtual void BeginOfEventAction(const G4Event *);
     virtual void EndOfEventAction(const G4Event *);
@@ -166,26 +167,26 @@ public:
      */
     void SetWriteRootFile(const bool val);
 
-    /**
-     *  @brief  Set the angle of the U wire plane w.r.t the z-axis
-     *
-     *  @param  angle the angle to the z-axis
-     */
-    void SetWireAngleU(double angle);
-
-    /**
-     *  @brief  Set the angle of the V wire plane w.r.t the z-axis
-     *
-     *  @param  angle the angle to the z-axis
-     */
-    void SetWireAngleV(double angle);
-
-    /**
-     *  @brief  Set the angle of the W wire plane w.r.t the z-axis
-     *
-     *  @param  angle the angle to the z-axis
-     */
-    void SetWireAngleW(double angle);
+    //    /**
+    //     *  @brief  Set the angle of the U wire plane w.r.t the z-axis
+    //     *
+    //     *  @param  angle the angle to the z-axis
+    //     */
+    //    void SetWireAngleU(double angle);
+    //
+    //    /**
+    //     *  @brief  Set the angle of the V wire plane w.r.t the z-axis
+    //     *
+    //     *  @param  angle the angle to the z-axis
+    //     */
+    //    void SetWireAngleV(double angle);
+    //
+    //    /**
+    //     *  @brief  Set the angle of the W wire plane w.r.t the z-axis
+    //     *
+    //     *  @param  angle the angle to the z-axis
+    //     */
+    //    void SetWireAngleW(double angle);
 
 private:
     /**
@@ -199,6 +200,7 @@ private:
     void CleanUp();
 
     LArSIMplePrimaryGeneratorAction *fGenAction; ///< Pointer to the primary generator action class
+    LArSIMpleDetectorConstruction *fDetector;    ///< Pointer to the detector construction class
     LArSIMpleMessenger *fMessenger;              ///< Pointer to the messenger config class
 
     unsigned int fEventID; ///< Event ID for the current event
@@ -213,9 +215,9 @@ private:
     bool fFoldBackTruthInfo;           ///< Whether to fold back truth information
     LArSIMpleTruthFolder fTruthFolder; ///< Truth folding object
 
-    double fWireAngleU; ///< Wire angle for the U plane
-    double fWireAngleV; ///< Wire angle for the V plane
-    double fWireAngleW; ///< Wire angle for the W plane
+    //    double fWireAngleU; ///< Wire angle for the U plane
+    //    double fWireAngleV; ///< Wire angle for the V plane
+    //    double fWireAngleW; ///< Wire angle for the W plane
 
     std::vector<LArSIMple3DEnergyDeposit> fEnergyDeposits; ///< The 3DEnergyDeposits of the current event
     std::map<int, LArSIMpleTrackData> fTrackIDToTrackData; ///< Map of Geant4 track IDs to TrackData objects
@@ -329,23 +331,23 @@ inline void LArSIMpleEventAction::SetWriteRootFile(const bool val)
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-inline void LArSIMpleEventAction::SetWireAngleU(double angle)
-{
-    fWireAngleU = angle;
-}
-
-//------------------------------------------------------------------------------------------------------------------------------------------
-
-inline void LArSIMpleEventAction::SetWireAngleV(double angle)
-{
-    fWireAngleV = angle;
-}
-
-//------------------------------------------------------------------------------------------------------------------------------------------
-
-inline void LArSIMpleEventAction::SetWireAngleW(double angle)
-{
-    fWireAngleW = angle;
-}
+//inline void LArSIMpleEventAction::SetWireAngleU(double angle)
+//{
+//    fWireAngleU = angle;
+//}
+//
+////------------------------------------------------------------------------------------------------------------------------------------------
+//
+//inline void LArSIMpleEventAction::SetWireAngleV(double angle)
+//{
+//    fWireAngleV = angle;
+//}
+//
+////------------------------------------------------------------------------------------------------------------------------------------------
+//
+//inline void LArSIMpleEventAction::SetWireAngleW(double angle)
+//{
+//    fWireAngleW = angle;
+//}
 
 #endif

@@ -10,6 +10,7 @@
 #include "LArSIMpleDetectorConstruction.hh"
 
 #include "G4UIcmdWithABool.hh"
+#include "G4UIcmdWithADouble.hh"
 #include "G4UIcmdWithADoubleAndUnit.hh"
 #include "G4UIcmdWithAString.hh"
 #include "G4UIcommand.hh"
@@ -67,6 +68,21 @@ LArSIMpleDetectorMessenger::LArSIMpleDetectorMessenger(LArSIMpleDetectorConstruc
     fCheckOverlaps->SetGuidance("Check overlaps when building geometry");
     fCheckOverlaps->SetParameterName("CheckOverlaps", true, true);
     fCheckOverlaps->SetDefaultValue(true);
+
+    fWireAngleU = new G4UIcmdWithADouble("/LArSIMple/WireAngleU", this);
+    fWireAngleU->SetGuidance("Angle of the U wires to the verticle");
+    fWireAngleU->SetParameterName("WireAngleU", true);
+    fWireAngleU->SetDefaultValue(35.9);
+
+    fWireAngleV = new G4UIcmdWithADouble("/LArSIMple/WireAngleV", this);
+    fWireAngleV->SetGuidance("Angle of the v wires to the verticle");
+    fWireAngleV->SetParameterName("WireAngleV", true);
+    fWireAngleV->SetDefaultValue(-35.9);
+
+    fWireAngleW = new G4UIcmdWithADouble("/LArSIMple/WireAngleW", this);
+    fWireAngleW->SetGuidance("Angle of the W wires to the verticle");
+    fWireAngleW->SetParameterName("WireAngleW", true);
+    fWireAngleW->SetDefaultValue(0.0);
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -82,6 +98,9 @@ LArSIMpleDetectorMessenger::~LArSIMpleDetectorMessenger()
     delete fVoxeliseLAr;
     delete fCheckOverlaps;
     delete fLArSIMpleDir;
+    delete fWireAngleU;
+    delete fWireAngleV;
+    delete fWireAngleW;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -106,4 +125,10 @@ void LArSIMpleDetectorMessenger::SetNewValue(G4UIcommand *command, G4String newV
         fDetectorConstruction->SetVoxeliseLAr(fVoxeliseLAr->GetNewBoolValue(newValue));
     if (command == fCheckOverlaps)
         fDetectorConstruction->SetCheckOverlaps(fCheckOverlaps->GetNewBoolValue(newValue));
+    if (command == fWireAngleU)
+        fDetectorConstruction->SetWireAngleU(fWireAngleU->GetNewDoubleValue(newValue));
+    if (command == fWireAngleV)
+        fDetectorConstruction->SetWireAngleV(fWireAngleV->GetNewDoubleValue(newValue));
+    if (command == fWireAngleW)
+        fDetectorConstruction->SetWireAngleW(fWireAngleW->GetNewDoubleValue(newValue));
 }

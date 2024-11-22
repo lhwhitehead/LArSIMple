@@ -13,6 +13,7 @@
 
 #include "LArSIMple3DEnergyDeposit.hh"
 #include "LArSIMpleTrackData.hh"
+#include "LArSIMpleWireHit.hh"
 
 class LArSIMpleTrueNeutrinoEvent;
 
@@ -50,7 +51,8 @@ public:
      *  @param  trueEvt the true neutrino event
      *  @param  wireAngles the angles of the three wire readout planes
      */
-    void WriteRootFile(const std::string &base, const std::vector<LArSIMple3DEnergyDeposit> &hits, const LArSIMpleTrueNeutrinoEvent *trueEvt,
+    void WriteRootFile(const std::string &base, const std::vector<LArSIMple3DEnergyDeposit> &hits, const std::vector<LArSIMpleWireHit> &uHits,
+        const std::vector<LArSIMpleWireHit> &vHits, const std::vector<LArSIMpleWireHit> &wHits, const LArSIMpleTrueNeutrinoEvent *trueEvt,
         std::map<int, LArSIMpleTrackData> &trueTracks, const std::vector<double> &wireAngles) const;
 
 private:

@@ -201,9 +201,49 @@ public:
     void SetCheckOverlaps(bool check);
 
     /**
-     *  @brief  
+     *  @brief  Get the angle of the U wires w.r.t the y-axis
      *
-     *  @return true if voxelised
+     *  @return the angle to the y-axis
+     */
+    float GetWireAngleU() const;
+
+    /**
+     *  @brief  Get the angle of the V wires w.r.t the y-axis
+     *
+     *  @return the angle to the y-axis
+     */
+    float GetWireAngleV() const;
+
+    /**
+     *  @brief  Get the angle of the W wires w.r.t the y-axis
+     *
+     *  @return the angle to the y-axis
+     */
+    float GetWireAngleW() const;
+
+    /**
+     *  @brief  Set the angle of the U wires w.r.t the y-axis
+     *
+     *  @param  angle the angle to the y-axis
+     */
+    void SetWireAngleU(float angle);
+
+    /**
+     *  @brief  Set the angle of the V wires w.r.t the y-axis
+     *
+     *  @param  angle the angle to the y-axis
+     */
+    void SetWireAngleV(float angle);
+
+    /**
+     *  @brief  Set the angle of the W wires w.r.t the y-axis
+     *
+     *  @param  angle the angle to the y-axis
+     */
+    void SetWireAngleW(float angle);
+
+    /**
+     *  @brief  Print a summary of the detecot geometry
      */
     void PrintDetectorSummary() const;
 
@@ -238,6 +278,10 @@ private:
 
     bool fVoxeliseLAr;   ///< Whether to voxelise the LAr volume
     bool fCheckOverlaps; ///< Whether to check for geometry overlaps
+
+    float fWireAngleU; ///< Angle of the U wires to the vertical
+    float fWireAngleV; ///< Angle of the V wires to the vertical
+    float fWireAngleW; ///< Angle of the W wires to the vertical
 
     G4Material *fMaterialLAr; ///< Geant4 material for air
     G4Material *fMaterialAir; ///< Geant4 material for liquid argon
@@ -405,6 +449,48 @@ inline bool LArSIMpleDetectorConstruction::GetCheckOverlaps() const
 inline void LArSIMpleDetectorConstruction::SetCheckOverlaps(bool check)
 {
     fCheckOverlaps = check;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+inline float LArSIMpleDetectorConstruction::GetWireAngleU() const
+{
+    return fWireAngleU;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+inline float LArSIMpleDetectorConstruction::GetWireAngleV() const
+{
+    return fWireAngleV;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+inline float LArSIMpleDetectorConstruction::GetWireAngleW() const
+{
+    return fWireAngleW;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+inline void LArSIMpleDetectorConstruction::SetWireAngleU(float angle)
+{
+    fWireAngleU = angle;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+inline void LArSIMpleDetectorConstruction::SetWireAngleV(float angle)
+{
+    fWireAngleV = angle;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+inline void LArSIMpleDetectorConstruction::SetWireAngleW(float angle)
+{
+    fWireAngleW = angle;
 }
 
 #endif

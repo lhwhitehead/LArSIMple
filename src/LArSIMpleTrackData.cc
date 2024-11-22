@@ -76,7 +76,7 @@ LArSIMpleTrackData::LArSIMpleTrackData(const LArSIMpleTrackData &rhs)
     fEndDirection = rhs.GetEndDirection();
     fEndKineticEnergy = rhs.GetEndKineticEnergy();
     fEndMomentum = rhs.GetEndMomentum();
-//    fIsFoldable = rhs.IsFoldable();
+    //    fIsFoldable = rhs.IsFoldable();
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
