@@ -67,40 +67,146 @@ public:
     void AddFinalStateParticle(LArSIMpleTrueParticle particle);
     void AddFinalStateParticle(G4ThreeVector pos, G4ThreeVector dir, double energy, int pdg);
 
+    /**
+     *  @brief  Set the neutrino interaction vertex position
+     *
+     *  @param  pos the vertex position
+     */
     void SetInteractionVertex(G4ThreeVector pos);
+
+    /**
+     *  @brief  Returns the neutrino interaction vertex position
+     *
+     *  @return the vertex position
+     */
     G4ThreeVector GetInteractionVertex() const;
 
+    /**
+     *  @brief  Returns the neutrino PDG code
+     *
+     *  @return the PDG code
+     */
     int GetNeutrinoPDGCode() const;
+
+    /**
+     *  @brief  Returns the neutrino energy
+     *
+     *  @return the neutrino energy
+     */
     float GetNeutrinoEnergy() const;
+
+    /**
+     *  @brief  Returns the neutrino flavour
+     *
+     *  @return the neutrino flavour
+     */
     LArSIMpleNeutrinoFlavourType GetNeutrinoFlavour() const;
+
+    /**
+     *  @brief  Returns the neutrino interaction type
+     *
+     *  @return the interaction type
+     */
     LArSIMpleNeutrinoInteractionType GetInteractionType() const;
+
+    /**
+     *  @brief  Sets the neutrino interaction type
+     *
+     *  @param  intType the interaction type
+     */
     void SetInteractionType(const LArSIMpleNeutrinoInteractionType intType);
 
+    /**
+     *  @brief  Returns the number of final-state particles
+     *
+     *  @return the number of final-state particles
+     */
     unsigned int GetNumberOfFinalStateParticles() const;
+
+    /**
+     *  @brief  Returns the final-state particles
+     *
+     *  @return the final-state particles
+     */
     std::vector<LArSIMpleTrueParticle> GetFinalStateParticles() const;
+
+    /**
+     *  @brief  Returns the leading lepton
+     *
+     *  @return the leading lepton
+     */
     LArSIMpleTrueParticle GetLeadingLepton() const;
 
+    /**
+     *  @brief  Returns the number of final-state protons
+     *
+     *  @return the number of final-state protons
+     */
     unsigned int GetNProtons() const;
+
+    /**
+     *  @brief  Returns the number of final-state pi+ mesons
+     *
+     *  @return the number of final-state pi+ mesons
+     */
     unsigned int GetNPiPlus() const;
+
+    /**
+     *  @brief  Returns the number of final-state pi- mesons
+     *
+     *  @return the number of final-state pi- mesons
+     */
     unsigned int GetNPiMinus() const;
+
+    /**
+     *  @brief  Returns the number of final-state pi0 mesons
+     *
+     *  @return the number of final-state pi0 mesons
+     */
     unsigned int GetNPiZero() const;
+
+    /**
+     *  @brief  Returns the number of final-state neutrons
+     *
+     *  @return the number of final-state neutrons
+     */
     unsigned int GetNNeutrons() const;
+
+    /**
+     *  @brief  Returns the number of final-state photons
+     *
+     *  @return the number of final-state photons
+     */
     unsigned int GetNPhotons() const;
 
+    /**
+     *  @brief  Print a summary of the neutrino interaction
+     */
     void Print() const;
 
 private:
+    /**
+     *  @brief  Sets the neutrino flavour
+     */
     void SetFlavour();
+
+    /**
+     *  @brief  Returns the number of final-state particles with a given PDG code
+     *
+     *  @param  pdg the pdg code of the particle type to count
+     *
+     *  @return the number of particles
+     */
     unsigned int GetNParticles(const int pdg) const;
 
-    LArSIMpleTrueParticle fNeutrino;
-    LArSIMpleTrueParticle fTarget;
+    LArSIMpleTrueParticle fNeutrino;                          ///< True particle representing the neutrino
+    LArSIMpleTrueParticle fTarget;                            ///< True particle representing the target nucleon
 
-    G4ThreeVector fInteractionVertex;
-    LArSIMpleNeutrinoFlavourType fFlavour;
-    LArSIMpleNeutrinoInteractionType fInteractionType;
+    G4ThreeVector fInteractionVertex;                         ///< The neutrino interaction vertex position
+    LArSIMpleNeutrinoFlavourType fFlavour;                    ///< The neutrino flavour
+    LArSIMpleNeutrinoInteractionType fInteractionType;        ///< The neutrino interaction type
 
-    std::vector<LArSIMpleTrueParticle> fFinalStateParticles;
+    std::vector<LArSIMpleTrueParticle> fFinalStateParticles;  ///< A vector of final-state particles
 };
 
 //------------------------------------------------------------------------------------------------------------------------------------------
