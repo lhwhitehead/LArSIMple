@@ -181,10 +181,8 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
     outputTree->Branch("process", &process);
 
     std::map<int, int> trackIDToHitMap;
-    for (unsigned int h = 0; h < hits.size(); ++h)
+    for (const LArSIMple3DEnergyDeposit &hit : hits)
     {
-        const LArSIMple3DEnergyDeposit &hit = hits.at(h);
-
         const G4ThreeVector &xyzPos = hit.GetPosition();
         posX.emplace_back(xyzPos.getX());
         posY.emplace_back(xyzPos.getY());
@@ -245,29 +243,45 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
     outputTree->Branch("vViewPDG", &vViewPDG);
     outputTree->Branch("wViewPDG", &wViewPDG);
 
+    std::map<int, int> trackIDToHitMapU, trackIDToHitMapV, trackIDToHitMapW;
     for (const LArSIMpleWireHit &uHit : uHits)
     {
         uViewDrift.emplace_back(uHit.GetDriftBin());
         uViewWire.emplace_back(uHit.GetWireNumber());
         uViewCharge.emplace_back(uHit.GetCharge());
-        uViewTrackID.emplace_back(uHit.GetLargestContributingTrackId());
         uViewPDG.emplace_back(uHit.GetLargestContributingPDG());
+        const int trkId{uHit.GetLargestContributingTrackId()};
+        uViewTrackID.emplace_back(trkId);
+        if (!trackIDToHitMapU.count(trkId))
+            trackIDToHitMapU[trkId] = 1;
+        else
+            ++trackIDToHitMapU[trkId];
     }
     for (const LArSIMpleWireHit &vHit : vHits)
     {
         vViewDrift.emplace_back(vHit.GetDriftBin());
         vViewWire.emplace_back(vHit.GetWireNumber());
         vViewCharge.emplace_back(vHit.GetCharge());
-        vViewTrackID.emplace_back(vHit.GetLargestContributingTrackId());
         vViewPDG.emplace_back(vHit.GetLargestContributingPDG());
+        const int trkId{vHit.GetLargestContributingTrackId()};
+        vViewTrackID.emplace_back(trkId);
+        if (!trackIDToHitMapV.count(trkId))
+            trackIDToHitMapV[trkId] = 1;
+        else
+            ++trackIDToHitMapV[trkId];
     }
     for (const LArSIMpleWireHit &wHit : wHits)
     {
         wViewDrift.emplace_back(wHit.GetDriftBin());
         wViewWire.emplace_back(wHit.GetWireNumber());
         wViewCharge.emplace_back(wHit.GetCharge());
-        wViewTrackID.emplace_back(wHit.GetLargestContributingTrackId());
         wViewPDG.emplace_back(wHit.GetLargestContributingPDG());
+        const int trkId{wHit.GetLargestContributingTrackId()};
+        wViewTrackID.emplace_back(trkId);
+        if (!trackIDToHitMapW.count(trkId))
+            trackIDToHitMapW[trkId] = 1;
+        else
+            ++trackIDToHitMapW[trkId];
     }
 
     // True track information
@@ -285,6 +299,9 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
     std::vector<float> trackMass;
     std::vector<int> trackIsPrimary;
     std::vector<int> trackNHits;
+    std::vector<int> trackNHitsU;
+    std::vector<int> trackNHitsV;
+    std::vector<int> trackNHitsW;
 
     outputTree->Branch("trueTrackVtxPosX", &trackVtxPosX);
     outputTree->Branch("trueTrackVtxPosY", &trackVtxPosY);
@@ -322,6 +339,9 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
     outputTree->Branch("trueTrackMass", &trackMass);
     outputTree->Branch("trueTrackIsPrimary", &trackIsPrimary);
     outputTree->Branch("trueTrackNHits", &trackNHits);
+    outputTree->Branch("trueTrackNHitsU", &trackNHitsU);
+    outputTree->Branch("trueTrackNHitsV", &trackNHitsV);
+    outputTree->Branch("trueTrackNHitsW", &trackNHitsW);
 
     for (const auto &trackPair : trueTracks)
     {
@@ -371,6 +391,11 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
         trackMass.emplace_back(trackPair.second.GetMass());
         trackIsPrimary.emplace_back(trackPair.second.IsPrimary());
         trackNHits.emplace_back(trackIDToHitMap.at(trackPair.first));
+
+        // If this track has no hits in the 2D views, add a zero instead. This just keeps the vectors the same length
+        trackNHitsU.emplace_back(trackIDToHitMapU.count(trackPair.first) ? trackIDToHitMapU.at(trackPair.first) : 0);
+        trackNHitsV.emplace_back(trackIDToHitMapV.count(trackPair.first) ? trackIDToHitMapV.at(trackPair.first) : 0);
+        trackNHitsW.emplace_back(trackIDToHitMapW.count(trackPair.first) ? trackIDToHitMapW.at(trackPair.first) : 0);
     }
 
     std::cout << "Creating ROOT TTree with " << posX.size() << " hits" << std::endl;
