@@ -73,7 +73,7 @@ private:
 inline double LArSIMpleOutputWriter::ConvertYZToWireCoordinate(const double y, const double z, const double wireAngle) const
 {
     const double degreesToRadians{3.14159265358979323846 / 180.};
-    return z * std::cos(wireAngle * degreesToRadians) - y * std::sin(wireAngle * degreesToRadians);
+    return z * std::cos(wireAngle * degreesToRadians) + y * std::sin(wireAngle * degreesToRadians);
 }
 
 #endif
