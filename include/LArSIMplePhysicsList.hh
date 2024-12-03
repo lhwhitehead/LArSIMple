@@ -9,12 +9,12 @@
 #ifndef LArSIMplePhysicsList_h
 #define LArSIMplePhysicsList_h 1
 
-#include "QGSP_BIC_HP.hh"
+#include "QGSP_BERT.hh"
 
 /**
  *  @brief The physics list class
  */
-class LArSIMplePhysicsList : public QGSP_BIC_HP
+class LArSIMplePhysicsList : public QGSP_BERT
 {
 public:
     /**

@@ -9,7 +9,7 @@
 #include "LArSIMplePhysicsList.hh"
 
 LArSIMplePhysicsList::LArSIMplePhysicsList() :
-    QGSP_BIC_HP()
+    QGSP_BERT()
 {
 }
 
@@ -23,6 +23,6 @@ LArSIMplePhysicsList::~LArSIMplePhysicsList()
 
 void LArSIMplePhysicsList::SetCuts()
 {
-    QGSP_BIC_HP::SetCuts();
+    QGSP_BERT::SetCuts();
     SetCutsWithDefault();
 }
