@@ -85,4 +85,5 @@ void LArSIMpleProcessTable::FillProcessMap()
     fProcessStringToCodeMap.insert(std::make_pair("primaryBackground", MC_PROC_PRIMARY_BACKGROUND));
     fProcessStringToCodeMap.insert(std::make_pair("RadioactiveDecay", MC_PROC_RADIOACTIVE_DECAY));
     fProcessStringToCodeMap.insert(std::make_pair("kaon0LInelastic", MC_PROC_KAON0L_INELASTIC));
+    fProcessStringToCodeMap.insert(std::make_pair("positronNuclear", MC_PROC_POSITRON_NUCLEAR));
 }
