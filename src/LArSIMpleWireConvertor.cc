@@ -48,7 +48,7 @@ std::vector<LArSIMpleWireHit> LArSIMpleWireConvertor::Convert3DEnergyDepositsToW
             grid.at(wireDrift).AddHitContribution(depo.GetParticleTrackID(), depo.GetParticlePDG(), depo.GetEnergy());
         else
             grid.insert(std::make_pair(
-                wireDrift, LArSIMpleWireHit(wire, drift, view, depo.GetParticleTrackID(), depo.GetParticlePDG(), depo.GetEnergy())));
+                wireDrift, LArSIMpleWireHit(wire, wirePos, drift, depo.GetPosition().getX(), view, depo.GetParticleTrackID(), depo.GetParticlePDG(), depo.GetEnergy())));
     }
 
     // Convert to a vector of LArSIMpleWireHits

@@ -35,26 +35,30 @@ public:
      *  @brief  Constructor
      *
      *  @param  wireNumber the number of the wire that the hit would have been registered on
+     *  @param  wireCoordinate the original wire coordinate before descretisation
      *  @param  driftBin the value of the discretised drift direction
+     *  @param  xCoordinate the original x coordinate before descretisation
      *  @param  view the readout view in question (U, V or W)
      *  @param  trackId the contributing track id to this hit
      *  @param  pdg the contributing pdg code to this hit 
      *  @param  charge the contributing energy deposit to this hit
      */
-    LArSIMpleWireHit(const unsigned int &wireNumber, const unsigned int &driftBin, const LArSIMpleReadoutView &view, const int &trackId,
-        const int &pdg, const float &charge);
+    LArSIMpleWireHit(const unsigned int &wireNumber, const float &wireCoordinate, const unsigned int &driftBin, const float &xCoordinate, 
+        const LArSIMpleReadoutView &view, const int &trackId, const int &pdg, const float &charge);
 
     /**
      *  @brief  Constructor
      *
      *  @param  wireNumber the number of the wire that the hit would have been registered on
+     *  @param  wireCoordinate the original wire coordinate before descretisation
      *  @param  driftBin the value of the discretised drift direction
+     *  @param  xCoordinate the original x coordinate before descretisation
      *  @param  view the readout view in question (U, V or W)
      *  @param  trackIds the vector of contributing track ids to this hit 
      *  @param  pdgs the vector of contributing pdg codes to this hit 
      *  @param  charges the vector of contributing energy deposits to this hit
      */
-    LArSIMpleWireHit(const unsigned int &wireNumber, const unsigned int &driftBin, const LArSIMpleReadoutView &view,
+    LArSIMpleWireHit(const unsigned int &wireNumber, const float &wireCoordinate, const unsigned int &driftBin, const float &xCoordinate, const LArSIMpleReadoutView &view,
         const std::vector<int> &trackIds, const std::vector<int> &pdgs, const std::vector<float> &charges);
 
     /**
@@ -80,6 +84,20 @@ public:
      *  @return the drift bin
      */
     unsigned int GetDriftBin() const;
+
+    /**
+     *  @brief  Returns the wire coordinate of this hit
+     *
+     *  @return the wire coordinate
+     */
+    float GetWireCoordinate() const;
+
+    /**
+     *  @brief  Returns the x coordinate of this hit
+     *
+     *  @return the x coordinate
+     */
+    float GetXCoordinate() const;
 
     /**
      *  @brief  Returns the readout view number of this hit
@@ -120,6 +138,8 @@ public:
 
 private:
     LArSIMpleReadoutView fReadoutView; ///< The readout plane
+    float fXCoordinate;                ///< The x coordinate of the parent 3D energy deposit
+    float fWireCoordinate;             ///< The wire coordinate of the parent 3D energy deposit
     unsigned int fWireNumber;          ///< The wire number that the hit would have been registered on
     unsigned int fDriftBin;            ///< The drift coordinate bin after discretisation
     std::vector<int> fTrackIds;        ///< The track ids responsible for this hit
@@ -138,9 +158,23 @@ inline unsigned int LArSIMpleWireHit::GetWireNumber() const
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
+inline float LArSIMpleWireHit::GetWireCoordinate() const
+{
+    return fWireCoordinate;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 inline unsigned int LArSIMpleWireHit::GetDriftBin() const
 {
     return fDriftBin;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+inline float LArSIMpleWireHit::GetXCoordinate() const
+{
+    return fXCoordinate;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
