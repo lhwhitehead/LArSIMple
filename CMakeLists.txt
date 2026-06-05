@@ -1,81 +1,104 @@
-# $Id: CMakeLists.txt 86065 2014-11-07 08:51:15Z gcosmo $
+cmake_minimum_required(VERSION 3.16)
 
-#----------------------------------------------------------------------------
-# Setup the project
-#
-cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
-project(LArSIMple)
-set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR})
+project(LArSIMple LANGUAGES CXX)
 
-#----------------------------------------------------------------------------
-# Find Geant4 package, activating all available UI and Vis drivers by default
-# You can set WITH_GEANT4_UIVIS to OFF via the command line or ccmake/cmake-gui
-# to build a batch mode only executable
-#
-option(WITH_GEANT4_UIVIS "Build example with Geant4 UI and Vis drivers" ON)
+option(USE_PANDORA "Build with Pandora SDK support" ON)
+option(WITH_GEANT4_UIVIS "Build with Geant4 UI and visualization" ON)
+
+# ------------------------------------------------------------------
+
+# Geant4
+
+# ------------------------------------------------------------------
+
 if(WITH_GEANT4_UIVIS)
-  find_package(Geant4 REQUIRED ui_all vis_all)
+find_package(Geant4 REQUIRED ui_all vis_all)
 else()
-  find_package(Geant4 REQUIRED)
+find_package(Geant4 REQUIRED)
 endif()
 
-#----------------------------------------------------------------------------
-# Setup Geant4 include directories and compile definitions
-# Setup include directory for this project
-#
-include(${Geant4_USE_FILE})
+# ------------------------------------------------------------------
 
-#----------------------------------------------------------------------------
-# Find ROOT (required package)
-#
+# ROOT
+
+# ------------------------------------------------------------------
+
 find_package(ROOT REQUIRED)
-message(${ROOT_LIBRARIES})
-find_library(ROOT_LIB_EG EG)
-message(${ROOT_LIB_EG})
 
-#----------------------------------------------------------------------------
-# Locate sources and headers for this project
-# NB: headers are included so they will show up in IDEs
-#
-include_directories(${PROJECT_SOURCE_DIR}/include
-                    ${ROOT_INCLUDE_DIRS})
+# ------------------------------------------------------------------
 
-file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cc)
-file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
+# Source files
 
-#----------------------------------------------------------------------------
-# Add the executable, and link it to the Geant4, ROOT and zlib libraries
-#
-add_executable(LArSIMple LArSIMple.cc ${sources} ${headers})
-target_link_libraries(LArSIMple ${Geant4_LIBRARIES} ${ROOT_LIBRARIES} ${ROOT_LIB_EG} z)
-target_compile_options(LArSIMple PRIVATE -Wno-misleading-indentation)
+# ------------------------------------------------------------------
 
-#----------------------------------------------------------------------------
-# Copy all scripts to the build directory, i.e. the directory in which we
-# build G4TPC. This is so that we can run the executable directly because it
-# relies on these scripts being in the current working directory.
-#
-set(LArSIMple_SCRIPTS
-  g4TPC.out
-  g4TPC.in
-  icons.mac
-  gui.mac
-  run.png
-  init_vis.mac
-  run1.mac
-  run2.mac
-  vis.mac
-  )
+include(cmake/Sources.cmake)
 
-foreach(_script ${G4TPC_SCRIPTS})
-  configure_file(
-    ${PROJECT_SOURCE_DIR}/${_script}
-    ${PROJECT_BINARY_DIR}/${_script}
-    COPYONLY
-    )
-endforeach()
+# ------------------------------------------------------------------
 
-#----------------------------------------------------------------------------
-# Install the executable to 'bin' directory under CMAKE_INSTALL_PREFIX
-#
+# Pandora support
+
+# ------------------------------------------------------------------
+
+if(USE_PANDORA)
+
+find_package(PandoraSDK REQUIRED)
+find_package(larpandoracontent REQUIRED)
+
+include(cmake/PandoraSources.cmake)
+
+endif()
+
+# ------------------------------------------------------------------
+
+# Executable
+
+# ------------------------------------------------------------------
+
+add_executable(
+LArSIMple
+LArSIMple.cc
+${LARSIMPLE_SOURCES}
+${LARSIMPLE_HEADERS}
+)
+
+target_include_directories(LArSIMple PRIVATE
+${PROJECT_SOURCE_DIR}/include
+${ROOT_INCLUDE_DIRS}
+)
+
+target_link_libraries(LArSIMple PRIVATE
+${Geant4_LIBRARIES}
+${ROOT_LIBRARIES}
+${ROOT_LIB_EG}
+z
+)
+
+if(USE_PANDORA)
+
+target_compile_definitions(LArSIMple PRIVATE USE_PANDORA)
+
+target_link_libraries(LArSIMple PRIVATE
+    ${PandoraSDK_LIBRARIES}
+    ${larpandoracontent_LIBRARIES}
+)
+
+target_include_directories(LArSIMple PRIVATE
+    ${PandoraSDK_INCLUDE_DIRS}
+    ${larpandoracontent_INCLUDE_DIRS}
+)
+
+endif()
+
+target_compile_options(
+LArSIMple PRIVATE
+-Wno-misleading-indentation
+)
+
+# ------------------------------------------------------------------
+
+# Install
+
+# ------------------------------------------------------------------
+
 install(TARGETS LArSIMple DESTINATION bin)
+

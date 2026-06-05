@@ -1,0 +1,49 @@
+set(LARSIMPLE_SOURCES
+    src/LArSIMple3DEnergyDeposit.cc
+    src/LArSIMpleDetectorConstruction.cc
+    src/LArSIMpleDetectorMessenger.cc
+    src/LArSIMpleEventAction.cc
+    src/LArSIMpleHitFeatureUtils.cc
+    src/LArSIMpleMessenger.cc
+    src/LArSIMpleNestedParameterisation.cc
+    src/LArSIMpleNeutrinoInputParser.cc
+    src/LArSIMpleOutputWriter.cc
+    src/LArSIMplePhysicsList.cc
+    src/LArSIMplePrimaryGeneratorAction.cc
+    src/LArSIMplePrimaryGeneratorMessenger.cc
+    src/LArSIMpleProcessTable.cc
+    src/LArSIMpleRunAction.cc
+    src/LArSIMpleSteppingAction.cc
+    src/LArSIMpleTrackData.cc
+    src/LArSIMpleTrackingAction.cc
+    src/LArSIMpleTrueNeutrinoEvent.cc
+    src/LArSIMpleTrueParticle.cc
+    src/LArSIMpleTruthFolder.cc
+    src/LArSIMpleWireConvertor.cc
+    src/LArSIMpleWireHit.cc
+)
+
+set(LARSIMPLE_HEADERS
+    include/LArSIMple3DEnergyDeposit.hh
+    include/LArSIMpleDetectorConstruction.hh
+    include/LArSIMpleDetectorMessenger.hh
+    include/LArSIMpleEventAction.hh
+    include/LArSIMpleHitFeatureUtils.hh
+    include/LArSIMpleMessenger.hh
+    include/LArSIMpleNestedParameterisation.hh
+    include/LArSIMpleNeutrinoInputParser.hh
+    include/LArSIMpleOutputWriter.hh
+    include/LArSIMplePhysicsList.hh
+    include/LArSIMplePrimaryGeneratorAction.hh
+    include/LArSIMplePrimaryGeneratorMessenger.hh
+    include/LArSIMpleProcessTable.hh
+    include/LArSIMpleRunAction.hh
+    include/LArSIMpleSteppingAction.hh
+    include/LArSIMpleTrackData.hh
+    include/LArSIMpleTrackingAction.hh
+    include/LArSIMpleTrueNeutrinoEvent.hh
+    include/LArSIMpleTrueParticle.hh
+    include/LArSIMpleTruthFolder.hh
+    include/LArSIMpleWireConvertor.hh
+    include/LArSIMpleWireHit.hh
+)
