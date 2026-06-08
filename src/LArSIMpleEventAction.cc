@@ -16,6 +16,10 @@
 #include "LArSIMpleWireConvertor.hh"
 #include "LArSIMpleWireHit.hh"
 
+#ifdef USE_PANDORA
+#include "LArSIMplePandoraWriter.hh"
+#endif
+
 #include "G4Event.hh"
 #include "G4EventManager.hh"
 #include "G4Track.hh"
@@ -111,6 +115,13 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event *)
         writer.WriteRootFile(fOutputFileDirectory + fOutputFilePrefix, fEnergyDeposits, uHits, vHits, wHits,
             fGenAction->GetTrueNeutrinoEventPointer(), fTrackIDToTrackData, wireAngles);
     }
+
+#ifdef USE_PANDORA
+    LArSIMplePandoraWriter pandoraWriter(fDetector, fEventID, true);
+    pandoraWriter.CreateCaloHits(fEnergyDeposits);
+#endif
+
+
     this->CleanUp();
 }
 
