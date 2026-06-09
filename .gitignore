@@ -39,3 +39,7 @@ bin/
 *.gz
 *.root
 *.info
+*.pndr
+# For XML we want to keep those in config
+*.xml
+!config/*.xml
