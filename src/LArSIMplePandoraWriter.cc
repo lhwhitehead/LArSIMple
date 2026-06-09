@@ -22,15 +22,13 @@
 #include "larpandoracontent/LArObjects/LArCaloHit.h"
 #include "larpandoracontent/LArObjects/LArMCParticle.h"
 
-LArSIMplePandoraWriter::LArSIMplePandoraWriter(const LArSIMpleDetectorConstruction *const detector, const unsigned int eventNumber, const bool useXMLNotBinary) :
+LArSIMplePandoraWriter::LArSIMplePandoraWriter(const LArSIMpleDetectorConstruction *const detector) :
 fDetector(detector),
-fEventNumber(eventNumber),
-fUseXMLNotBinary(useXMLNotBinary),
-fWriteGeometry(true)
+fEnergyScale(1.0e-3), // MeV -> GeV
+fPositionScale(0.1f)  // mm  -> cm
 {
     std::cout << "Creating Pandora instance" << std::endl;
     fPandora = new pandora::Pandora();
-
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -43,7 +41,6 @@ LArSIMplePandoraWriter::~LArSIMplePandoraWriter()
 
 void LArSIMplePandoraWriter::CreateCaloHits(const std::vector<LArSIMpleWireHit> &hits)
 {
-//    for (const LArSIMpleWireHit hit : hits)
     for (unsigned int h = 0; h < hits.size(); ++h)
         this->CreateCaloHitFromWireHit(h, hits.at(h));
 }
@@ -66,9 +63,9 @@ void LArSIMplePandoraWriter::CreateLArTPC()
     tpcParams.m_centerX = 0.f;
     tpcParams.m_centerY = 0.f;
     tpcParams.m_centerZ = 0.f;
-    tpcParams.m_widthX = fDetector->GetLArWidth();
-    tpcParams.m_widthY = fDetector->GetLArHeight();
-    tpcParams.m_widthZ = fDetector->GetLArLength();
+    tpcParams.m_widthX = fDetector->GetLArWidth() * fPositionScale;
+    tpcParams.m_widthY = fDetector->GetLArHeight() * fPositionScale;
+    tpcParams.m_widthZ = fDetector->GetLArLength() * fPositionScale;
     tpcParams.m_larTPCVolumeId = 0;
     tpcParams.m_wirePitchU = 0.5f; // Currently hard coded as 5mm
     tpcParams.m_wirePitchV = 0.5f;
@@ -112,11 +109,11 @@ void LArSIMplePandoraWriter::CreateCaloHitFromWireHit(const unsigned int hitNumb
 
     const float voxelWidth{0.5f};
     const float MipE{0.00075}; // Pandora expects mips too?
-    const float voxelE(hit.GetCharge());
+    const float voxelE(hit.GetCharge() * fEnergyScale);
     const float voxelMipEquivalentE{voxelE / MipE};
-   
+
     lar_content::LArCaloHitParameters hitParams;
-    hitParams.m_positionVector = pandora::CartesianVector(hit.GetWireNumber() * 0.1f, 0.f, hit.GetDriftBin() * 0.1f);
+    hitParams.m_positionVector = pandora::CartesianVector(hit.GetDriftCoordinate() * fPositionScale, 0.f, hit.GetWireCoordinate() * fPositionScale);
     hitParams.m_expectedDirection = pandora::CartesianVector(0.f, 0.f, 1.f);
     hitParams.m_cellNormalVector = pandora::CartesianVector(0.f, 0.f, 1.f);
     hitParams.m_cellGeometry = pandora::RECTANGULAR;
@@ -138,6 +135,8 @@ void LArSIMplePandoraWriter::CreateCaloHitFromWireHit(const unsigned int hitNumb
     hitParams.m_pParentAddress = (void *)(static_cast<uintptr_t>(hitNumber));
     hitParams.m_larTPCVolumeId = 0;
     hitParams.m_daughterVolumeId = 0;
+
+//    std::cout << static_cast<pandora::HitType>(static_cast<unsigned short>(hit.GetView()) + 4) << ", " << hit.GetDriftCoordinate() * fPositionScale << ", " << hit.GetWireCoordinate() * fPositionScale << std::endl;
 
     try
     {
@@ -166,11 +165,11 @@ void LArSIMplePandoraWriter::CreateMCParticle(const LArSIMpleTrackData &mcPartic
         lar_content::LArMCParticleParameters mcParticleParams;
 
         // Initial momentum and energy in GeV
-        const float px = mcParticle.GetVertexDirection().getX() * mcParticle.GetVertexMomentum();
-        const float py = mcParticle.GetVertexDirection().getY() * mcParticle.GetVertexMomentum();
-        const float pz = mcParticle.GetVertexDirection().getZ() * mcParticle.GetVertexMomentum();
+        const float px = mcParticle.GetVertexDirection().getX() * mcParticle.GetVertexMomentum() * fEnergyScale;
+        const float py = mcParticle.GetVertexDirection().getY() * mcParticle.GetVertexMomentum() * fEnergyScale;
+        const float pz = mcParticle.GetVertexDirection().getZ() * mcParticle.GetVertexMomentum() * fEnergyScale;
         const float energySq = mcParticle.GetVertexMomentum() * mcParticle.GetVertexMomentum() + mcParticle.GetMass() * mcParticle.GetMass();
-        mcParticleParams.m_energy = sqrt(energySq);
+        mcParticleParams.m_energy = sqrt(energySq) * fEnergyScale;
         mcParticleParams.m_momentum = pandora::CartesianVector(px, py, pz);
 
         // Particle codes
@@ -182,14 +181,14 @@ void LArSIMplePandoraWriter::CreateMCParticle(const LArSIMpleTrackData &mcPartic
         mcParticleParams.m_pParentAddress = (void *)((intptr_t)mcParticle.GetTrackID());
 
         // Start and end points in cm
-        const float startx = mcParticle.GetVertexPosition().getX() * 0.1f;
-        const float starty = mcParticle.GetVertexPosition().getY() * 0.1f;
-        const float startz = mcParticle.GetVertexPosition().getZ() * 0.1f;
+        const float startx = mcParticle.GetVertexPosition().getX() * fPositionScale;
+        const float starty = mcParticle.GetVertexPosition().getY() * fPositionScale;
+        const float startz = mcParticle.GetVertexPosition().getZ() * fPositionScale;
         mcParticleParams.m_vertex = pandora::CartesianVector(startx, starty, startz);
 
-        const float endx = mcParticle.GetEndPosition().getX() * 0.1f;
-        const float endy = mcParticle.GetEndPosition().getY() * 0.1f;
-        const float endz = mcParticle.GetEndPosition().getZ() * 0.1f;
+        const float endx = mcParticle.GetEndPosition().getX() * fPositionScale;
+        const float endy = mcParticle.GetEndPosition().getY() * fPositionScale;
+        const float endz = mcParticle.GetEndPosition().getZ() * fPositionScale;
         mcParticleParams.m_endpoint = pandora::CartesianVector(endx, endy, endz);
 
         // Process ID

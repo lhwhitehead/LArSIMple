@@ -52,7 +52,7 @@ std::vector<LArSIMpleWireHit> LArSIMpleWireConvertor::Convert3DEnergyDepositsToW
             const float w{min_wire + wire * bin_width};
             const float x{min_drift + drift * bin_width};
             grid.insert(std::make_pair(
-                wireDrift, LArSIMpleWireHit(w, x, view, depo.GetParticleTrackID(), depo.GetParticlePDG(), depo.GetEnergy())));
+                wireDrift, LArSIMpleWireHit(wire, w, drift, x, view, depo.GetParticleTrackID(), depo.GetParticlePDG(), depo.GetEnergy())));
         }
     }
 

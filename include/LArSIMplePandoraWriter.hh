@@ -31,7 +31,7 @@ public:
     /**
      *  @brief  Constructor
      */
-    LArSIMplePandoraWriter(const LArSIMpleDetectorConstruction *const detector, const unsigned int eventNumber, const bool useXMLNotBinary);
+    LArSIMplePandoraWriter(const LArSIMpleDetectorConstruction *const detector);
 
     /**
      *  @brief  Destructor
@@ -56,9 +56,8 @@ private:
     lar_content::LArCaloHitFactory fLArCaloHitFactory;
 
     const LArSIMpleDetectorConstruction *const fDetector;
-    unsigned int fEventNumber;
-    bool fUseXMLNotBinary;
-    bool fWriteGeometry; 
+    float fEnergyScale;
+    float fPositionScale;
 };
 
 #endif

@@ -41,8 +41,8 @@ public:
      *  @param  pdg the contributing pdg code to this hit 
      *  @param  charge the contributing energy deposit to this hit
      */
-    LArSIMpleWireHit(const float &wireNumber, const float &driftBin,
-        const LArSIMpleReadoutView &view, const int &trackId, const int &pdg, const float &charge);
+    LArSIMpleWireHit(const unsigned int wireNumber, const float wireCoordinate, const unsigned int driftBin, const float driftCoordinate,
+        const LArSIMpleReadoutView view, const int trackId, const int pdg, const float charge);
 
     /**
      *  @brief  Constructor
@@ -54,8 +54,8 @@ public:
      *  @param  pdgs the vector of contributing pdg codes to this hit 
      *  @param  charges the vector of contributing energy deposits to this hit
      */
-    LArSIMpleWireHit(const float &wireNumber, const float &driftBin,  const LArSIMpleReadoutView &view,
-        const std::vector<int> &trackIds, const std::vector<int> &pdgs, const std::vector<float> &charges);
+    LArSIMpleWireHit(const unsigned int wireNumber, const float wireCoordinate, const unsigned int driftBin, const float driftCoordinate,
+        const LArSIMpleReadoutView view, const std::vector<int> &trackIds, const std::vector<int> &pdgs, const std::vector<float> &charges);
 
     /**
      *  @brief  Copy constructor
@@ -93,7 +93,7 @@ public:
      *
      *  @return the x coordinate
      */
-    float GetXCoordinate() const;
+    float GetDriftCoordinate() const;
 
     /**
      *  @brief  Returns the readout view number of this hit
@@ -134,8 +134,10 @@ public:
 
 private:
     LArSIMpleReadoutView fReadoutView; ///< The readout plane
-    float fWireNumber;             ///< The wire coordinate that the hit would have been registered on
-    float fDriftBin;            ///< The drift coordinate after discretisation
+    unsigned int fWireNumber;             ///< The wire coordinate that the hit would have been registered on
+    float fWireCoordinate;             ///< The wire coordinate that the hit would have been registered on
+    unsigned int fDriftBin;            ///< The drift coordinate after discretisation
+    float fDriftCoordinate;            ///< The drift coordinate after discretisation
     std::vector<int> fTrackIds;        ///< The track ids responsible for this hit
     std::vector<int> fPDGs;            ///< The PDG codes responsible for this hit
     std::vector<float> fCharges;       ///< The charge contributions to this hit
@@ -152,9 +154,23 @@ inline unsigned int LArSIMpleWireHit::GetWireNumber() const
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
+inline float LArSIMpleWireHit::GetWireCoordinate() const
+{
+    return fWireCoordinate;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
 inline unsigned int LArSIMpleWireHit::GetDriftBin() const
 {
     return fDriftBin;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+inline float LArSIMpleWireHit::GetDriftCoordinate() const
+{
+    return fDriftCoordinate;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
