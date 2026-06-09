@@ -1,0 +1,18 @@
+<pandora>
+    <!-- GLOBAL SETTINGS -->
+    <IsMonitoringEnabled>false</IsMonitoringEnabled>
+    <ShouldDisplayAlgorithmInfo>false</ShouldDisplayAlgorithmInfo>
+    <SingleHitTypeClusteringMode>true</SingleHitTypeClusteringMode>
+
+    <!-- ALGORITHM SETTINGS -->
+     <algorithm type = "LArEventWriting">
+        <EventFileName>Pandora_Events.pndr</EventFileName>
+        <ShouldWriteEvents>true</ShouldWriteEvents>
+        <ShouldOverwriteEventFile>true</ShouldOverwriteEventFile>
+        <ShouldWriteMCRelationships>true</ShouldWriteMCRelationships>
+        <ShouldWriteTrackRelationships>false</ShouldWriteTrackRelationships>
+        <GeometryFileName>Pandora_Geometry.pndr</GeometryFileName>
+        <ShouldWriteGeometry>true</ShouldWriteGeometry>
+        <ShouldOverwriteGeometryFile>true</ShouldOverwriteGeometryFile>
+    </algorithm>
+</pandora>
