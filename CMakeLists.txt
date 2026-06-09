@@ -88,7 +88,7 @@ target_include_directories(LArSIMple PRIVATE
 
 target_link_libraries(LArSIMple PRIVATE
     larpandoracontent::LArPandoraContent
-    ${PandoraSDK_LIBRARIES}
+    PandoraPFA::PandoraSDK
 )
 
 endif()
