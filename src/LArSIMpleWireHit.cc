@@ -16,13 +16,11 @@ LArSIMpleWireHit::LArSIMpleWireHit()
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-LArSIMpleWireHit::LArSIMpleWireHit(const unsigned int &wireNumber, const float &wireCoordinate,  const unsigned int &driftBin, const float &xCoordinate, const LArSIMpleReadoutView &view,
+LArSIMpleWireHit::LArSIMpleWireHit(const float &wireNumber, const float &driftBin, const LArSIMpleReadoutView &view,
     const int &trackId, const int &pdg, const float &charge)
 {
     fWireNumber = wireNumber;
-    fWireCoordinate = wireCoordinate;
     fDriftBin = driftBin;
-    fXCoordinate = xCoordinate;
     fReadoutView = view;
     fTrackIds.emplace_back(trackId);
     fPDGs.emplace_back(pdg);
@@ -31,13 +29,11 @@ LArSIMpleWireHit::LArSIMpleWireHit(const unsigned int &wireNumber, const float &
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-LArSIMpleWireHit::LArSIMpleWireHit(const unsigned int &wireNumber, const float &wireCoordinate, const unsigned int &driftBin, const float &xCoordinate, const LArSIMpleReadoutView &view,
+LArSIMpleWireHit::LArSIMpleWireHit(const float &wireNumber, const float &driftBin, const LArSIMpleReadoutView &view,
     const std::vector<int> &trackIds, const std::vector<int> &pdgs, const std::vector<float> &charges)
 {
     fWireNumber = wireNumber;
-    fWireCoordinate = wireCoordinate;
     fDriftBin = driftBin;
-    fXCoordinate = xCoordinate;
     fReadoutView = view;
     fTrackIds = trackIds;
     fPDGs = pdgs;
@@ -50,9 +46,7 @@ LArSIMpleWireHit::LArSIMpleWireHit(const LArSIMpleWireHit &rhs)
 {
     fReadoutView = rhs.fReadoutView;
     fWireNumber = rhs.fWireNumber;
-    fWireCoordinate = rhs.fWireCoordinate;
     fDriftBin = rhs.fDriftBin;
-    fXCoordinate = rhs.fXCoordinate;
     fTrackIds = rhs.fTrackIds;
     fPDGs = rhs.fPDGs;
     fCharges = rhs.fCharges;

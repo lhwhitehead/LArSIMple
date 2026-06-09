@@ -11,7 +11,7 @@
 
 #include <vector>
 
-#include "LArSIMple3DEnergyDeposit.hh"
+#include "LArSIMpleWireHit.hh"
 #include "LArSIMpleDetectorConstruction.hh"
 #include "LArSIMpleTrackData.hh"
 
@@ -38,7 +38,7 @@ public:
      */
     ~LArSIMplePandoraWriter();
 
-    void CreateCaloHits(const std::vector<LArSIMple3DEnergyDeposit> &hits);
+    void CreateCaloHits(const std::vector<LArSIMpleWireHit> &hits);
 
     void CreateLArTPC();
 
@@ -47,7 +47,7 @@ public:
     void RunPandora();
 
 private:
-    void CreateCaloHitFrom3DEnergyDeposit(const unsigned int hitNumber, const LArSIMple3DEnergyDeposit &hit);
+    void CreateCaloHitFromWireHit(const unsigned int hitNumber, const LArSIMpleWireHit &hit);
 
     void CreateMCParticle(const LArSIMpleTrackData &mcParticle);
 

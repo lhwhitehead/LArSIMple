@@ -41,11 +41,11 @@ LArSIMplePandoraWriter::~LArSIMplePandoraWriter()
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void LArSIMplePandoraWriter::CreateCaloHits(const std::vector<LArSIMple3DEnergyDeposit> &hits)
+void LArSIMplePandoraWriter::CreateCaloHits(const std::vector<LArSIMpleWireHit> &hits)
 {
-//    for (const LArSIMple3DEnergyDeposit hit : hits)
+//    for (const LArSIMpleWireHit hit : hits)
     for (unsigned int h = 0; h < hits.size(); ++h)
-        this->CreateCaloHitFrom3DEnergyDeposit(h, hits.at(h));
+        this->CreateCaloHitFromWireHit(h, hits.at(h));
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -106,21 +106,17 @@ void LArSIMplePandoraWriter::RunPandora()
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void LArSIMplePandoraWriter::CreateCaloHitFrom3DEnergyDeposit(const unsigned int hitNumber, const LArSIMple3DEnergyDeposit &hit)
+void LArSIMplePandoraWriter::CreateCaloHitFromWireHit(const unsigned int hitNumber, const LArSIMpleWireHit &hit)
 {
     lar_content::LArCaloHitFactory hitFactory;
 
-    // Each 3D energy deposit actually gives us three hits - one in each view
-    const G4ThreeVector pos3D{hit.GetPosition()};
-    const G4ThreeVector posUVW{hit.GetUVWPosition()};
-
     const float voxelWidth{0.5f};
     const float MipE{0.00075}; // Pandora expects mips too?
-    const float voxelE(hit.GetEnergy());
+    const float voxelE(hit.GetCharge());
     const float voxelMipEquivalentE{voxelE / MipE};
    
     lar_content::LArCaloHitParameters hitParams;
-    hitParams.m_positionVector = pandora::CartesianVector(pos3D.x() / 10.f, 0.f, posUVW.x() / 10.f);
+    hitParams.m_positionVector = pandora::CartesianVector(hit.GetWireNumber() * 0.1f, 0.f, hit.GetDriftBin() * 0.1f);
     hitParams.m_expectedDirection = pandora::CartesianVector(0.f, 0.f, 1.f);
     hitParams.m_cellNormalVector = pandora::CartesianVector(0.f, 0.f, 1.f);
     hitParams.m_cellGeometry = pandora::RECTANGULAR;
@@ -135,7 +131,7 @@ void LArSIMplePandoraWriter::CreateCaloHitFrom3DEnergyDeposit(const unsigned int
     hitParams.m_electromagneticEnergy = voxelE;
     hitParams.m_hadronicEnergy = voxelE;
     hitParams.m_isDigital = false;
-    hitParams.m_hitType = pandora::TPC_VIEW_U;
+    hitParams.m_hitType = static_cast<pandora::HitType>(static_cast<unsigned short>(hit.GetView()) + 4); // Enums offset by 4
     hitParams.m_hitRegion = pandora::SINGLE_REGION;
     hitParams.m_layer = 0;
     hitParams.m_isInOuterSamplingLayer = false;
@@ -154,7 +150,7 @@ void LArSIMplePandoraWriter::CreateCaloHitFrom3DEnergyDeposit(const unsigned int
 
     try
     {
-        PandoraApi::SetCaloHitToMCParticleRelationship(*fPandora, (void *)((intptr_t)hitNumber), (void *)((intptr_t)hit.GetParticleTrackID()), 1.f);
+        PandoraApi::SetCaloHitToMCParticleRelationship(*fPandora, (void *)((intptr_t)hitNumber), (void *)((intptr_t)hit.GetLargestContributingTrackId()), 1.f);
     }
     catch(...)
     {

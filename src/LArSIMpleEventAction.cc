@@ -104,13 +104,13 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event *)
     if (fWriteZipAndInfoFiles)
         writer.WriteOutputZipAndInfoFiles(fOutputFileDirectory + fOutputFilePrefix, fEnergyDeposits);
 
+    LArSIMpleWireConvertor &wireConvertor = LArSIMpleWireConvertor::Get();
+    const std::vector<LArSIMpleWireHit> uHits = wireConvertor.Convert3DEnergyDepositsToWireHits(fEnergyDeposits, LArSIMpleReadoutView::ViewU);
+    const std::vector<LArSIMpleWireHit> vHits = wireConvertor.Convert3DEnergyDepositsToWireHits(fEnergyDeposits, LArSIMpleReadoutView::ViewV);
+    const std::vector<LArSIMpleWireHit> wHits = wireConvertor.Convert3DEnergyDepositsToWireHits(fEnergyDeposits, LArSIMpleReadoutView::ViewW);
+
     if (fWriteRootFile)
     {
-        LArSIMpleWireConvertor &wireConvertor = LArSIMpleWireConvertor::Get();
-        const std::vector<LArSIMpleWireHit> uHits = wireConvertor.Convert3DEnergyDepositsToWireHits(fEnergyDeposits, LArSIMpleReadoutView::ViewU);
-        const std::vector<LArSIMpleWireHit> vHits = wireConvertor.Convert3DEnergyDepositsToWireHits(fEnergyDeposits, LArSIMpleReadoutView::ViewV);
-        const std::vector<LArSIMpleWireHit> wHits = wireConvertor.Convert3DEnergyDepositsToWireHits(fEnergyDeposits, LArSIMpleReadoutView::ViewW);
-
         const std::vector<double> wireAngles{fDetector->GetWireAngleU(), fDetector->GetWireAngleV(), fDetector->GetWireAngleW()};
         writer.WriteRootFile(fOutputFileDirectory + fOutputFilePrefix, fEnergyDeposits, uHits, vHits, wHits,
             fGenAction->GetTrueNeutrinoEventPointer(), fTrackIDToTrackData, wireAngles);
@@ -119,7 +119,12 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event *)
 #ifdef USE_PANDORA
     LArSIMplePandoraWriter pandoraWriter(fDetector, fEventID, true);
     pandoraWriter.CreateLArTPC();
-    pandoraWriter.CreateCaloHits(fEnergyDeposits);
+    // Add all wire hits into a single vector
+    std::vector<LArSIMpleWireHit> allWireHits;
+    allWireHits.insert(allWireHits.end(), uHits.begin(), uHits.end());
+    allWireHits.insert(allWireHits.end(), vHits.begin(), vHits.end());
+    allWireHits.insert(allWireHits.end(), wHits.begin(), wHits.end());
+    pandoraWriter.CreateCaloHits(allWireHits);
     // Convert TrackData map into a vector
     std::vector<LArSIMpleTrackData> mcParticles;
     for (auto [_, mcParticle] : fTrackIDToTrackData)
