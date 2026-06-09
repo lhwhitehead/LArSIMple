@@ -73,18 +73,22 @@ ${ROOT_LIB_EG}
 z
 )
 
+# ------------------------------------------------------------------
+# Optional dependency for Pandora file writing
+# ------------------------------------------------------------------
+
 if(USE_PANDORA)
 
 target_compile_definitions(LArSIMple PRIVATE USE_PANDORA)
 
-target_link_libraries(LArSIMple PRIVATE
-    ${PandoraSDK_LIBRARIES}
-    ${larpandoracontent_LIBRARIES}
+target_include_directories(LArSIMple PRIVATE
+    ${larpandoracontent_INCLUDE_DIRS}
+    ${PandoraSDK_INCLUDE_DIRS}
 )
 
-target_include_directories(LArSIMple PRIVATE
-    ${PandoraSDK_INCLUDE_DIRS}
-    ${larpandoracontent_INCLUDE_DIRS}
+target_link_libraries(LArSIMple PRIVATE
+    larpandoracontent::LArPandoraContent
+    ${PandoraSDK_LIBRARIES}
 )
 
 endif()
@@ -95,9 +99,7 @@ LArSIMple PRIVATE
 )
 
 # ------------------------------------------------------------------
-
 # Install
-
 # ------------------------------------------------------------------
 
 install(TARGETS LArSIMple DESTINATION bin)

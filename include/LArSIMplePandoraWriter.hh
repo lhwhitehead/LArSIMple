@@ -25,7 +25,7 @@
  *  @brief PandoraWriter class for writing Pandora input xml files 
  */
 
-class LArSIMplePandoraWriter : public pandora::Algorithm
+class LArSIMplePandoraWriter
 {
 public:
     /**
@@ -44,20 +44,14 @@ public:
 
     void CreateMCParticles(const std::vector<LArSIMpleTrackData> &mcParticles);
 
-    void CreateGeometry();
+    void RunPandora();
 
-    void WriteEvent();
-
-    pandora::StatusCode Run(){return pandora::STATUS_CODE_SUCCESS;};
 private:
-    pandora::StatusCode ReadSettings(const pandora::TiXmlHandle xmlHandle){(void)xmlHandle; return pandora::STATUS_CODE_SUCCESS;};
     void CreateCaloHitFrom3DEnergyDeposit(const unsigned int hitNumber, const LArSIMple3DEnergyDeposit &hit);
 
     void CreateMCParticle(const LArSIMpleTrackData &mcParticle);
 
     pandora::Pandora *fPandora;
-    pandora::FileWriter *fEventWriter;
-    pandora::FileWriter *fGeomWriter;
 
     lar_content::LArCaloHitFactory fLArCaloHitFactory;
 

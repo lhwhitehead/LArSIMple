@@ -11,6 +11,7 @@
 #include "LArSIMpleDetectorConstruction.hh"
 #include "LArSIMpleTrackData.hh"
 #include "LArSIMplePandoraWriter.hh"
+#include "LArSIMplePandoraContent.hh"
 
 #include "G4ThreeVector.hh"
 
@@ -18,8 +19,6 @@
 #include "Api/PandoraContentApi.h"
 #include "Objects/CartesianVector.h"
 #include "Pandora/PandoraInternal.h"
-#include "Persistency/BinaryFileWriter.h"
-#include "Persistency/XmlFileWriter.h"
 #include "larpandoracontent/LArObjects/LArCaloHit.h"
 #include "larpandoracontent/LArObjects/LArMCParticle.h"
 
@@ -32,32 +31,12 @@ fWriteGeometry(true)
     std::cout << "Creating Pandora instance" << std::endl;
     fPandora = new pandora::Pandora();
 
-    if (fUseXMLNotBinary)
-    {
-        fEventWriter = new pandora::XmlFileWriter(*fPandora, "larsimple_event.xml", pandora::FileMode::OVERWRITE);
-        if (fWriteGeometry)
-            fGeomWriter = new pandora::XmlFileWriter(*fPandora, "larsimple_geom.xml", pandora::FileMode::OVERWRITE);
-    }
-    else
-    {
-        fEventWriter = new pandora::BinaryFileWriter(*fPandora, "larsimple_event.pndr", pandora::FileMode::OVERWRITE);
-        if (fWriteGeometry)
-            fGeomWriter = new pandora::BinaryFileWriter(*fPandora, "larsimple_geom.pndr", pandora::FileMode::OVERWRITE);
-    }
-
-    if (fWriteGeometry)
-    {
-        this->CreateLArTPC();
-        PANDORA_THROW_RESULT_IF(pandora::STATUS_CODE_SUCCESS, !=, fGeomWriter->WriteGeometry());
-    }
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 LArSIMplePandoraWriter::~LArSIMplePandoraWriter()
 {
-    delete fEventWriter;
-    delete fGeomWriter;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -112,19 +91,17 @@ void LArSIMplePandoraWriter::CreateLArTPC()
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void LArSIMplePandoraWriter::WriteEvent()
+void LArSIMplePandoraWriter::RunPandora()
 {
-    const pandora::CaloHitList *pCaloHitList = nullptr;
-    PANDORA_THROW_RESULT_IF(pandora::STATUS_CODE_SUCCESS, !=, PandoraContentApi::GetCurrentList(*this, pCaloHitList));
+    PANDORA_THROW_RESULT_IF(pandora::STATUS_CODE_SUCCESS, !=, LArSIMplePandoraContent::RegisterAlgorithms(*fPandora));
 
-    const pandora::TrackList *pTrackList = nullptr;
-    PANDORA_THROW_RESULT_IF(pandora::STATUS_CODE_SUCCESS, !=, PandoraContentApi::GetCurrentList(*this, pTrackList));
+    std::string fullConfigFileName = "config/PandoraSettings.xml";
+    PANDORA_THROW_RESULT_IF(pandora::STATUS_CODE_SUCCESS,
+                            !=,
+                            PandoraApi::ReadSettings(*fPandora, fullConfigFileName));
 
-    const pandora::MCParticleList *pMCParticleList = nullptr;
-    PANDORA_THROW_RESULT_IF(pandora::STATUS_CODE_SUCCESS, !=, PandoraContentApi::GetCurrentList(*this, pMCParticleList));
-
-    PANDORA_THROW_RESULT_IF(pandora::STATUS_CODE_SUCCESS, !=,
-        fEventWriter->WriteEvent(*pCaloHitList, *pTrackList, *pMCParticleList, true, false));
+    PANDORA_THROW_RESULT_IF(pandora::STATUS_CODE_SUCCESS, !=, PandoraApi::ProcessEvent(*fPandora));
+    PANDORA_THROW_RESULT_IF(pandora::STATUS_CODE_SUCCESS, !=, PandoraApi::Reset(*fPandora));
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -245,5 +222,4 @@ void LArSIMplePandoraWriter::CreateMCParticle(const LArSIMpleTrackData &mcPartic
         }
         
 }
-
 

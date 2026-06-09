@@ -118,7 +118,14 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event *)
 
 #ifdef USE_PANDORA
     LArSIMplePandoraWriter pandoraWriter(fDetector, fEventID, true);
+    pandoraWriter.CreateLArTPC();
     pandoraWriter.CreateCaloHits(fEnergyDeposits);
+    // Convert TrackData map into a vector
+    std::vector<LArSIMpleTrackData> mcParticles;
+    for (auto [_, mcParticle] : fTrackIDToTrackData)
+        mcParticles.emplace_back(mcParticle);
+    pandoraWriter.CreateMCParticles(mcParticles);
+    pandoraWriter.RunPandora();
 #endif
 
 
