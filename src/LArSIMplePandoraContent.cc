@@ -1,7 +1,7 @@
 /**
  *  @file LArSIMple/src/LArSIMplePandoraContent.cc
  * 
- *  @brief Implementation of the messenger class. 
+ *  @brief Implementation of the pandora content class. 
  * 
  *  $Log: $
  */

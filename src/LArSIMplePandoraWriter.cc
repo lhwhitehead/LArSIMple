@@ -1,7 +1,7 @@
 /**
  *  @file LArSIMple/src/LArSIMplePandoraWriter.cc
  * 
- *  @brief Implementation of the messenger class. 
+ *  @brief Implementation of the pandora interface class. 
  * 
  *  $Log: $
  */

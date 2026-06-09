@@ -1,7 +1,7 @@
 /**
  *  @file   LArSIMple/include/LArSIMplePandoraWriter.hh
  * 
- *  @brief  Header file for the messenger class.
+ *  @brief  Header file for the pandora interface class.
  * 
  *  $Log: $
  */
@@ -38,26 +38,51 @@ public:
      */
     ~LArSIMplePandoraWriter();
 
+    /**
+     *  @brief  Create Pandora CaloHits from LArSIMpleWireHit objects
+     *
+     *  @param  hits the vector of LArSIMpleWireHit objects
+     */   
     void CreateCaloHits(const std::vector<LArSIMpleWireHit> &hits);
 
+    /**
+     *  @brief  Create Pandora LArTPCs using the geometry
+     */
     void CreateLArTPC();
 
+    /**
+     *  @brief  Create Pandora MCParticles from LArSIMpleTrackData objects
+     *
+     *  @param  mcParticles the vector of LArSIMpleTrackData objects
+     */  
     void CreateMCParticles(const std::vector<LArSIMpleTrackData> &mcParticles);
 
+    /**
+     *  @brief  Run the Pandora instance
+     */
     void RunPandora();
 
 private:
+
+    /**
+     *  @brief  Create Pandora CaloHit from LArSIMpleWireHit object
+     *
+     *  @param  hitNumber the number of the hit in the hit vector
+     *  @param  hit the LArSIMpleWireHit object
+     */   
     void CreateCaloHitFromWireHit(const unsigned int hitNumber, const LArSIMpleWireHit &hit);
 
+    /**
+     *  @brief  Create Pandora MCParticle from LArSIMpleTrackData object
+     *
+     *  @param  mcParticle the LArSIMpleTrackData object
+     */  
     void CreateMCParticle(const LArSIMpleTrackData &mcParticle);
 
-    pandora::Pandora *fPandora;
-
-    lar_content::LArCaloHitFactory fLArCaloHitFactory;
-
-    const LArSIMpleDetectorConstruction *const fDetector;
-    float fEnergyScale;
-    float fPositionScale;
+    pandora::Pandora *fPandora;                           ///< The Pandora instance
+    const LArSIMpleDetectorConstruction *const fDetector; ///< The detector object
+    float fEnergyScale;                                   ///< Energy conversion factor for GEANT -> Pandora
+    float fPositionScale;                                 ///< Position conversion factor for GEANT -> Pandora
 };
 
 #endif
