@@ -25,10 +25,18 @@
 LArSIMplePandoraWriter::LArSIMplePandoraWriter(const LArSIMpleDetectorConstruction *const detector) :
 fDetector(detector),
 fEnergyScale(1.0e-3), // MeV -> GeV
-fPositionScale(0.1f)  // mm  -> cm
+fPositionScale(0.1f), // mm  -> cm
+fBuiltGeometry(false)
 {
     std::cout << "Creating Pandora instance" << std::endl;
     fPandora = new pandora::Pandora();
+    PANDORA_THROW_RESULT_IF(pandora::STATUS_CODE_SUCCESS, !=, LArSIMplePandoraContent::RegisterAlgorithms(*fPandora));
+
+    std::string fullConfigFileName = "config/PandoraSettings.xml";
+    PANDORA_THROW_RESULT_IF(pandora::STATUS_CODE_SUCCESS,
+                            !=,
+                            PandoraApi::ReadSettings(*fPandora, fullConfigFileName));
+
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -57,6 +65,9 @@ void LArSIMplePandoraWriter::CreateMCParticles(const std::vector<LArSIMpleTrackD
 
 void LArSIMplePandoraWriter::CreateLArTPC()
 {
+    if (fBuiltGeometry)
+        return;
+
     PandoraApi::Geometry::LArTPC::Parameters tpcParams;
 
     // Currently assumes detector centre is at (0,0,0)
@@ -84,19 +95,13 @@ void LArSIMplePandoraWriter::CreateLArTPC()
     {
         std::cerr << "Failed to create Pandora LArTPC" << std::endl;
     }
+    fBuiltGeometry = true;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 void LArSIMplePandoraWriter::RunPandora()
 {
-    PANDORA_THROW_RESULT_IF(pandora::STATUS_CODE_SUCCESS, !=, LArSIMplePandoraContent::RegisterAlgorithms(*fPandora));
-
-    std::string fullConfigFileName = "config/PandoraSettings.xml";
-    PANDORA_THROW_RESULT_IF(pandora::STATUS_CODE_SUCCESS,
-                            !=,
-                            PandoraApi::ReadSettings(*fPandora, fullConfigFileName));
-
     PANDORA_THROW_RESULT_IF(pandora::STATUS_CODE_SUCCESS, !=, PandoraApi::ProcessEvent(*fPandora));
     PANDORA_THROW_RESULT_IF(pandora::STATUS_CODE_SUCCESS, !=, PandoraApi::Reset(*fPandora));
 }
@@ -108,9 +113,9 @@ void LArSIMplePandoraWriter::CreateCaloHitFromWireHit(const unsigned int hitNumb
     lar_content::LArCaloHitFactory hitFactory;
 
     const float voxelWidth{0.5f};
-    const float MipE{0.00075}; // Pandora expects mips too?
+//    const float MipE{0.00075}; // Pandora expects mips too?
     const float voxelE(hit.GetCharge() * fEnergyScale);
-    const float voxelMipEquivalentE{voxelE / MipE};
+//    const float voxelMipEquivalentE{voxelE / MipE};
 
     lar_content::LArCaloHitParameters hitParams;
     hitParams.m_positionVector = pandora::CartesianVector(hit.GetDriftCoordinate() * fPositionScale, 0.f, hit.GetWireCoordinate() * fPositionScale);
@@ -124,7 +129,7 @@ void LArSIMplePandoraWriter::CreateCaloHitFromWireHit(const unsigned int hitNumb
     hitParams.m_nCellInteractionLengths = 1.f;
     hitParams.m_time = 0.f;
     hitParams.m_inputEnergy = voxelE;
-    hitParams.m_mipEquivalentEnergy = voxelMipEquivalentE;
+    hitParams.m_mipEquivalentEnergy = hit.GetCharge(); // We seem to get values of 1 for muons, so the raw charge seems ok as a proxy for number of mips
     hitParams.m_electromagneticEnergy = voxelE;
     hitParams.m_hadronicEnergy = voxelE;
     hitParams.m_isDigital = false;

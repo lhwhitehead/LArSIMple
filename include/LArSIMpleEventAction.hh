@@ -19,6 +19,10 @@
 #include "G4ios.hh"
 #include "globals.hh"
 
+#ifdef USE_PANDORA
+#include "LArSIMplePandoraWriter.hh"
+#endif
+
 class LArSIMplePrimaryGeneratorAction;
 class LArSIMpleDetectorConstruction;
 class LArSIMpleMessenger;
@@ -222,6 +226,10 @@ private:
     std::vector<LArSIMple3DEnergyDeposit> fEnergyDeposits; ///< The 3DEnergyDeposits of the current event
     std::map<int, LArSIMpleTrackData> fTrackIDToTrackData; ///< Map of Geant4 track IDs to TrackData objects
     std::map<int, int> fTrackIDToFoldedTrackID;            ///< Map of Geant4 track IDs to folded track IDs
+
+#ifdef USE_PANDORA
+    std::unique_ptr<LArSIMplePandoraWriter> fPandoraWriter;
+#endif
 };
 
 //------------------------------------------------------------------------------------------------------------------------------------------

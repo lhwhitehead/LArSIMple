@@ -30,14 +30,14 @@ LArSIMpleEventAction::LArSIMpleEventAction(LArSIMplePrimaryGeneratorAction *genA
     fOutputFileDirectory(""),
     fOutputFilePrefix("hits_3d"),
     fHitThreshold(0.0),
-    //    fWireAngleU(35.9),
-    //    fWireAngleV(-35.9),
-    //    fWireAngleW(0.0),
     fWriteZipAndInfoFiles(true),
     fWriteRootFile(false),
     fFoldBackTruthInfo(true)
 {
     fMessenger = new LArSIMpleMessenger(this);
+#ifdef USE_PANDORA
+    fPandoraWriter = std::make_unique<LArSIMplePandoraWriter>(detector);
+#endif
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -117,16 +117,16 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event *)
     }
 
 #ifdef USE_PANDORA
-    LArSIMplePandoraWriter pandoraWriter(fDetector);
+//    LArSIMplePandoraWriter pandoraWriter(fDetector);
     std::cout << "Creating LArTPC" << std::endl;
-    pandoraWriter.CreateLArTPC();
+    fPandoraWriter->CreateLArTPC();
 
     // Convert TrackData map into a vector
     std::cout << "Creating MC particles" << std::endl;
     std::vector<LArSIMpleTrackData> mcParticles;
     for (auto [_, mcParticle] : fTrackIDToTrackData)
         mcParticles.emplace_back(mcParticle);
-    pandoraWriter.CreateMCParticles(mcParticles);
+    fPandoraWriter->CreateMCParticles(mcParticles);
 
     // Add all wire hits into a single vector
     std::vector<LArSIMpleWireHit> allWireHits;
@@ -134,10 +134,10 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event *)
     allWireHits.insert(allWireHits.end(), vHits.begin(), vHits.end());
     allWireHits.insert(allWireHits.end(), wHits.begin(), wHits.end());
     std::cout << "Creating calo hits" << std::endl;
-    pandoraWriter.CreateCaloHits(allWireHits);
+    fPandoraWriter->CreateCaloHits(allWireHits);
 
     std::cout << "Running Pandora" << std::endl;
-    pandoraWriter.RunPandora();
+    fPandoraWriter->RunPandora();
 #endif
 
 

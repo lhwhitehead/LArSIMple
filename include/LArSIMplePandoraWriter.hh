@@ -83,6 +83,7 @@ private:
     const LArSIMpleDetectorConstruction *const fDetector; ///< The detector object
     float fEnergyScale;                                   ///< Energy conversion factor for GEANT -> Pandora
     float fPositionScale;                                 ///< Position conversion factor for GEANT -> Pandora
+    bool fBuiltGeometry;                                  ///< Check whether we have made the geometry
 };
 
 #endif
