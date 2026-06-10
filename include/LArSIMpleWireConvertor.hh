@@ -38,8 +38,8 @@ public:
     LArSIMpleWireConvertor(LArSIMpleWireConvertor const &) = delete;
     LArSIMpleWireConvertor &operator=(LArSIMpleWireConvertor const &) = delete;
 
-    void SetGeometryInformation(const float &xMin, const float &xMax, const float &yMin, const float &yMax, const float &zMin,
-        const float &zMax, const float &wireAngleU, const float &wireAngleV, const float &wireAngleW);
+    void SetGeometryInformation(const float xMin, const float xMax, const float yMin, const float yMax, const float zMin,
+        const float zMax, const float wireAngleU, const float wireAngleV, const float wireAngleW);
 
     /** 
      *  @brief  Convert 3D energy deposits to wire plane hits
@@ -73,8 +73,8 @@ private:
     float fWireAngleW;
 };
 
-inline void LArSIMpleWireConvertor::SetGeometryInformation(const float &xMin, const float &xMax, const float &yMin, const float &yMax,
-    const float &zMin, const float &zMax, const float &wireAngleU, const float &wireAngleV, const float &wireAngleW)
+inline void LArSIMpleWireConvertor::SetGeometryInformation(const float xMin, const float xMax, const float yMin, const float yMax,
+    const float zMin, const float zMax, const float wireAngleU, const float wireAngleV, const float wireAngleW)
 {
     fXMin = xMin;
     fXMax = xMax;

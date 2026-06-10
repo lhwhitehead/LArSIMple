@@ -130,7 +130,7 @@ public:
      *  @param  pdg the PDG code of the particle
      *  @param  charge the amount of deposited energy
      */
-    void AddHitContribution(const int &trackId, const int &pdg, const float &charge);
+    void AddHitContribution(const int trackId, const int pdg, const float charge);
 
 private:
     LArSIMpleReadoutView fReadoutView; ///< The readout plane
@@ -189,7 +189,7 @@ inline float LArSIMpleWireHit::GetCharge() const
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-inline void LArSIMpleWireHit::AddHitContribution(const int &trackId, const int &pdg, const float &charge)
+inline void LArSIMpleWireHit::AddHitContribution(const int trackId, const int pdg, const float charge)
 {
     fTrackIds.emplace_back(trackId);
     fPDGs.emplace_back(pdg);
