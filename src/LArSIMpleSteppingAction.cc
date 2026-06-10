@@ -38,7 +38,7 @@ G4VProcess *LArSIMpleSteppingAction::GetCurrentProcess()
 
 void LArSIMpleSteppingAction::UserSteppingAction(const G4Step *aStep)
 {
-    if (aStep->GetPreStepPoint()->GetTouchableHandle()->GetVolume()->GetName().contains("LArBox"))
+    if (G4StrUtil::contains(aStep->GetPreStepPoint()->GetTouchableHandle()->GetVolume()->GetName(), "LArBox"))
     {
         LArSIMple3DEnergyDeposit energyDeposit;
 
