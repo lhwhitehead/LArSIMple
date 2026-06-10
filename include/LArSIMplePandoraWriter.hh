@@ -25,6 +25,8 @@
  *  @brief PandoraWriter class for writing Pandora input xml files 
  */
 
+class LArSIMplePandoraMessenger;
+
 class LArSIMplePandoraWriter
 {
 public:
@@ -62,6 +64,20 @@ public:
      */
     void RunPandora();
 
+    /**
+     *  @brief  Set whether to apply the calo hit charge threshold
+     *
+     *  @param  value whether to apply the threshold
+     */
+    void SetApplyCaloHitThreshold(const bool value);   
+
+    /**
+     *  @brief  Set the calo hit charge threshold
+     *
+     *  @param  value the value of the threshold
+     */
+    void SetCaloHitThreshold(const float value);
+
 private:
 
     /**
@@ -84,6 +100,24 @@ private:
     float fEnergyScale;                                   ///< Energy conversion factor for GEANT -> Pandora
     float fPositionScale;                                 ///< Position conversion factor for GEANT -> Pandora
     bool fBuiltGeometry;                                  ///< Check whether we have made the geometry
+
+    LArSIMplePandoraMessenger *fMessenger;                ///< Pointer to the messenger object
+    bool fApplyCaloHitThreshold;                          ///< Whether to apply the calo hit charge threshold
+    float fCaloHitThreshold;                              ///< Value of the calo hit charge threshold
 };
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+inline void LArSIMplePandoraWriter::SetApplyCaloHitThreshold(const bool value)
+{
+    fApplyCaloHitThreshold = value;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+inline void LArSIMplePandoraWriter::SetCaloHitThreshold(const float value)
+{
+    fCaloHitThreshold = value;
+}
 
 #endif

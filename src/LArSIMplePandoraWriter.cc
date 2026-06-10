@@ -11,6 +11,7 @@
 #include "LArSIMpleDetectorConstruction.hh"
 #include "LArSIMpleTrackData.hh"
 #include "LArSIMplePandoraWriter.hh"
+#include "LArSIMplePandoraMessenger.hh"
 #include "LArSIMplePandoraContent.hh"
 
 #include "G4ThreeVector.hh"
@@ -26,8 +27,12 @@ LArSIMplePandoraWriter::LArSIMplePandoraWriter(const LArSIMpleDetectorConstructi
 fDetector(detector),
 fEnergyScale(1.0e-3), // MeV -> GeV
 fPositionScale(0.1f), // mm  -> cm
-fBuiltGeometry(false)
+fBuiltGeometry(false),
+fApplyCaloHitThreshold(false),
+fCaloHitThreshold(0.01)
 {
+    fMessenger = new LArSIMplePandoraMessenger(this);
+
     std::cout << "Creating Pandora instance" << std::endl;
     fPandora = new pandora::Pandora();
     PANDORA_THROW_RESULT_IF(pandora::STATUS_CODE_SUCCESS, !=, LArSIMplePandoraContent::RegisterAlgorithms(*fPandora));
@@ -36,7 +41,6 @@ fBuiltGeometry(false)
     PANDORA_THROW_RESULT_IF(pandora::STATUS_CODE_SUCCESS,
                             !=,
                             PandoraApi::ReadSettings(*fPandora, fullConfigFileName));
-
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -110,6 +114,9 @@ void LArSIMplePandoraWriter::RunPandora()
 
 void LArSIMplePandoraWriter::CreateCaloHitFromWireHit(const unsigned int hitNumber, const LArSIMpleWireHit &hit)
 {
+    if (fApplyCaloHitThreshold && hit.GetCharge() < fCaloHitThreshold)
+        return;
+
     lar_content::LArCaloHitFactory hitFactory;
 
     const float voxelWidth{0.5f};
