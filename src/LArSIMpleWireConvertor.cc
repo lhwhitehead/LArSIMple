@@ -9,8 +9,8 @@
 #include "LArSIMpleWireConvertor.hh"
 #include "LArSIMpleWireHit.hh"
 
-LArSIMpleWireConvertor::LArSIMpleWireConvertor() :
-    fGeometrySetupComplete{false}
+LArSIMpleWireConvertor::LArSIMpleWireConvertor(const LArSIMpleDetectorConstruction *const detector) :
+    fDetector(detector)
 {
 }
 
@@ -30,10 +30,11 @@ std::vector<LArSIMpleWireHit> LArSIMpleWireConvertor::Convert3DEnergyDepositsToW
     float min_wire, max_wire;
     GetWireGeometryInfo(view, min_wire, max_wire);
 
-    float bin_width = 5.f;
-    float min_drift{fXMin}, max_drift{fXMax};
-    const unsigned int nbins_wire = std::floor((max_wire - min_wire) / bin_width);
-    const unsigned int nbins_drift = std::floor((max_drift - min_drift) / bin_width);
+    const float wire_bin_width{fDetector->GetWirePitch(view)};
+    const float drift_bin_width{fDetector->GetDriftEquivalentPitch()};
+    const float min_drift{fDetector->GetLArSizeMinX()}, max_drift{fDetector->GetLArSizeMaxX()};
+    const unsigned int nbins_wire = std::floor((max_wire - min_wire) / wire_bin_width);
+    const unsigned int nbins_drift = std::floor((max_drift - min_drift) / drift_bin_width);
 
     // Add hits into a 2D grid in (wire, drift) coordinates
     for (const LArSIMple3DEnergyDeposit &depo : energyDeposits3D)
@@ -49,8 +50,8 @@ std::vector<LArSIMpleWireHit> LArSIMpleWireConvertor::Convert3DEnergyDepositsToW
         else
         {
             // When creating the hit convert back to wire and x to remove binning
-            const float w{min_wire + wire * bin_width};
-            const float x{min_drift + drift * bin_width};
+            const float w{min_wire + wire * wire_bin_width};
+            const float x{min_drift + drift * drift_bin_width};
             grid.insert(std::make_pair(
                 wireDrift, LArSIMpleWireHit(wire, w, drift, x, view, depo.GetParticleTrackID(), depo.GetParticlePDG(), depo.GetEnergy())));
         }
@@ -69,15 +70,16 @@ std::vector<LArSIMpleWireHit> LArSIMpleWireConvertor::Convert3DEnergyDepositsToW
 void LArSIMpleWireConvertor::GetWireGeometryInfo(const LArSIMpleReadoutView &view, float &min_wire, float &max_wire) const
 {
     const float degreesToRadians{3.14159265358979323846 / 180.};
-    const float wireAngle{view == LArSIMpleReadoutView::ViewU ? fWireAngleU : (view == LArSIMpleReadoutView::ViewV ? fWireAngleV : fWireAngleW)};
+    const float wireAngle{view == LArSIMpleReadoutView::ViewU ? fDetector->GetWireAngle(LArSIMpleReadoutView::ViewU) : 
+        (view == LArSIMpleReadoutView::ViewV ? fDetector->GetWireAngle(LArSIMpleReadoutView::ViewV) : fDetector->GetWireAngle(LArSIMpleReadoutView::ViewW))};
     if (wireAngle > 0)
     {
-        min_wire = fZMin * std::cos(wireAngle * degreesToRadians) + fYMin * std::sin(wireAngle * degreesToRadians);
-        max_wire = fZMax * std::cos(wireAngle * degreesToRadians) + fYMax * std::sin(wireAngle * degreesToRadians);
+        min_wire = fDetector->GetLArSizeMinZ() * std::cos(wireAngle * degreesToRadians) + fDetector->GetLArSizeMinY() * std::sin(wireAngle * degreesToRadians);
+        max_wire = fDetector->GetLArSizeMaxZ() * std::cos(wireAngle * degreesToRadians) + fDetector->GetLArSizeMaxY() * std::sin(wireAngle * degreesToRadians);
     }
     else
     {
-        min_wire = fZMin * std::cos(wireAngle * degreesToRadians) + fYMax * std::sin(wireAngle * degreesToRadians);
-        max_wire = fZMax * std::cos(wireAngle * degreesToRadians) + fYMin * std::sin(wireAngle * degreesToRadians);
+        min_wire = fDetector->GetLArSizeMinZ() * std::cos(wireAngle * degreesToRadians) + fDetector->GetLArSizeMinY() * std::sin(wireAngle * degreesToRadians);
+        max_wire = fDetector->GetLArSizeMaxZ() * std::cos(wireAngle * degreesToRadians) + fDetector->GetLArSizeMaxY() * std::sin(wireAngle * degreesToRadians);
     }
 }

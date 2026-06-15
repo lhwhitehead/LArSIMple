@@ -14,6 +14,11 @@
 /LArSIMple/WireAngleV -35.9
 /LArSIMple/WireAngleW 0.0
 
+/LArSIMple/WirePitchU 0.5
+/LArSIMple/WirePitchV 0.5
+/LArSIMple/WirePitchW 0.5
+/LArSIMple/DriftEquivalentPitch 0.5
+
 # Output files
 /LArSIMple/WriteZipAndInfoFiles false
 /LArSIMple/WriteRootFile true

@@ -60,9 +60,15 @@ private:
     G4UIcmdWithABool *fVoxeliseLAr;   ///< Command for whether to voxelise the LAr volume
     G4UIcmdWithABool *fCheckOverlaps; ///< Command for whether to check geometry overlaps
 
-    G4UIcmdWithADouble *fWireAngleU; ///< Command to set the U plane wire angle
-    G4UIcmdWithADouble *fWireAngleV; ///< Command to set the V plane wire angle
-    G4UIcmdWithADouble *fWireAngleW; ///< Command to set the W plane wire angle
+    G4UIcmdWithADouble *fWireAngleU; ///< Command to set the U plane wire angle in degrees
+    G4UIcmdWithADouble *fWireAngleV; ///< Command to set the V plane wire angle in degrees
+    G4UIcmdWithADouble *fWireAngleW; ///< Command to set the W plane wire angle in degrees
+
+    G4UIcmdWithADouble *fWirePitchU; ///< Command to set the U plane wire pitch in cm
+    G4UIcmdWithADouble *fWirePitchV; ///< Command to set the V plane wire pitch in cm
+    G4UIcmdWithADouble *fWirePitchW; ///< Command to set the W plane wire pitch in cm
+
+    G4UIcmdWithADouble *fDriftEquivalentPitch; ///< Command to set the equivalent pitch in the drift direction in cm
 };
 
 #endif

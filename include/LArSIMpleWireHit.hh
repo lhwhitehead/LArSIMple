@@ -12,13 +12,7 @@
 #include <map>
 #include <numeric>
 #include <vector>
-
-enum class LArSIMpleReadoutView
-{
-    ViewU = 0,
-    ViewV = 1,
-    ViewW = 2
-};
+#include "LArSIMpleDetectorConstruction.hh"
 
 /**
  *  @brief Class to represent wire hits

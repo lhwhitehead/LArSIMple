@@ -85,9 +85,9 @@ void LArSIMplePandoraWriter::CreateLArTPC()
     tpcParams.m_wirePitchU = 0.5f; // Currently hard coded as 5mm
     tpcParams.m_wirePitchV = 0.5f;
     tpcParams.m_wirePitchW = 0.5f;
-    tpcParams.m_wireAngleU = fDetector->GetWireAngleU();
-    tpcParams.m_wireAngleV = fDetector->GetWireAngleV();
-    tpcParams.m_wireAngleW = fDetector->GetWireAngleW();
+    tpcParams.m_wireAngleU = fDetector->GetWireAngle(LArSIMpleReadoutView::ViewU);
+    tpcParams.m_wireAngleV = fDetector->GetWireAngle(LArSIMpleReadoutView::ViewV);
+    tpcParams.m_wireAngleW = fDetector->GetWireAngle(LArSIMpleReadoutView::ViewW);
     tpcParams.m_sigmaUVW = 1;
     tpcParams.m_isDriftInPositiveX = 1;
 

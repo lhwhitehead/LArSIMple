@@ -49,9 +49,9 @@ G4VPhysicalVolume *LArSIMpleDetectorConstruction::Construct()
     this->ConstructLArBox();
 
     // Set up the geometry information needed by the WireConvertor class
-    LArSIMpleWireConvertor &wireConvertor = LArSIMpleWireConvertor::Get();
-    wireConvertor.SetGeometryInformation(
-        -fLArSizeX / 2., fLArSizeX / 2., -fLArSizeY / 2., fLArSizeY / 2., -fLArSizeZ / 2., fLArSizeZ / 2., 35.9, -35.9, 0.);
+    LArSIMpleWireConvertor &wireConvertor = LArSIMpleWireConvertor::Get(this);
+//    wireConvertor.SetGeometryInformation(
+//        -fLArSizeX / 2., fLArSizeX / 2., -fLArSizeY / 2., fLArSizeY / 2., -fLArSizeZ / 2., fLArSizeZ / 2., 35.9, -35.9, 0.);
 
     return fPhysiWorld;
 }

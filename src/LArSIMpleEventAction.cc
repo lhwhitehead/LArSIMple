@@ -75,7 +75,7 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event *)
     {
         LArSIMple3DEnergyDeposit &eDep = fEnergyDeposits.at(hitIdx);
         const G4ThreeVector &pos = eDep.GetPosition();
-        eDep.CalculateUVW(fDetector->GetWireAngleU(), fDetector->GetWireAngleV(), fDetector->GetWireAngleW());
+        eDep.CalculateUVW(fDetector->GetWireAngle(LArSIMpleReadoutView::ViewU), fDetector->GetWireAngle(LArSIMpleReadoutView::ViewV), fDetector->GetWireAngle(LArSIMpleReadoutView::ViewW));
     }
 
     if (fUseHitFeatures)
@@ -104,14 +104,14 @@ void LArSIMpleEventAction::EndOfEventAction(const G4Event *)
     if (fWriteZipAndInfoFiles)
         writer.WriteOutputZipAndInfoFiles(fOutputFileDirectory + fOutputFilePrefix, fEnergyDeposits);
 
-    LArSIMpleWireConvertor &wireConvertor = LArSIMpleWireConvertor::Get();
+    LArSIMpleWireConvertor &wireConvertor = LArSIMpleWireConvertor::Get(fDetector);
     const std::vector<LArSIMpleWireHit> uHits = wireConvertor.Convert3DEnergyDepositsToWireHits(fEnergyDeposits, LArSIMpleReadoutView::ViewU);
     const std::vector<LArSIMpleWireHit> vHits = wireConvertor.Convert3DEnergyDepositsToWireHits(fEnergyDeposits, LArSIMpleReadoutView::ViewV);
     const std::vector<LArSIMpleWireHit> wHits = wireConvertor.Convert3DEnergyDepositsToWireHits(fEnergyDeposits, LArSIMpleReadoutView::ViewW);
 
     if (fWriteRootFile)
     {
-        const std::vector<double> wireAngles{fDetector->GetWireAngleU(), fDetector->GetWireAngleV(), fDetector->GetWireAngleW()};
+        const std::vector<double> wireAngles{fDetector->GetWireAngle(LArSIMpleReadoutView::ViewU), fDetector->GetWireAngle(LArSIMpleReadoutView::ViewV), fDetector->GetWireAngle(LArSIMpleReadoutView::ViewW)};
         writer.WriteRootFile(fOutputFileDirectory + fOutputFilePrefix, fEnergyDeposits, uHits, vHits, wHits,
             fGenAction->GetTrueNeutrinoEventPointer(), fTrackIDToTrackData, wireAngles);
     }

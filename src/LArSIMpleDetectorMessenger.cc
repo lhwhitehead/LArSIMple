@@ -83,6 +83,26 @@ LArSIMpleDetectorMessenger::LArSIMpleDetectorMessenger(LArSIMpleDetectorConstruc
     fWireAngleW->SetGuidance("Angle of the W wires to the verticle");
     fWireAngleW->SetParameterName("WireAngleW", true);
     fWireAngleW->SetDefaultValue(0.0);
+
+    fWirePitchU = new G4UIcmdWithADouble("/LArSIMple/WirePitchU", this);
+    fWirePitchU->SetGuidance("Pitch of the U wires");
+    fWirePitchU->SetParameterName("WirePitchU", true);
+    fWirePitchU->SetDefaultValue(0.5);
+
+    fWirePitchV = new G4UIcmdWithADouble("/LArSIMple/WirePitchV", this);
+    fWirePitchV->SetGuidance("Pitch of the V wires");
+    fWirePitchV->SetParameterName("WirePitchV", true);
+    fWirePitchV->SetDefaultValue(0.5);
+
+    fWirePitchW = new G4UIcmdWithADouble("/LArSIMple/WirePitchW", this);
+    fWirePitchW->SetGuidance("Pitch of the W wires");
+    fWirePitchW->SetParameterName("WirePitchW", true);
+    fWirePitchW->SetDefaultValue(0.5);
+
+    fDriftEquivalentPitch = new G4UIcmdWithADouble("/LArSIMple/DriftEquivalentPitch", this);
+    fDriftEquivalentPitch->SetGuidance("Drift equivalent pitch");
+    fDriftEquivalentPitch->SetParameterName("Drift equivalent pitch", true);
+    fDriftEquivalentPitch->SetDefaultValue(0.5);
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -101,6 +121,10 @@ LArSIMpleDetectorMessenger::~LArSIMpleDetectorMessenger()
     delete fWireAngleU;
     delete fWireAngleV;
     delete fWireAngleW;
+    delete fWirePitchU;
+    delete fWirePitchV;
+    delete fWirePitchW;
+    delete fDriftEquivalentPitch;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -131,4 +155,12 @@ void LArSIMpleDetectorMessenger::SetNewValue(G4UIcommand *command, G4String newV
         fDetectorConstruction->SetWireAngleV(fWireAngleV->GetNewDoubleValue(newValue));
     if (command == fWireAngleW)
         fDetectorConstruction->SetWireAngleW(fWireAngleW->GetNewDoubleValue(newValue));
+    if (command == fWirePitchU)
+        fDetectorConstruction->SetWirePitchU(fWirePitchU->GetNewDoubleValue(newValue));
+    if (command == fWirePitchV)
+        fDetectorConstruction->SetWirePitchV(fWirePitchV->GetNewDoubleValue(newValue));
+    if (command == fWirePitchW)
+        fDetectorConstruction->SetWirePitchW(fWirePitchW->GetNewDoubleValue(newValue));
+    if (command == fDriftEquivalentPitch)
+        fDetectorConstruction->SetDriftEquivalentPitch(fDriftEquivalentPitch->GetNewDoubleValue(newValue));
 }

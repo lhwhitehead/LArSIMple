@@ -10,6 +10,7 @@
 #define LArSIMpleWireConvertor_h
 
 #include "LArSIMple3DEnergyDeposit.hh"
+#include "LArSIMpleDetectorConstruction.hh"
 #include "LArSIMpleWireHit.hh"
 #include <map>
 #include <vector>
@@ -30,16 +31,16 @@ public:
      *
      *  @return The instance of the wire convertor
      */
-    static LArSIMpleWireConvertor &Get()
+    static LArSIMpleWireConvertor &Get(const LArSIMpleDetectorConstruction *const detector)
     {
-        static LArSIMpleWireConvertor wireConvertor;
+        static LArSIMpleWireConvertor wireConvertor(detector);
         return wireConvertor;
     };
     LArSIMpleWireConvertor(LArSIMpleWireConvertor const &) = delete;
     LArSIMpleWireConvertor &operator=(LArSIMpleWireConvertor const &) = delete;
 
-    void SetGeometryInformation(const float xMin, const float xMax, const float yMin, const float yMax, const float zMin,
-        const float zMax, const float wireAngleU, const float wireAngleV, const float wireAngleW);
+//    void SetGeometryInformation(const float xMin, const float xMax, const float yMin, const float yMax, const float zMin,
+//        const float zMax, const float wireAngleU, const float wireAngleV, const float wireAngleW);
 
     /** 
      *  @brief  Convert 3D energy deposits to wire plane hits
@@ -57,35 +58,37 @@ private:
     /**
      *  @brief  Constructor
      */
-    LArSIMpleWireConvertor();
+    LArSIMpleWireConvertor(const LArSIMpleDetectorConstruction *const detector);
 
     void GetWireGeometryInfo(const LArSIMpleReadoutView &view, float &min_wire, float &max_wire) const;
 
-    bool fGeometrySetupComplete;
-    float fXMin;
-    float fXMax;
-    float fYMin;
-    float fYMax;
-    float fZMin;
-    float fZMax;
-    float fWireAngleU;
-    float fWireAngleV;
-    float fWireAngleW;
+    const LArSIMpleDetectorConstruction *fDetector; ///< Pointer to the detector geometry object
+
+//    bool fGeometrySetupComplete;
+//    float fXMin;
+//    float fXMax;
+//    float fYMin;
+//    float fYMax;
+//    float fZMin;
+//    float fZMax;
+//    float fWireAngleU;
+//    float fWireAngleV;
+//    float fWireAngleW;
 };
 
-inline void LArSIMpleWireConvertor::SetGeometryInformation(const float xMin, const float xMax, const float yMin, const float yMax,
-    const float zMin, const float zMax, const float wireAngleU, const float wireAngleV, const float wireAngleW)
-{
-    fXMin = xMin;
-    fXMax = xMax;
-    fYMin = yMin;
-    fYMax = yMax;
-    fZMin = zMin;
-    fZMax = zMax;
-    fWireAngleU = wireAngleU;
-    fWireAngleV = wireAngleV;
-    fWireAngleW = wireAngleW;
-    fGeometrySetupComplete = true;
-}
+//inline void LArSIMpleWireConvertor::SetGeometryInformation(const float xMin, const float xMax, const float yMin, const float yMax,
+//    const float zMin, const float zMax, const float wireAngleU, const float wireAngleV, const float wireAngleW)
+//{
+//    fXMin = xMin;
+//    fXMax = xMax;
+//    fYMin = yMin;
+//    fYMax = yMax;
+//    fZMin = zMin;
+//    fZMax = zMax;
+//    fWireAngleU = wireAngleU;
+//    fWireAngleV = wireAngleV;
+//    fWireAngleW = wireAngleW;
+//    fGeometrySetupComplete = true;
+//}
 
 #endif

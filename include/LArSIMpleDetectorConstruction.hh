@@ -20,6 +20,13 @@ class G4Material;
 
 class LArSIMpleDetectorMessenger;
 
+enum class LArSIMpleReadoutView
+{
+    ViewU = 0,
+    ViewV = 1,
+    ViewW = 2
+};
+
 /**
  *   @brief Detector construction class
  */
@@ -201,25 +208,13 @@ public:
     void SetCheckOverlaps(bool check);
 
     /**
-     *  @brief  Get the angle of the U wires w.r.t the y-axis
+     *  @brief  Get the angle of the wires w.r.t the y-axis
+     *
+     *  @param  view the readout view
      *
      *  @return the angle to the y-axis
      */
-    float GetWireAngleU() const;
-
-    /**
-     *  @brief  Get the angle of the V wires w.r.t the y-axis
-     *
-     *  @return the angle to the y-axis
-     */
-    float GetWireAngleV() const;
-
-    /**
-     *  @brief  Get the angle of the W wires w.r.t the y-axis
-     *
-     *  @return the angle to the y-axis
-     */
-    float GetWireAngleW() const;
+    float GetWireAngle(const LArSIMpleReadoutView view) const;
 
     /**
      *  @brief  Set the angle of the U wires w.r.t the y-axis
@@ -243,7 +238,50 @@ public:
     void SetWireAngleW(float angle);
 
     /**
-     *  @brief  Print a summary of the detecot geometry
+     *  @brief  Get the wire pitch
+     *
+     *  @param  view the readout view
+     *  @return the wire pitch
+     */
+    float GetWirePitch(const LArSIMpleReadoutView view) const;
+
+    /**
+     *  @brief  Set the pitch of the U wires
+     *
+     *  @param  pitch the wire pitch
+     */
+    void SetWirePitchU(const float pitch);
+
+    /**
+     *  @brief  Set the pitch of the V wires
+     *
+     *  @param  pitch the wire pitch
+     */
+    void SetWirePitchV(const float pitch);
+
+    /**
+     *  @brief  Set the pitch of the W wires
+     *
+     *  @param  pitch the wire pitch
+     */
+    void SetWirePitchW(const float pitch);
+
+    /**
+     *  @brief  Get the drift equivalent pitch
+     *
+     *  @return the drift equivalent pitch 
+     */
+    float GetDriftEquivalentPitch() const;
+
+    /**
+     *  @brief  Set the drift equivalent pitch
+     *
+     *  @param  pitch the drift equivalent pitch
+     */
+    void SetDriftEquivalentPitch(const float pitch);
+
+    /**
+     *  @brief  Print a summary of the detector geometry
      */
     void PrintDetectorSummary() const;
 
@@ -279,9 +317,9 @@ private:
     bool fVoxeliseLAr;   ///< Whether to voxelise the LAr volume
     bool fCheckOverlaps; ///< Whether to check for geometry overlaps
 
-    float fWireAngleU; ///< Angle of the U wires to the vertical
-    float fWireAngleV; ///< Angle of the V wires to the vertical
-    float fWireAngleW; ///< Angle of the W wires to the vertical
+    std::map<LArSIMpleReadoutView, float> fWireAngles; ///< Wire angles in degrees
+    std::map<LArSIMpleReadoutView, float> fWirePitches; ///< Wire pitches in cm
+    float fDriftEquivalentPitch; ///< Equivalent pitch of the drift coordinate
 
     G4Material *fMaterialLAr; ///< Geant4 material for air
     G4Material *fMaterialAir; ///< Geant4 material for liquid argon
@@ -453,44 +491,72 @@ inline void LArSIMpleDetectorConstruction::SetCheckOverlaps(bool check)
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-inline float LArSIMpleDetectorConstruction::GetWireAngleU() const
+inline float LArSIMpleDetectorConstruction::GetWireAngle(const LArSIMpleReadoutView view) const
 {
-    return fWireAngleU;
+    return fWireAngles.at(view);
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-inline float LArSIMpleDetectorConstruction::GetWireAngleV() const
+inline void LArSIMpleDetectorConstruction::SetWireAngleU(const float angle)
 {
-    return fWireAngleV;
+    fWireAngles[LArSIMpleReadoutView::ViewU] = angle;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-inline float LArSIMpleDetectorConstruction::GetWireAngleW() const
+inline void LArSIMpleDetectorConstruction::SetWireAngleV(const float angle)
 {
-    return fWireAngleW;
+    fWireAngles[LArSIMpleReadoutView::ViewV] = angle;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-inline void LArSIMpleDetectorConstruction::SetWireAngleU(float angle)
+inline void LArSIMpleDetectorConstruction::SetWireAngleW(const float angle)
 {
-    fWireAngleU = angle;
+    fWireAngles[LArSIMpleReadoutView::ViewW] = angle;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-inline void LArSIMpleDetectorConstruction::SetWireAngleV(float angle)
+inline float LArSIMpleDetectorConstruction::GetWirePitch(const LArSIMpleReadoutView view) const
 {
-    fWireAngleV = angle;
+    return fWirePitches.at(view);
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-inline void LArSIMpleDetectorConstruction::SetWireAngleW(float angle)
+inline void LArSIMpleDetectorConstruction::SetWirePitchU(const float pitch)
 {
-    fWireAngleW = angle;
+    fWirePitches[LArSIMpleReadoutView::ViewU] = pitch;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+inline void LArSIMpleDetectorConstruction::SetWirePitchV(const float pitch)
+{
+    fWirePitches[LArSIMpleReadoutView::ViewV] = pitch;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+inline void LArSIMpleDetectorConstruction::SetWirePitchW(const float pitch)
+{
+    fWirePitches[LArSIMpleReadoutView::ViewW] = pitch;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+inline float LArSIMpleDetectorConstruction::GetDriftEquivalentPitch() const
+{
+    return fDriftEquivalentPitch;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+
+inline void LArSIMpleDetectorConstruction::SetDriftEquivalentPitch(const float pitch)
+{
+    fDriftEquivalentPitch = pitch;
 }
 
 #endif
