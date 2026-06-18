@@ -46,7 +46,6 @@ void LArSIMpleSteppingAction::UserSteppingAction(const G4Step *aStep)
             return;
 
         const G4StepPoint *stepPoint = aStep->GetPreStepPoint();
-        //        energyDeposit.SetPositionAndTime((stepPoint->GetPosition() / CLHEP::cm), stepPoint->GetGlobalTime());
         energyDeposit.SetPositionAndTime((stepPoint->GetPosition()), stepPoint->GetGlobalTime());
 
         const G4Track *track = aStep->GetTrack();
@@ -64,7 +63,6 @@ void LArSIMpleSteppingAction::UserSteppingAction(const G4Step *aStep)
 
         const double energy{aStep->GetTotalEnergyDeposit() - aStep->GetNonIonizingEnergyDeposit()};
         energyDeposit.SetEnergy(energy);
-        //        energyDeposit.SetDeDx(energy / (aStep->GetDeltaPosition().mag() / CLHEP::cm));
         energyDeposit.SetDeDx(energy / (aStep->GetDeltaPosition().mag()));
         fEventAction->Add3DEnergyDeposit(energyDeposit);
     }

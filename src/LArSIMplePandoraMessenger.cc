@@ -7,7 +7,7 @@
  */
 
 #include "LArSIMplePandoraMessenger.hh"
-#include "LArSIMplePandoraWriter.hh"
+#include "LArSIMplePandoraInterface.hh"
 
 #include "G4UIcmdWithABool.hh"
 #include "G4UIcmdWithADouble.hh"
@@ -15,8 +15,8 @@
 #include "G4UIdirectory.hh"
 #include "G4UIparameter.hh"
 
-LArSIMplePandoraMessenger::LArSIMplePandoraMessenger(LArSIMplePandoraWriter *pPandoraWriter) :
-    fPandoraWriter(pPandoraWriter)
+LArSIMplePandoraMessenger::LArSIMplePandoraMessenger(LArSIMplePandoraInterface *pPandoraInterface) :
+    fPandoraInterface(pPandoraInterface)
 {
     fPandoraDir = new G4UIdirectory("/LArSIMple/Pandora/");
     fPandoraDir->SetGuidance("Commands to select pandora options");
@@ -46,7 +46,7 @@ LArSIMplePandoraMessenger::~LArSIMplePandoraMessenger()
 void LArSIMplePandoraMessenger::SetNewValue(G4UIcommand *command, G4String newValue)
 {
     if (command == fCaloHitThreshold)
-        fPandoraWriter->SetCaloHitThreshold(fCaloHitThreshold->GetNewDoubleValue(newValue));
+        fPandoraInterface->SetCaloHitThreshold(fCaloHitThreshold->GetNewDoubleValue(newValue));
     if (command == fApplyCaloHitThreshold)
-        fPandoraWriter->SetApplyCaloHitThreshold(fApplyCaloHitThreshold->GetNewBoolValue(newValue));
+        fPandoraInterface->SetApplyCaloHitThreshold(fApplyCaloHitThreshold->GetNewBoolValue(newValue));
 }

@@ -20,7 +20,7 @@
 #include "globals.hh"
 
 #ifdef USE_PANDORA
-#include "LArSIMplePandoraWriter.hh"
+#include "LArSIMplePandoraInterface.hh"
 #endif
 
 class LArSIMplePrimaryGeneratorAction;
@@ -171,27 +171,6 @@ public:
      */
     void SetWriteRootFile(const bool val);
 
-    //    /**
-    //     *  @brief  Set the angle of the U wire plane w.r.t the z-axis
-    //     *
-    //     *  @param  angle the angle to the z-axis
-    //     */
-    //    void SetWireAngleU(double angle);
-    //
-    //    /**
-    //     *  @brief  Set the angle of the V wire plane w.r.t the z-axis
-    //     *
-    //     *  @param  angle the angle to the z-axis
-    //     */
-    //    void SetWireAngleV(double angle);
-    //
-    //    /**
-    //     *  @brief  Set the angle of the W wire plane w.r.t the z-axis
-    //     *
-    //     *  @param  angle the angle to the z-axis
-    //     */
-    //    void SetWireAngleW(double angle);
-
 private:
     /**
      *  @brief  We want the decay photons of primary pi0 mesons to be primaries
@@ -219,16 +198,12 @@ private:
     bool fFoldBackTruthInfo;           ///< Whether to fold back truth information
     LArSIMpleTruthFolder fTruthFolder; ///< Truth folding object
 
-    //    double fWireAngleU; ///< Wire angle for the U plane
-    //    double fWireAngleV; ///< Wire angle for the V plane
-    //    double fWireAngleW; ///< Wire angle for the W plane
-
     std::vector<LArSIMple3DEnergyDeposit> fEnergyDeposits; ///< The 3DEnergyDeposits of the current event
     std::map<int, LArSIMpleTrackData> fTrackIDToTrackData; ///< Map of Geant4 track IDs to TrackData objects
     std::map<int, int> fTrackIDToFoldedTrackID;            ///< Map of Geant4 track IDs to folded track IDs
 
 #ifdef USE_PANDORA
-    std::unique_ptr<LArSIMplePandoraWriter> fPandoraWriter;
+    std::unique_ptr<LArSIMplePandoraInterface> fPandoraInterface;
 #endif
 };
 
@@ -336,26 +311,5 @@ inline void LArSIMpleEventAction::SetWriteRootFile(const bool val)
 {
     fWriteRootFile = val;
 }
-
-//------------------------------------------------------------------------------------------------------------------------------------------
-
-//inline void LArSIMpleEventAction::SetWireAngleU(double angle)
-//{
-//    fWireAngleU = angle;
-//}
-//
-////------------------------------------------------------------------------------------------------------------------------------------------
-//
-//inline void LArSIMpleEventAction::SetWireAngleV(double angle)
-//{
-//    fWireAngleV = angle;
-//}
-//
-////------------------------------------------------------------------------------------------------------------------------------------------
-//
-//inline void LArSIMpleEventAction::SetWireAngleW(double angle)
-//{
-//    fWireAngleW = angle;
-//}
 
 #endif

@@ -167,12 +167,12 @@ void LArSIMplePrimaryGeneratorAction::GenerateRandomVertex(G4ThreeVector &vtx) c
 {
     // Choose a random position within the LAr volume (at least 1m from the edges)
     const float buffer{1000.f};
-    const float minX{fDetectorConstruction->GetLArSizeMinX() + buffer};
-    const float maxX{fDetectorConstruction->GetLArSizeMaxX() - buffer};
-    const float minY{fDetectorConstruction->GetLArSizeMinY() + buffer};
-    const float maxY{fDetectorConstruction->GetLArSizeMaxY() - buffer};
-    const float minZ{fDetectorConstruction->GetLArSizeMinZ() + buffer};
-    const float maxZ{fDetectorConstruction->GetLArSizeMaxZ() - buffer};
+    const float minX{fDetectorConstruction->GetLArVolumeMinX() + buffer};
+    const float maxX{fDetectorConstruction->GetLArVolumeMaxX() - buffer};
+    const float minY{fDetectorConstruction->GetLArVolumeMinY() + buffer};
+    const float maxY{fDetectorConstruction->GetLArVolumeMaxY() - buffer};
+    const float minZ{fDetectorConstruction->GetLArVolumeMinZ() + buffer};
+    const float maxZ{fDetectorConstruction->GetLArVolumeMaxZ() - buffer};
 
     vtx.setX(minX + G4UniformRand() * (maxX - minX));
     vtx.setY(minY + G4UniformRand() * (maxY - minY));

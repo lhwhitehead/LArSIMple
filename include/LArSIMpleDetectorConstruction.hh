@@ -142,42 +142,42 @@ public:
      *
      *  @return The minimum x position of the LAr volume
      */
-    float GetLArSizeMinX() const;
+    float GetLArVolumeMinX() const;
 
     /**
      *  @brief  Get the minimum y position of the LAr volume
      *
      *  @return The minimum y position of the LAr volume
      */
-    float GetLArSizeMinY() const;
+    float GetLArVolumeMinY() const;
 
     /**
      *  @brief  Get the minimum z position of the LAr volume
      *
      *  @return The minimum z position of the LAr volume
      */
-    float GetLArSizeMinZ() const;
+    float GetLArVolumeMinZ() const;
 
     /**
      *  @brief  Get the maximum x position of the LAr volume
      *
      *  @return The maximum x position of the LAr volume
      */
-    float GetLArSizeMaxX() const;
+    float GetLArVolumeMaxX() const;
 
     /**
      *  @brief  Get the maximum y position of the LAr volume
      *
      *  @return The maximum y position of the LAr volume
      */
-    float GetLArSizeMaxY() const;
+    float GetLArVolumeMaxY() const;
 
     /**
      *  @brief  Get the maximum z position of the LAr volume
      *
      *  @return The maximum z position of the LAr volume
      */
-    float GetLArSizeMaxZ() const;
+    float GetLArVolumeMaxZ() const;
 
     /**
      *  @brief  Is the LAr volume voxelised?
@@ -421,42 +421,42 @@ inline void LArSIMpleDetectorConstruction::SetLArLength(double length)
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-inline float LArSIMpleDetectorConstruction::GetLArSizeMinX() const
+inline float LArSIMpleDetectorConstruction::GetLArVolumeMinX() const
 {
     return -1.f * fLArSizeX / 2.f;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-inline float LArSIMpleDetectorConstruction::GetLArSizeMinY() const
+inline float LArSIMpleDetectorConstruction::GetLArVolumeMinY() const
 {
     return -1.f * fLArSizeY / 2.f;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-inline float LArSIMpleDetectorConstruction::GetLArSizeMinZ() const
+inline float LArSIMpleDetectorConstruction::GetLArVolumeMinZ() const
 {
     return -1.f * fLArSizeZ / 2.f;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-inline float LArSIMpleDetectorConstruction::GetLArSizeMaxX() const
+inline float LArSIMpleDetectorConstruction::GetLArVolumeMaxX() const
 {
     return fLArSizeX / 2.f;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-inline float LArSIMpleDetectorConstruction::GetLArSizeMaxY() const
+inline float LArSIMpleDetectorConstruction::GetLArVolumeMaxY() const
 {
     return fLArSizeY / 2.f;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-inline float LArSIMpleDetectorConstruction::GetLArSizeMaxZ() const
+inline float LArSIMpleDetectorConstruction::GetLArVolumeMaxZ() const
 {
     return fLArSizeZ / 2.f;
 }

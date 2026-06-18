@@ -1,13 +1,13 @@
 /**
- *  @file   LArSIMple/include/LArSIMplePandoraWriter.hh
+ *  @file   LArSIMple/include/LArSIMplePandoraInterface.hh
  * 
  *  @brief  Header file for the pandora interface class.
  * 
  *  $Log: $
  */
 
-#ifndef LArSIMplePandoraWriter_h
-#define LArSIMplePandoraWriter_h
+#ifndef LArSIMplePandoraInterface_h
+#define LArSIMplePandoraInterface_h
 
 #include <vector>
 
@@ -22,23 +22,23 @@
 #include "larpandoracontent/LArObjects/LArCaloHit.h"
 
 /**
- *  @brief PandoraWriter class for writing Pandora input xml files 
+ *  @brief PandoraInterface class for writing Pandora input xml files 
  */
 
 class LArSIMplePandoraMessenger;
 
-class LArSIMplePandoraWriter
+class LArSIMplePandoraInterface
 {
 public:
     /**
      *  @brief  Constructor
      */
-    LArSIMplePandoraWriter(const LArSIMpleDetectorConstruction *const detector);
+    LArSIMplePandoraInterface(const LArSIMpleDetectorConstruction *const detector);
 
     /**
      *  @brief  Destructor
      */
-    ~LArSIMplePandoraWriter();
+    ~LArSIMplePandoraInterface();
 
     /**
      *  @brief  Create Pandora CaloHits from LArSIMpleWireHit objects
@@ -108,14 +108,14 @@ private:
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-inline void LArSIMplePandoraWriter::SetApplyCaloHitThreshold(const bool value)
+inline void LArSIMplePandoraInterface::SetApplyCaloHitThreshold(const bool value)
 {
     fApplyCaloHitThreshold = value;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-inline void LArSIMplePandoraWriter::SetCaloHitThreshold(const float value)
+inline void LArSIMplePandoraInterface::SetCaloHitThreshold(const float value)
 {
     fCaloHitThreshold = value;
 }

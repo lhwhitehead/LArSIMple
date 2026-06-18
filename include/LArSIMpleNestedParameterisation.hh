@@ -1,7 +1,7 @@
 /**
  *  @file   LArSIMple/include/LArSIMpleNestedParameterisation
  * 
- *  @brief  Header file for the 3D energy deposit class.
+ *  @brief  Header file for the nested volume parameterisation class
  * 
  *  $Log: $
  */

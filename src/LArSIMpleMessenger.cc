@@ -65,21 +65,6 @@ LArSIMpleMessenger::LArSIMpleMessenger(LArSIMpleEventAction *pEventAction) :
     fUseHitFeatures->SetGuidance("Calculate and use features for each hit based on the local neighbourhood");
     fUseHitFeatures->SetParameterName("UseHitFeatures", false);
     fUseHitFeatures->SetDefaultValue(false);
-
-    //    fWireAngleU = new G4UIcmdWithADouble("/LArSIMple/WireAngleU", this);
-    //    fWireAngleU->SetGuidance("Angle of the U wires to the verticle");
-    //    fWireAngleU->SetParameterName("WireAngleU", true);
-    //    fWireAngleU->SetDefaultValue(35.9);
-    //
-    //    fWireAngleV = new G4UIcmdWithADouble("/LArSIMple/WireAngleV", this);
-    //    fWireAngleV->SetGuidance("Angle of the v wires to the verticle");
-    //    fWireAngleV->SetParameterName("WireAngleV", true);
-    //    fWireAngleV->SetDefaultValue(-35.9);
-    //
-    //    fWireAngleW = new G4UIcmdWithADouble("/LArSIMple/WireAngleW", this);
-    //    fWireAngleW->SetGuidance("Angle of the W wires to the verticle");
-    //    fWireAngleW->SetParameterName("WireAngleW", true);
-    //    fWireAngleW->SetDefaultValue(0.0);
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -96,9 +81,6 @@ LArSIMpleMessenger::~LArSIMpleMessenger()
     delete fFoldDeltaRays;
     delete fHitThreshold;
     delete fUseHitFeatures;
-    //    delete fWireAngleU;
-    //    delete fWireAngleV;
-    //    delete fWireAngleW;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -121,10 +103,4 @@ void LArSIMpleMessenger::SetNewValue(G4UIcommand *command, G4String newValue)
         fEventAction->SetHitThreshold(fHitThreshold->GetNewDoubleValue(newValue));
     if (command == fUseHitFeatures)
         fEventAction->SetUseHitFeatures(fUseHitFeatures->GetNewBoolValue(newValue));
-    //    if (command == fWireAngleU)
-    //        fEventAction->SetWireAngleU(fWireAngleU->GetNewDoubleValue(newValue));
-    //    if (command == fWireAngleV)
-    //        fEventAction->SetWireAngleV(fWireAngleV->GetNewDoubleValue(newValue));
-    //    if (command == fWireAngleW)
-    //        fEventAction->SetWireAngleW(fWireAngleW->GetNewDoubleValue(newValue));
 }

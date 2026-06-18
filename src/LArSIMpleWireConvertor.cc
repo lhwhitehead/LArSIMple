@@ -32,7 +32,7 @@ std::vector<LArSIMpleWireHit> LArSIMpleWireConvertor::Convert3DEnergyDepositsToW
 
     const float wire_bin_width{fDetector->GetWirePitch(view)};
     const float drift_bin_width{fDetector->GetDriftEquivalentPitch()};
-    const float min_drift{fDetector->GetLArSizeMinX()}, max_drift{fDetector->GetLArSizeMaxX()};
+    const float min_drift{fDetector->GetLArVolumeMinX()}, max_drift{fDetector->GetLArVolumeMaxX()};
     const unsigned int nbins_wire = std::floor((max_wire - min_wire) / wire_bin_width);
     const unsigned int nbins_drift = std::floor((max_drift - min_drift) / drift_bin_width);
 
@@ -74,12 +74,12 @@ void LArSIMpleWireConvertor::GetWireGeometryInfo(const LArSIMpleReadoutView &vie
         (view == LArSIMpleReadoutView::ViewV ? fDetector->GetWireAngle(LArSIMpleReadoutView::ViewV) : fDetector->GetWireAngle(LArSIMpleReadoutView::ViewW))};
     if (wireAngle > 0)
     {
-        min_wire = fDetector->GetLArSizeMinZ() * std::cos(wireAngle * degreesToRadians) + fDetector->GetLArSizeMinY() * std::sin(wireAngle * degreesToRadians);
-        max_wire = fDetector->GetLArSizeMaxZ() * std::cos(wireAngle * degreesToRadians) + fDetector->GetLArSizeMaxY() * std::sin(wireAngle * degreesToRadians);
+        min_wire = fDetector->GetLArVolumeMinZ() * std::cos(wireAngle * degreesToRadians) + fDetector->GetLArVolumeMinY() * std::sin(wireAngle * degreesToRadians);
+        max_wire = fDetector->GetLArVolumeMaxZ() * std::cos(wireAngle * degreesToRadians) + fDetector->GetLArVolumeMaxY() * std::sin(wireAngle * degreesToRadians);
     }
     else
     {
-        min_wire = fDetector->GetLArSizeMinZ() * std::cos(wireAngle * degreesToRadians) + fDetector->GetLArSizeMinY() * std::sin(wireAngle * degreesToRadians);
-        max_wire = fDetector->GetLArSizeMaxZ() * std::cos(wireAngle * degreesToRadians) + fDetector->GetLArSizeMaxY() * std::sin(wireAngle * degreesToRadians);
+        min_wire = fDetector->GetLArVolumeMinZ() * std::cos(wireAngle * degreesToRadians) + fDetector->GetLArVolumeMinY() * std::sin(wireAngle * degreesToRadians);
+        max_wire = fDetector->GetLArVolumeMaxZ() * std::cos(wireAngle * degreesToRadians) + fDetector->GetLArVolumeMaxY() * std::sin(wireAngle * degreesToRadians);
     }
 }

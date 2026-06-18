@@ -61,10 +61,6 @@ private:
 
     G4UIcmdWithADoubleAndUnit *fHitThreshold; ///< Command for setting the energy threshold for hit creation
     G4UIcmdWithABool *fUseHitFeatures;        ///< Command for whether to calculate neighbouring hit features
-
-    //    G4UIcmdWithADouble *fWireAngleU; ///< Command to set the U plane wire angle
-    //    G4UIcmdWithADouble *fWireAngleV; ///< Command to set the V plane wire angle
-    //    G4UIcmdWithADouble *fWireAngleW; ///< Command to set the W plane wire angle
 };
 
 #endif

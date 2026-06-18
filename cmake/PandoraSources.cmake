@@ -1,11 +1,11 @@
 list(APPEND LARSIMPLE_SOURCES
     src/LArSIMplePandoraContent.cc
     src/LArSIMplePandoraMessenger.cc
-    src/LArSIMplePandoraWriter.cc
+    src/LArSIMplePandoraInterface.cc
 )
 
 list(APPEND LARSIMPLE_HEADERS
     include/LArSIMplePandoraContent.hh
     include/LArSIMplePandoraMessenger.hh
-    include/LArSIMplePandoraWriter.hh
+    include/LArSIMplePandoraInterface.hh
 )

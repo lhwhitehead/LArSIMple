@@ -1,5 +1,5 @@
 /**
- *  @file LArSIMple/src/LArSIMplePandoraWriter.cc
+ *  @file LArSIMple/src/LArSIMplePandoraInterface.cc
  * 
  *  @brief Implementation of the pandora interface class. 
  * 
@@ -10,7 +10,7 @@
 
 #include "LArSIMpleDetectorConstruction.hh"
 #include "LArSIMpleTrackData.hh"
-#include "LArSIMplePandoraWriter.hh"
+#include "LArSIMplePandoraInterface.hh"
 #include "LArSIMplePandoraMessenger.hh"
 #include "LArSIMplePandoraContent.hh"
 
@@ -23,7 +23,7 @@
 #include "larpandoracontent/LArObjects/LArCaloHit.h"
 #include "larpandoracontent/LArObjects/LArMCParticle.h"
 
-LArSIMplePandoraWriter::LArSIMplePandoraWriter(const LArSIMpleDetectorConstruction *const detector) :
+LArSIMplePandoraInterface::LArSIMplePandoraInterface(const LArSIMpleDetectorConstruction *const detector) :
 fDetector(detector),
 fEnergyScale(1.0e-3), // MeV -> GeV
 fPositionScale(0.1f), // mm  -> cm
@@ -45,13 +45,13 @@ fCaloHitThreshold(0.01)
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-LArSIMplePandoraWriter::~LArSIMplePandoraWriter()
+LArSIMplePandoraInterface::~LArSIMplePandoraInterface()
 {
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void LArSIMplePandoraWriter::CreateCaloHits(const std::vector<LArSIMpleWireHit> &hits)
+void LArSIMplePandoraInterface::CreateCaloHits(const std::vector<LArSIMpleWireHit> &hits)
 {
     for (unsigned int h = 0; h < hits.size(); ++h)
         this->CreateCaloHitFromWireHit(h, hits.at(h));
@@ -59,7 +59,7 @@ void LArSIMplePandoraWriter::CreateCaloHits(const std::vector<LArSIMpleWireHit> 
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void LArSIMplePandoraWriter::CreateMCParticles(const std::vector<LArSIMpleTrackData> &mcParticles)
+void LArSIMplePandoraInterface::CreateMCParticles(const std::vector<LArSIMpleTrackData> &mcParticles)
 {
     for (const LArSIMpleTrackData &mcParticle : mcParticles)
         this->CreateMCParticle(mcParticle);
@@ -67,7 +67,7 @@ void LArSIMplePandoraWriter::CreateMCParticles(const std::vector<LArSIMpleTrackD
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void LArSIMplePandoraWriter::CreateLArTPC()
+void LArSIMplePandoraInterface::CreateLArTPC()
 {
     if (fBuiltGeometry)
         return;
@@ -82,9 +82,9 @@ void LArSIMplePandoraWriter::CreateLArTPC()
     tpcParams.m_widthY = fDetector->GetLArHeight() * fPositionScale;
     tpcParams.m_widthZ = fDetector->GetLArLength() * fPositionScale;
     tpcParams.m_larTPCVolumeId = 0;
-    tpcParams.m_wirePitchU = 0.5f; // Currently hard coded as 5mm
-    tpcParams.m_wirePitchV = 0.5f;
-    tpcParams.m_wirePitchW = 0.5f;
+    tpcParams.m_wirePitchU = fDetector->GetWirePitch(LArSIMpleReadoutView::ViewU);
+    tpcParams.m_wirePitchV = fDetector->GetWirePitch(LArSIMpleReadoutView::ViewV);
+    tpcParams.m_wirePitchW = fDetector->GetWirePitch(LArSIMpleReadoutView::ViewW);
     tpcParams.m_wireAngleU = fDetector->GetWireAngle(LArSIMpleReadoutView::ViewU);
     tpcParams.m_wireAngleV = fDetector->GetWireAngle(LArSIMpleReadoutView::ViewV);
     tpcParams.m_wireAngleW = fDetector->GetWireAngle(LArSIMpleReadoutView::ViewW);
@@ -104,7 +104,7 @@ void LArSIMplePandoraWriter::CreateLArTPC()
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void LArSIMplePandoraWriter::RunPandora()
+void LArSIMplePandoraInterface::RunPandora()
 {
     PANDORA_THROW_RESULT_IF(pandora::STATUS_CODE_SUCCESS, !=, PandoraApi::ProcessEvent(*fPandora));
     PANDORA_THROW_RESULT_IF(pandora::STATUS_CODE_SUCCESS, !=, PandoraApi::Reset(*fPandora));
@@ -112,7 +112,7 @@ void LArSIMplePandoraWriter::RunPandora()
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void LArSIMplePandoraWriter::CreateCaloHitFromWireHit(const unsigned int hitNumber, const LArSIMpleWireHit &hit)
+void LArSIMplePandoraInterface::CreateCaloHitFromWireHit(const unsigned int hitNumber, const LArSIMpleWireHit &hit)
 {
     if (fApplyCaloHitThreshold && hit.GetCharge() < fCaloHitThreshold)
         return;
@@ -171,7 +171,7 @@ void LArSIMplePandoraWriter::CreateCaloHitFromWireHit(const unsigned int hitNumb
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-void LArSIMplePandoraWriter::CreateMCParticle(const LArSIMpleTrackData &mcParticle)
+void LArSIMplePandoraInterface::CreateMCParticle(const LArSIMpleTrackData &mcParticle)
 {
         lar_content::LArMCParticleFactory mcParticleFactory;
         lar_content::LArMCParticleParameters mcParticleParams;

@@ -11,7 +11,7 @@
 
 #include "G4UImessenger.hh"
 
-class LArSIMplePandoraWriter;
+class LArSIMplePandoraInterface;
 class G4UIdirectory;
 class G4UIcmdWithADouble;
 class G4UIcmdWithABool;
@@ -28,7 +28,7 @@ public:
      *
      *  @param  pEventAction pointer to a LArSIMpleEventAction object
      */
-    LArSIMplePandoraMessenger(LArSIMplePandoraWriter *pPandoraWriter);
+    LArSIMplePandoraMessenger(LArSIMplePandoraInterface *pPandoraInterface);
 
     /**
      *  @brief  Destructor
@@ -44,7 +44,7 @@ public:
     void SetNewValue(G4UIcommand *command, G4String newValues);
 
 private:
-    LArSIMplePandoraWriter *fPandoraWriter; ///< Pointer to the pandora writer class
+    LArSIMplePandoraInterface *fPandoraInterface; ///< Pointer to the pandora interface class
 
     G4UIdirectory *fPandoraDir; ///< Pointer to the G4 config directory class
 

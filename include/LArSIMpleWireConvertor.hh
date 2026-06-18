@@ -39,9 +39,6 @@ public:
     LArSIMpleWireConvertor(LArSIMpleWireConvertor const &) = delete;
     LArSIMpleWireConvertor &operator=(LArSIMpleWireConvertor const &) = delete;
 
-//    void SetGeometryInformation(const float xMin, const float xMax, const float yMin, const float yMax, const float zMin,
-//        const float zMax, const float wireAngleU, const float wireAngleV, const float wireAngleW);
-
     /** 
      *  @brief  Convert 3D energy deposits to wire plane hits
      *
@@ -63,32 +60,6 @@ private:
     void GetWireGeometryInfo(const LArSIMpleReadoutView &view, float &min_wire, float &max_wire) const;
 
     const LArSIMpleDetectorConstruction *fDetector; ///< Pointer to the detector geometry object
-
-//    bool fGeometrySetupComplete;
-//    float fXMin;
-//    float fXMax;
-//    float fYMin;
-//    float fYMax;
-//    float fZMin;
-//    float fZMax;
-//    float fWireAngleU;
-//    float fWireAngleV;
-//    float fWireAngleW;
 };
-
-//inline void LArSIMpleWireConvertor::SetGeometryInformation(const float xMin, const float xMax, const float yMin, const float yMax,
-//    const float zMin, const float zMax, const float wireAngleU, const float wireAngleV, const float wireAngleW)
-//{
-//    fXMin = xMin;
-//    fXMax = xMax;
-//    fYMin = yMin;
-//    fYMax = yMax;
-//    fZMin = zMin;
-//    fZMax = zMax;
-//    fWireAngleU = wireAngleU;
-//    fWireAngleV = wireAngleV;
-//    fWireAngleW = wireAngleW;
-//    fGeometrySetupComplete = true;
-//}
 
 #endif

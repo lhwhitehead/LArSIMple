@@ -128,7 +128,7 @@ public:
 
 private:
     LArSIMpleReadoutView fReadoutView; ///< The readout plane
-    unsigned int fWireNumber;             ///< The wire coordinate that the hit would have been registered on
+    unsigned int fWireNumber;          ///< The wire coordinate that the hit would have been registered on
     float fWireCoordinate;             ///< The wire coordinate that the hit would have been registered on
     unsigned int fDriftBin;            ///< The drift coordinate after discretisation
     float fDriftCoordinate;            ///< The drift coordinate after discretisation

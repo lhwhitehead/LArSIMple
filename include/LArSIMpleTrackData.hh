@@ -178,15 +178,15 @@ private:
     bool fIsPrimary;                                 ///< Is this a primary particle?
     std::string fProcess;                            ///< The process that created this track as a string
     LArSIMpleProcessTable::ProcessCode fProcessCode; ///< The process that created this track as a process code
-    double fMass;
-    G4ThreeVector fVertexPosition;
-    G4ThreeVector fVertexDirection;
-    double fVertexKineticEnergy;
-    double fVertexMomentum;
-    G4ThreeVector fEndPosition;
-    G4ThreeVector fEndDirection;
-    double fEndKineticEnergy;
-    double fEndMomentum;
+    double fMass;                                    ///< The mass of the particle
+    G4ThreeVector fVertexPosition;                   ///< The particle vertex position
+    G4ThreeVector fVertexDirection;                  ///< The initial direction of the particle
+    double fVertexKineticEnergy;                     ///< The initial kinetic energy of the particle
+    double fVertexMomentum;                          ///< The initial momentum of the particle
+    G4ThreeVector fEndPosition;                      ///< The end point of the particle
+    G4ThreeVector fEndDirection;                     ///< The direction of the particle at its end point
+    double fEndKineticEnergy;                        ///< The kinetic energy of the particle at its end point
+    double fEndMomentum;                             ///< The momentum of the particle at its end point
 };
 
 //------------------------------------------------------------------------------------------------------------------------------------------

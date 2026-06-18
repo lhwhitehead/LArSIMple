@@ -60,11 +60,55 @@ public:
      */
     ~LArSIMpleTrueNeutrinoEvent();
 
+    /**
+     *  @brief  Add a neutrino to the true event
+     *
+     *  @param  neutrino the neutrino to add
+     */
     void AddNeutrino(LArSIMpleTrueParticle neutrino);
+
+    /**
+     *  @brief  Add a neutrino to the true event
+     *
+     *  @param  pos the neutrino position
+     *  @param  dir the neutrino direction
+     *  @param  energy the neutrino energy
+     *  @param  pdg the pdg code of the neutrino
+     */
     void AddNeutrino(G4ThreeVector pos, G4ThreeVector dir, double energy, int pdg);
+
+    /**
+     *  @brief  Add the nuclear target to the true event
+     *
+     *  @param  target the nuclear target to add
+     */
     void AddTarget(LArSIMpleTrueParticle target);
+
+    /**
+     *  @brief  Add the nuclear target to the true event
+     *
+     *  @param  pos the target position position
+     *  @param  dir the target nucleus direction
+     *  @param  energy the target nucleus energy
+     *  @param  pdg the pdg code of the target nucleus
+     */
     void AddTarget(G4ThreeVector pos, G4ThreeVector dir, double energy, int pdg);
+
+    /**
+     *  @brief  Add a final state particle to the true event
+     *
+     *  @param  particle the final state particle
+     */
     void AddFinalStateParticle(LArSIMpleTrueParticle particle);
+
+    /**
+     *  @brief  Add a final state particle to the true event
+     *
+     *  @param  pos the particle position
+     *  @param  dir the particle direction
+     *  @param  energy the particle energy
+     *  @param  pdg the particle pdg code
+     */
     void AddFinalStateParticle(G4ThreeVector pos, G4ThreeVector dir, double energy, int pdg);
 
     /**
