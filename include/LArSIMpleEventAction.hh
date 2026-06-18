@@ -35,7 +35,7 @@ class LArSIMpleEventAction : public G4UserEventAction
 {
 
 public:
-    LArSIMpleEventAction(LArSIMplePrimaryGeneratorAction *, LArSIMpleDetectorConstruction *);
+    LArSIMpleEventAction(const LArSIMplePrimaryGeneratorAction *const pPrimaryGeneratorAction, const LArSIMpleDetectorConstruction * const pDetector);
     virtual ~LArSIMpleEventAction();
     virtual void BeginOfEventAction(const G4Event *);
     virtual void EndOfEventAction(const G4Event *);
@@ -182,8 +182,8 @@ private:
      */
     void CleanUp();
 
-    LArSIMplePrimaryGeneratorAction *fGenAction; ///< Pointer to the primary generator action class
-    LArSIMpleDetectorConstruction *fDetector;    ///< Pointer to the detector construction class
+    const LArSIMplePrimaryGeneratorAction *const fGenAction; ///< Pointer to the primary generator action class
+    const LArSIMpleDetectorConstruction *const fDetector;    ///< Pointer to the detector construction class
     LArSIMpleMessenger *fMessenger;              ///< Pointer to the messenger config class
 
     unsigned int fEventID; ///< Event ID for the current event

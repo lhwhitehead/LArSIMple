@@ -24,9 +24,9 @@
 #include "G4EventManager.hh"
 #include "G4Track.hh"
 
-LArSIMpleEventAction::LArSIMpleEventAction(LArSIMplePrimaryGeneratorAction *genAction, LArSIMpleDetectorConstruction *detector) :
-    fGenAction(genAction),
-    fDetector(detector),
+LArSIMpleEventAction::LArSIMpleEventAction(const LArSIMplePrimaryGeneratorAction *const pPrimaryGeneratorAction, const LArSIMpleDetectorConstruction *const pDetector) :
+    fGenAction(pPrimaryGeneratorAction),
+    fDetector(pDetector),
     fOutputFileDirectory(""),
     fOutputFilePrefix("hits_3d"),
     fHitThreshold(0.0),
@@ -36,7 +36,7 @@ LArSIMpleEventAction::LArSIMpleEventAction(LArSIMplePrimaryGeneratorAction *genA
 {
     fMessenger = new LArSIMpleMessenger(this);
 #ifdef USE_PANDORA
-    fPandoraInterface = std::make_unique<LArSIMplePandoraInterface>(detector);
+    fPandoraInterface = std::make_unique<LArSIMplePandoraInterface>(pDetector);
 #endif
 }
 
