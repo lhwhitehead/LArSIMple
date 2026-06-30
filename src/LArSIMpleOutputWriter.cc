@@ -220,13 +220,21 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
     }
 
     // Discretised output to mimic actual wire planes
-    std::vector<unsigned int> uViewDrift, uViewWire;
-    std::vector<unsigned int> vViewDrift, vViewWire;
-    std::vector<unsigned int> wViewDrift, wViewWire;
+    std::vector<unsigned int> uViewDriftBin, uViewWireBin;
+    std::vector<unsigned int> vViewDriftBin, vViewWireBin;
+    std::vector<unsigned int> wViewDriftBin, wViewWireBin;
+    std::vector<float> uViewWire, vViewWire, wViewWire;
+    std::vector<float> uViewDrift, vViewDrift, wViewDrift;
     std::vector<float> uViewCharge, vViewCharge, wViewCharge;
     std::vector<int> uViewTrackID, vViewTrackID, wViewTrackID;
     std::vector<int> uViewPDG, vViewPDG, wViewPDG;
 
+    outputTree->Branch("uViewDriftBin", &uViewDriftBin);
+    outputTree->Branch("uViewWireBin", &uViewWireBin);
+    outputTree->Branch("vViewDriftBin", &vViewDriftBin);
+    outputTree->Branch("vViewWireBin", &vViewWireBin);
+    outputTree->Branch("wViewDriftBin", &wViewDriftBin);
+    outputTree->Branch("wViewWireBin", &wViewWireBin);
     outputTree->Branch("uViewDrift", &uViewDrift);
     outputTree->Branch("uViewWire", &uViewWire);
     outputTree->Branch("vViewDrift", &vViewDrift);
@@ -246,8 +254,10 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
     std::map<int, int> trackIDToHitMapU, trackIDToHitMapV, trackIDToHitMapW;
     for (const LArSIMpleWireHit &uHit : uHits)
     {
-        uViewDrift.emplace_back(uHit.GetDriftBin());
-        uViewWire.emplace_back(uHit.GetWireNumber());
+        uViewDriftBin.emplace_back(uHit.GetDriftBin());
+        uViewWireBin.emplace_back(uHit.GetWireNumber());
+        uViewDrift.emplace_back(uHit.GetDriftCoordinate());
+        uViewWire.emplace_back(uHit.GetWireCoordinate());
         uViewCharge.emplace_back(uHit.GetCharge());
         uViewPDG.emplace_back(uHit.GetLargestContributingPDG());
         const int trkId{uHit.GetLargestContributingTrackId()};
@@ -259,8 +269,10 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
     }
     for (const LArSIMpleWireHit &vHit : vHits)
     {
-        vViewDrift.emplace_back(vHit.GetDriftBin());
-        vViewWire.emplace_back(vHit.GetWireNumber());
+        vViewDriftBin.emplace_back(vHit.GetDriftBin());
+        vViewWireBin.emplace_back(vHit.GetWireNumber());
+        vViewDrift.emplace_back(vHit.GetDriftCoordinate());
+        vViewWire.emplace_back(vHit.GetWireCoordinate());
         vViewCharge.emplace_back(vHit.GetCharge());
         vViewPDG.emplace_back(vHit.GetLargestContributingPDG());
         const int trkId{vHit.GetLargestContributingTrackId()};
@@ -272,8 +284,10 @@ void LArSIMpleOutputWriter::WriteRootFile(const std::string &base, const std::ve
     }
     for (const LArSIMpleWireHit &wHit : wHits)
     {
-        wViewDrift.emplace_back(wHit.GetDriftBin());
-        wViewWire.emplace_back(wHit.GetWireNumber());
+        wViewDriftBin.emplace_back(wHit.GetDriftBin());
+        wViewWireBin.emplace_back(wHit.GetWireNumber());
+        wViewDrift.emplace_back(wHit.GetDriftCoordinate());
+        wViewWire.emplace_back(wHit.GetWireCoordinate());
         wViewCharge.emplace_back(wHit.GetCharge());
         wViewPDG.emplace_back(wHit.GetLargestContributingPDG());
         const int trkId{wHit.GetLargestContributingTrackId()};
