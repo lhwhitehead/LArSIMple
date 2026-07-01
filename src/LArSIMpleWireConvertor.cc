@@ -79,7 +79,7 @@ void LArSIMpleWireConvertor::GetWireGeometryInfo(const LArSIMpleReadoutView &vie
     }
     else
     {
-        min_wire = fDetector->GetLArVolumeMinZ() * std::cos(wireAngle * degreesToRadians) + fDetector->GetLArVolumeMinY() * std::sin(wireAngle * degreesToRadians);
-        max_wire = fDetector->GetLArVolumeMaxZ() * std::cos(wireAngle * degreesToRadians) + fDetector->GetLArVolumeMaxY() * std::sin(wireAngle * degreesToRadians);
+        min_wire = fDetector->GetLArVolumeMinZ() * std::cos(wireAngle * degreesToRadians) - fDetector->GetLArVolumeMinY() * std::sin(wireAngle * degreesToRadians);
+        max_wire = fDetector->GetLArVolumeMaxZ() * std::cos(wireAngle * degreesToRadians) - fDetector->GetLArVolumeMaxY() * std::sin(wireAngle * degreesToRadians);
     }
 }
